@@ -1,57 +1,13 @@
-import { edgeBand, r2 } from "@/lib/engrave";
+import { edgeBand } from "@/lib/engrave";
+import { FrogLeap } from "./FrogLeap";
 import type { Lang } from "@/lib/i18n";
 
-const CAPTION = { zh: "跳躍：從一個學科，到另一個學科。", en: "A leap from one discipline to another." } satisfies Record<Lang, string>;
-
 /**
- * Chronophotographic leap (after É.-J. Marey): seven ghost grasshoppers along a
- * parabola. The ghosts ink in when the divider scrolls into view.
+ * Fig. Saltatio ranae: the leap divider. A frog crosses the figure each time it
+ * scrolls into view (see FrogLeap); kept under its old name so pages need no change.
  */
 export function MareyDivider({ caption = true, lang = "zh" }: { caption?: boolean; lang?: Lang }) {
-  const P0 = [90, 132];
-  const P1 = [600, -88];
-  const P2 = [1110, 132];
-  const N = 7;
-  const ghosts = Array.from({ length: N }, (_, i) => {
-    const t = i / (N - 1);
-    const x = (1 - t) ** 2 * P0[0] + 2 * t * (1 - t) * P1[0] + t * t * P2[0];
-    const y = (1 - t) ** 2 * P0[1] + 2 * t * (1 - t) * P1[1] + t * t * P2[1];
-    const dx = 2 * (1 - t) * (P1[0] - P0[0]) + 2 * t * (P2[0] - P1[0]);
-    const dy = 2 * (1 - t) * (P1[1] - P0[1]) + 2 * t * (P2[1] - P1[1]);
-    const ang = ((Math.atan2(dy, dx) * 180) / Math.PI) * 0.55;
-    return { x: r2(x), y: r2(y), ang: r2(ang), o: r2(0.16 + 0.84 * Math.pow(t, 1.6)), i };
-  });
-  return (
-    <div className="marey wrap reveal" aria-hidden="true">
-      <svg viewBox="0 0 1200 150">
-        <path d="M90 132Q600-88 1110 132" fill="none" stroke="var(--ink)" strokeWidth=".6" strokeDasharray="2 5" />
-        <line x1="40" y1="134" x2="1160" y2="134" stroke="var(--ink)" strokeWidth=".5" />
-        {ghosts.map((g) => (
-          <g
-            key={g.i}
-            className="ghost"
-            transform={`translate(${g.x} ${g.y}) rotate(${g.ang}) scale(.42)`}
-            style={{ ["--o" as string]: g.o, ["--kick" as string]: g.i === 0 || g.i === N - 1 ? "0deg" : g.i < 3 ? "60deg" : "18deg", transitionDelay: `${g.i * 0.11}s` }}
-          >
-            <use href="#grasshopper" x="-105" y="-99" width="210" height="110" />
-          </g>
-        ))}
-        <text x="90" y="149" className="svg-mono" fill="var(--cinnabar)">
-          t = 0
-        </text>
-        <text x="1110" y="149" textAnchor="end" className="svg-mono" fill="var(--cinnabar)">
-          t = 0.6 s
-        </text>
-      </svg>
-      {caption && (
-        <p>
-          <i>Fig. Saltation.</i>
-          {lang === "zh" ? "　" : " "}
-          {CAPTION[lang]}
-        </p>
-      )}
-    </div>
-  );
+  return <FrogLeap caption={caption} lang={lang} />;
 }
 
 /**

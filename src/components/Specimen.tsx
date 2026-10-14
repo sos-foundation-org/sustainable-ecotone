@@ -70,7 +70,7 @@ export function Portrait({ s, size = "md", lang = "zh" }: { s: Speaker; size?: "
       <span className="tape c" aria-hidden="true" />
       <span className="tape d" aria-hidden="true" />
       {s.photo ? (
-        <img src={s.photo} alt={t.portrait(s.name[lang])} />
+        <img src={s.photo} alt={t.portrait(s.name[lang])} style={s.photoPos ? { objectPosition: s.photoPos } : undefined} />
       ) : (
         <div className="ph" aria-hidden="true">
           <span className="initial">{s.initial[lang]}</span>

@@ -17,7 +17,8 @@ const T = {
     sep: "、",
     leapHead: "下一跳 · Next leap",
     q: ["「", "」"],
-    btn: "讓蚱蜢跳一下",
+    btn: "長出新的連結",
+    btnSub: "grow a new link",
     font: '"Noto Serif TC", serif',
     room: 84,
   },
@@ -29,7 +30,8 @@ const T = {
     sep: ", ",
     leapHead: "Next leap",
     q: ["“", "”"],
-    btn: "Let the grasshopper leap",
+    btn: "Grow a new link",
+    btnSub: "",
     font: '"EB Garamond", "Cormorant Garamond", Georgia, serif',
     room: 132,
   },
@@ -451,7 +453,8 @@ export default function MycorrhizaHero({
               </p>
               <button className="myco-leap-btn" type="button" onClick={leap} disabled={leaping}>
                 <span>
-                  {t.btn} <i>· grow a new link</i>
+                  {t.btn}
+                  {t.btnSub && <i> · {t.btnSub}</i>}
                 </span>
                 <span className="arr" aria-hidden="true">
                   ↗

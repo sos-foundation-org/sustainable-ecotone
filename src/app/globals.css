@@ -292,7 +292,7 @@ i, .en { font-family: var(--f-lat); font-style: italic; font-size: 1.1em; letter
 .myco-h1 { margin: 24px 0 0; font-weight: 400; letter-spacing: 0; line-height: 1; }
 .myco-h1 .lat { display: block; font-family: var(--f-lat); font-style: italic; font-weight: 500; font-size: clamp(3rem, 6.2vw, 5.8rem); line-height: .95; }
 .myco-h1 .pron { display: block; font-family: var(--f-mono); font-size: .74rem; letter-spacing: .05em; color: var(--sepia); margin: 14px 0 6px; line-height: 1.5; }
-.myco-h1 .zh { display: block; font-family: var(--f-zh); font-weight: 200; font-size: clamp(4.1rem, 10.4vw, 9.75rem); line-height: 1.04; letter-spacing: .05em; margin-left: -.05em; }
+.myco-h1 .zh { display: block; white-space: nowrap; font-family: var(--f-zh); font-weight: 200; font-size: clamp(3.6rem, 9vw, 8.25rem); line-height: 1.04; letter-spacing: .05em; margin-left: -.05em; }
 .myco-kicker { font-weight: 400; font-size: clamp(1.06rem, 1.55vw, 1.32rem); line-height: 1.75; margin: 16px 0 0; max-width: 21em; }
 .myco-kicker em { font-style: normal; border-bottom: 1px solid var(--spore); }
 .myco-labels { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
@@ -395,9 +395,9 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 /* ── Marey divider ───────────────────────────────────────── */
 .marey { padding-top: 6px; }
 .marey svg { width: 100%; height: auto; display: block; color: var(--ink); }
-.marey .ghost { opacity: var(--o); transition: opacity .5s ease; }
-.js .marey.reveal .ghost { opacity: 0; }
-.js .marey.reveal.is-in .ghost { opacity: var(--o); }
+.frogleap svg { overflow: hidden; --fillp: var(--paper); }
+.frog-trail { fill: none; stroke: var(--ink); stroke-width: .7; stroke-dasharray: 2 5; opacity: .55; }
+.frog-ghost { opacity: .16; }
 .marey p { text-align: center; color: var(--sepia); font-size: .82rem; margin-top: 6px; }
 
 /* ── edge bands ──────────────────────────────────────────── */

@@ -7,7 +7,7 @@ import OrgLink from "./OrgLink";
 import Logo from "./Logo";
 
 // Two deliberately different blocks, never shown as one band:
-//  · Co-organizers: the three organisations that run the forum (large stamps + role).
+//  · Co-organizers: the three organisations that run the forum (large stamps).
 //  · Speakers' affiliations: where the speakers of every volume so far come from (small,
 //    quiet list), derived from all events in events.ts, so it grows with each volume.
 //    It implies no co-organisation or sponsorship.
@@ -50,18 +50,16 @@ export function CoOrganizersHead({ lang, id, as: H = "h2" }: { lang: Lang; id: s
   );
 }
 
-/** Co-organizers as large stamps, each with its role and a short line. */
+/** Co-organizers as large stamps with their names. */
 export function CoOrganizers({ lang, id }: { lang: Lang; id: string }) {
   return (
     <div className="co-organizers">
       <CoOrganizersHead lang={lang} id={id} />
       <ul className="stamps stamps--lg">
-        {CO_ORGANIZERS.map(({ key, role, blurb }, i) => (
+        {CO_ORGANIZERS.map(({ key }, i) => (
           <li key={key}>
             <CollectorStamp org={key} tilt={[-6, 4, -2][i]} lang={lang} />
             <b>{ORGS[key].name[lang]}</b>
-            <span className="mono role">{role[lang]}</span>
-            <span className="muted small">{blurb[lang]}</span>
           </li>
         ))}
       </ul>

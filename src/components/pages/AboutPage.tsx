@@ -222,7 +222,7 @@ export default function AboutPage({ lang }: { lang: Lang }) {
           />
           <p className="muted partners-note reveal">{zh ? "論壇由這三個單位共同發起與主辦。" : "The forum was founded and is run jointly by these three organisations."}</p>
           <ul className="collector-cards">
-            {CO_ORGANIZERS.map(({ key, role, detail }, i) => {
+            {CO_ORGANIZERS.map(({ key }, i) => {
               const o = ORGS[key];
               return (
                 <li key={key} className="reveal">
@@ -230,11 +230,6 @@ export default function AboutPage({ lang }: { lang: Lang }) {
                   <p className="mono cin">{zh ? `共同主辦 ${pad2(i + 1)}` : `Co-organizer ${pad2(i + 1)}`}</p>
                   <h3>{o.name[lang]}</h3>
                   {(zh || o.nameEn !== o.name.en) && <i className="muted">{o.nameEn}</i>}
-                  <p>
-                    <b>{role[lang]}</b>
-                    {zh ? "：" : ": "}
-                    {detail[lang]}
-                  </p>
                   <OrgLink org={key} className="txtlink" lang={lang}>
                     {zh ? (
                       <>

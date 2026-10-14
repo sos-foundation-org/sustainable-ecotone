@@ -4,7 +4,7 @@ import type { DisciplineKey } from "./disciplines";
 
 // ─── Speakers ────────────────────────────────────────────────────────────────
 // 新講者：在 SPEAKERS 加一筆（可翻譯欄位寫 { zh, en }），並在 events.ts 的 speakers 陣列引用 id。
-// photo 放 public/speakers/<id>.jpg（4:5，至少 1600×2000）後填入路徑；沒有照片時顯示設計過的台紙佔位卡。
+// photo 放 public/speakers/<id>-4x5.jpg（先裁成 4:5，建議至少 1200×1500）後填入路徑；沒有照片時顯示設計過的台紙佔位卡。
 // disciplines：依講者既有身份標註的學科（見 disciplines.ts），用於「交會圖譜」；待講者確認。
 // places：講者所屬機構的地點，用於地圖與經緯度標籤。approx = 僅為區域示意。
 
@@ -38,6 +38,8 @@ export type Speaker = {
   bio: L10n; // 中文可含 <span class="en">…</span>；英文用 <em>…</em>
   talk?: L10n;
   photo?: string;
+  /** 照片裁切焦點（CSS object-position），例如 "72% 30%"；預設置中 */
+  photoPos?: string;
   draftNote?: L10n;
 };
 
@@ -48,6 +50,7 @@ export const SPEAKERS: Speaker[] = [
     id: "sun",
     name: { zh: "孫烜駿", en: "Syuan-Jyun Sun" },
     nameEn: "Syuan-Jyun Sun",
+    photo: "/speakers/sun-4x5.jpg",
     initial: { zh: "孫", en: "S" },
     eyebrow: "Climate Change · NTU",
     short: "Climate Change · NTU",
@@ -74,6 +77,7 @@ export const SPEAKERS: Speaker[] = [
     id: "chan",
     name: { zh: "詹偉平", en: "Wei-Ping Chan" },
     nameEn: "Wei-Ping Chan",
+    photo: "/speakers/chan-4x5.jpg",
     initial: { zh: "詹", en: "C" },
     eyebrow: "Founder · Founder · Researcher",
     short: "SOS · BioNarr · Harvard",
@@ -116,6 +120,7 @@ export const SPEAKERS: Speaker[] = [
     id: "yen",
     name: { zh: "顏訥", en: "Yen Ne" },
     nameEn: "Yen Ne",
+    photo: "/speakers/yen-4x5.jpg",
     initial: { zh: "顏", en: "Y" },
     eyebrow: "Literature · NDHU",
     short: "Literature · NDHU",
@@ -178,6 +183,7 @@ export const SPEAKERS: Speaker[] = [
     id: "wang",
     name: { zh: "王鼎涵", en: "Ting-Han Wang" },
     nameEn: "Ting-Han Wang",
+    photo: "/speakers/wang-4x5.jpg",
     initial: { zh: "王", en: "W" },
     eyebrow: "Clinician · OMIC · Sustainability Office",
     short: "Dentistry · OMIC · Sustainability",
