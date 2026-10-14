@@ -7,7 +7,7 @@ import { CO_ORGANIZERS, ORGS } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "關於我們",
-  description: "ECOTONE 由國立臺灣大學、國立陽明交通大學與 SOS Foundation 三方共同發起 — 為什麼是這三方，以及我們想做什麼。",
+  description: "Ecotone 兼容並續由國立臺灣大學、國立陽明交通大學與 SOS Foundation 三方共同發起 — 為什麼是這三方，以及我們想做什麼。",
 };
 
 const ROLES: Record<string, { role: string; detail: string }> = {
@@ -30,7 +30,7 @@ export default function AboutPage() {
         }
         lead={
           <>
-            ECOTONE 是一個由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起的跨領域永續論壇。我們想做的不是一場漂亮的活動，而是一個可以一直長下去的{" "}
+            Ecotone 兼容並續是一個由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起的跨領域永續論壇。我們想做的不是一場漂亮的活動，而是一個可以一直長下去的{" "}
             <span className="en">platform</span>。
           </>
         }
@@ -53,7 +53,7 @@ export default function AboutPage() {
               氣候變遷是科學問題，也是語言問題；城市綠化是設計問題，也是生態問題；醫療院所的碳排，是管理問題，也是倫理問題。但大學的結構，往往讓這些人一輩子不會坐在同一張桌子前。
             </p>
             <p className="muted">
-              ECOTONE 就是那張桌子。兩所大學提供學術的深度與廣度，SOS Foundation 提供跨界與行動的能量 —
+              Ecotone 就是那張桌子。兩所大學提供學術的深度與廣度，SOS Foundation 提供跨界與行動的能量 —
               我們一起定期邀請來自不同學科、甚至同時擁有多重身份的講者，讓永續的討論真正 <span className="en">cross-pollinate</span>。
             </p>
           </div>

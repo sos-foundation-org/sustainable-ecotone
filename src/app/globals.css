@@ -1,5 +1,5 @@
 /* ============================================================
-   ECOTONE — 跨領域永續論壇 Design System
+   Ecotone 兼容並續 — Design System
    Palette blends SOS Foundation (deep night teal, gold) with
    the WPC site (warm specimen paper, DM Serif Display).
    ============================================================ */
@@ -116,7 +116,10 @@ a[aria-disabled="true"] { cursor: default; }
 .brand { display: flex; align-items: center; gap: .7rem; text-decoration: none; }
 .brand-mark { width: 30px; height: 30px; flex: none; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.1; }
-.brand-text .en { font-size: 1.25rem; letter-spacing: .08em; }
+.brand-text .en { font-size: 1.35rem; letter-spacing: .02em; }
+.brand-name { display: flex; align-items: baseline; gap: .5rem; }
+.brand-name .zh { font-family: var(--f-serif-zh); font-weight: 600; font-size: .98rem; letter-spacing: .14em; color: var(--c-gold); }
+.site-header.is-solid .brand-name .zh { color: var(--c-amber); }
 .brand-text small { font-size: .68rem; letter-spacing: .12em; opacity: .7; }
 .nav-links { display: flex; gap: .25rem; list-style: none; margin: 0; padding: 0; align-items: center; }
 .nav-links a {
@@ -386,7 +389,8 @@ a[aria-disabled="true"] { cursor: default; }
 .site-footer li { margin: .45rem 0; }
 .site-footer a { text-decoration: none; transition: color .2s; }
 .site-footer a:hover { color: var(--c-gold); }
-.footer-brand .en { font-size: 1.6rem; color: var(--c-on-dark); letter-spacing: .08em; }
+.footer-brand .en { font-size: 1.7rem; color: var(--c-on-dark); }
+.footer-brand .brand-name .zh { font-size: 1.2rem; }
 .footer-bottom { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--c-line-dark); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; font-size: .8rem; }
 @media (max-width: 760px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-brand { grid-column: 1 / -1; } }
 

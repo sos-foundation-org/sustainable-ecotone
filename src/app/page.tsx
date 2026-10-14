@@ -30,7 +30,7 @@ export default function Home() {
         }
         lead={
           <>
-            ECOTONE 是一個長期經營的跨領域永續論壇。我們把氣候科學家、文學研究者、地景建築師、牙醫、生物學家放進同一個房間 —
+            Ecotone 兼容並續是一個長期經營的跨領域永續論壇。我們把氣候科學家、文學研究者、地景建築師、牙醫、生物學家放進同一個房間 —
             不是為了達成共識，而是為了看見彼此學科裡那些 <span className="en">unexpected connections</span>。
           </>
         }
@@ -79,8 +79,11 @@ export default function Home() {
               所謂的 <span className="en">edge effect</span>。
             </p>
             <p className="muted">
-              知識也是這樣。最有意思的想法很少誕生在學科的正中央，而是在邊界：當氣候模型遇上詩、當牙科診間遇上碳足跡、當昆蟲翅膀的結構色遇上建築立面。ECOTONE
+              知識也是這樣。最有意思的想法很少誕生在學科的正中央，而是在邊界：當氣候模型遇上詩、當牙科診間遇上碳足跡、當昆蟲翅膀的結構色遇上建築立面。Ecotone
               想做的，就是刻意製造這種邊界，然後定期、長期地讓它發生。
+            </p>
+            <p className="muted">
+              中文名「兼容並續」改自「兼容並蓄」— <strong>兼容</strong>不同的學科與身份，<strong>並續</strong>，讓永續真的能延續下去。
             </p>
           </div>
         </div>

@@ -8,17 +8,17 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "ECOTONE 跨領域永續論壇｜NTU × NYCU × SOS Foundation",
-    template: "%s｜ECOTONE 跨領域永續論壇",
+    default: "Ecotone｜兼容並續 · NTU × NYCU × SOS 跨領域永續論壇",
+    template: "%s｜Ecotone 兼容並續",
   },
   description:
-    "ECOTONE 是由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起的跨領域永續論壇。第一場：2026 年 11 月 Cross-Pollination 系列演講。",
+    "Ecotone 兼容並續是由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起的跨領域永續論壇。第一場：2026 年 11 月 Cross-Pollination 系列演講。",
   openGraph: {
-    title: "ECOTONE 跨領域永續論壇",
+    title: "Ecotone｜兼容並續",
     description: SITE.tagline + " NTU × NYCU × SOS Foundation。",
     type: "website",
     locale: "zh_TW",
-    siteName: "ECOTONE",
+    siteName: "Ecotone｜兼容並續",
   },
 };
 

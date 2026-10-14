@@ -21,11 +21,11 @@ export const dynamicParams = false;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const e = eventBySlug((await params).slug);
   if (!e) return {};
-  const desc = `ECOTONE Vol. ${String(e.vol).padStart(2, "0")} — ${e.title} ${e.kind}，${e.dateLabel}。`;
+  const desc = `Ecotone Vol. ${String(e.vol).padStart(2, "0")} — ${e.title} ${e.kind}，${e.dateLabel}。`;
   return {
     title: `${e.title} ${e.dateShort}`,
     description: desc,
-    openGraph: { title: `${e.title}｜ECOTONE Vol. ${String(e.vol).padStart(2, "0")}`, description: desc },
+    openGraph: { title: `${e.title}｜Ecotone Vol. ${String(e.vol).padStart(2, "0")}`, description: desc },
   };
 }
 
@@ -39,7 +39,7 @@ export default async function EventPage({ params }: Props) {
     <>
       <PageHero
         full
-        eyebrow={`ECOTONE Vol. ${vol} · ${e.dateShort}`}
+        eyebrow={`Ecotone Vol. ${vol} · ${e.dateShort}`}
         title={
           <>
             <span className="en">{e.title}</span>

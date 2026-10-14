@@ -28,10 +28,13 @@ export default function Header() {
   return (
     <header className={`site-header${solid ? " is-solid" : ""}`}>
       <div className="container nav">
-        <Link className="brand" href="/" aria-label="ECOTONE 首頁" onClick={close}>
+        <Link className="brand" href="/" aria-label="Ecotone 兼容並續 首頁" onClick={close}>
           <BrandMark />
           <span className="brand-text">
-            <span className="en">ECOTONE</span>
+            <span className="brand-name">
+              <span className="en">Ecotone</span>
+              <span className="zh">兼容並續</span>
+            </span>
             <small>跨領域永續論壇</small>
           </span>
         </Link>

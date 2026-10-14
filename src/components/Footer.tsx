@@ -8,7 +8,10 @@ export default function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <div className="en">ECOTONE</div>
+            <div className="brand-name">
+              <span className="en">Ecotone</span>
+              <span className="zh">兼容並續</span>
+            </div>
             <p style={{ marginTop: ".6rem", maxWidth: "28em" }}>
               跨領域永續論壇 — 由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起。在學科的交界處，讓永續長出新的物種。
             </p>
@@ -38,7 +41,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© {new Date().getFullYear()} ECOTONE Interdisciplinary Sustainability Forum</span>
+          <span>© {new Date().getFullYear()} Ecotone 兼容並續 · Interdisciplinary Sustainability Forum</span>
           <span>NTU × NYCU × SOS Foundation</span>
         </div>
       </div>

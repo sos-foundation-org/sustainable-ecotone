@@ -6,7 +6,7 @@ import { EVENTS } from "@/content/events";
 
 export const metadata: Metadata = {
   title: "活動",
-  description: "ECOTONE 跨領域永續論壇的所有活動 — 定期舉辦，逐場累積。",
+  description: "Ecotone 兼容並續的所有活動 — 定期舉辦，逐場累積。",
 };
 
 export default function EventsPage() {
@@ -27,7 +27,7 @@ export default function EventsPage() {
         }
         lead={
           <>
-            ECOTONE 會定期舉辦系列演講、工作坊與跨域對談。每一場都有不同的主題與組合，但同一個 <span className="en">mindset</span>：把不同學科放在一起，看會發生什麼。
+            Ecotone 會定期舉辦系列演講、工作坊與跨域對談。每一場都有不同的主題與組合，但同一個 <span className="en">mindset</span>：把不同學科放在一起，看會發生什麼。
           </>
         }
       />

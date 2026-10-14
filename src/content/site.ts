@@ -2,8 +2,9 @@
 // 改這裡就會全站生效。標記 PLACEHOLDER 的欄位為暫代，找到正式資料後替換。
 
 export const SITE = {
-  name: "ECOTONE",
-  nameZh: "跨領域永續論壇",
+  name: "Ecotone",
+  nameZh: "兼容並續",
+  subtitle: "跨領域永續論壇",
   tagline: "在學科的交界處，讓永續長出新的物種。",
   /** Production origin, no trailing slash. Set NEXT_PUBLIC_SITE_URL on Vercel once the domain is decided. */
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ecotone-forum.vercel.app").replace(/\/+$/, ""),

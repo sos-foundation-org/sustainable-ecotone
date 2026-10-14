@@ -7,7 +7,7 @@ import { VOICES } from "@/content/voices";
 
 export const metadata: Metadata = {
   title: "海外聲音",
-  description: "Voices from Abroad — 海外研究者、設計師與實踐者，以短片回應 ECOTONE 論壇的主題。",
+  description: "Voices from Abroad — 海外研究者、設計師與實踐者，以短片回應 Ecotone 論壇的主題。",
 };
 
 export default function VoicesPage() {

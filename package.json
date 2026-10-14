@@ -2,7 +2,7 @@
   "name": "ecotone-forum",
   "version": "0.1.0",
   "private": true,
-  "description": "ECOTONE 跨領域永續論壇 — NTU × NYCU × SOS Foundation",
+  "description": "Ecotone｜兼容並續 — 跨領域永續論壇 — NTU × NYCU × SOS Foundation",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
