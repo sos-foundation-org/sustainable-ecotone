@@ -9,6 +9,7 @@ const CAPTION = {
 } satisfies Record<Lang, { fig: string; text: string }>;
 
 const GROUND = 140;
+const HEADROOM = 130;
 const VW = 1200;
 
 /* A frog in the site's engraved line, three poses. Facing right; the feet sit
@@ -237,7 +238,8 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
   const c = CAPTION[lang];
   return (
     <div className="marey frogleap wrap" aria-hidden="true">
-      <svg ref={svgRef} viewBox={`0 0 ${VW} 160`} aria-hidden="true">
+      {/* headroom above the arc so the frog (scaled up to ~2× on phones) is never clipped at the top */}
+      <svg ref={svgRef} viewBox={`0 ${-HEADROOM} ${VW} ${160 + HEADROOM}`} aria-hidden="true">
         <FrogDefs />
         <line x1="0" y1={GROUND + 1} x2={VW} y2={GROUND + 1} stroke="var(--ink)" strokeWidth=".5" />
         {/* static figure (no JS / reduced motion): one resting frog and a dotted arc */}
