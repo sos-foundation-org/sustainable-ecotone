@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- PLACEHOLDER — replace with the official SALAD Dressing logo -->
+  <circle cx="100" cy="100" r="96" fill="#eef4ef" stroke="#5FA58B" stroke-width="3" stroke-dasharray="6 6"/>
+  <text x="100" y="96" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#2d5e4a" letter-spacing="2">SALAD</text>
+  <text x="100" y="128" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#2d5e4a" letter-spacing="1">Dressing</text>
+</svg>
