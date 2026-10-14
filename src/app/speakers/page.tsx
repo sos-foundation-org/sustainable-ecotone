@@ -1,106 +1,185 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import PageHero from "@/components/PageHero";
-import { Portrait } from "@/components/SpeakerCard";
-import OrgLink from "@/components/OrgLink";
-import Logo from "@/components/Logo";
-import Rich from "@/components/Rich";
-import { SPEAKERS } from "@/content/speakers";
-import { ORGS } from "@/content/site";
+import { PageTitle, PlateHead } from "@/components/Typography";
+import WaterlineHeading from "@/components/WaterlineHeading";
+import { PlateEdge } from "@/components/Dividers";
+import SpecimenSheet from "@/components/Specimen";
+import CrossingAtlas from "@/components/CrossingAtlas";
+import { CallLink } from "@/components/SpeakerCall";
+import { pastEvents, upcomingEvents } from "@/content/events";
+import { speakerById } from "@/content/speakers";
+import { DISCIPLINES } from "@/content/disciplines";
+import { pad2, roman } from "@/lib/engrave";
 
 export const metadata: Metadata = {
-  title: "講者",
-  description: "Cross-Pollination Vol. 01 講者：孫烜駿、詹偉平、顏訥、Yuhan、王鼎涵 — 每個人本身就是一個 ecotone。",
+  title: "歷屆講者",
+  description: "Ecotone 兼容並續的歷屆講者 — 一份持續增補的講者名錄。每一冊論壇結束後，該冊的講者會自動收錄在這裡。",
 };
 
-const ZH_NUM = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五"];
+/** An empty, waiting herbarium mount: tape, an empty photo window, ghost fungi, a blank label. */
+function EmptyMount() {
+  return (
+    <svg className="empty-mount" viewBox="0 0 560 380" role="img" aria-labelledby="em-t">
+      <title id="em-t">一張空白的台紙：照片的位置、菌絲與子實體都還只是虛線，標籤也還沒有填寫。</title>
+      <rect x="20" y="16" width="520" height="348" fill="#FBF8F1" stroke="#1C1A17" strokeWidth="1" />
+      <rect x="32" y="28" width="520" height="348" fill="none" stroke="#1C1A17" strokeWidth=".5" opacity=".35" />
+      {[
+        [60, 40, -8],
+        [212, 40, 7],
+        [60, 236, 6],
+        [212, 236, -5],
+      ].map(([x, y, r], i) => (
+        <rect key={i} x={x} y={y} width="56" height="16" fill="rgba(232,223,203,.95)" stroke="rgba(94,81,65,.4)" strokeWidth=".5" transform={`rotate(${r} ${x + 28} ${y + 8})`} />
+      ))}
+      <rect x="72" y="52" width="180" height="192" fill="none" stroke="#1C1A17" strokeWidth=".8" strokeDasharray="4 4" />
+      <text x="162" y="144" textAnchor="middle" className="svg-mono" fill="#5E5141">
+        PORTRAIT
+      </text>
+      <text x="162" y="164" textAnchor="middle" className="svg-zh" fill="#5E5141">
+        講者肖像 · 待補
+      </text>
+      <path d="M290 230C330 226 380 234 430 230S500 226 520 230" fill="none" stroke="#1C1A17" strokeWidth=".8" />
+      <g opacity=".28" color="#1C1A17">
+        <use href="#fungus-bell" x="310" y="170" width="45" height="60" />
+        <use href="#fungus-parasol" x="372" y="158" width="54" height="72" />
+        <use href="#fungus-bolete" x="444" y="176" width="40" height="54" />
+      </g>
+      <path d="M332 232C340 256 372 262 398 248S452 262 466 240M398 248C400 262 392 276 380 284" fill="none" stroke="#1C1A17" strokeWidth=".6" strokeDasharray="2 3" />
+      <g transform="translate(300 286)">
+        <rect width="220" height="62" fill="#FAF6EC" stroke="#1C1A17" strokeWidth=".9" />
+        <text x="10" y="16" className="svg-mono svg-mono--xs" fill="#A8321F">
+          COLL. · ECO-S-??
+        </text>
+        <path d="M10 32h200M10 46h150" stroke="#1C1A17" strokeWidth=".5" strokeDasharray="1 3" />
+        <text x="210" y="56" textAnchor="end" className="svg-mono svg-mono--xs" fill="#5E5141">
+          det. ＿＿＿＿
+        </text>
+      </g>
+      <g transform="translate(72 266)">
+        {Array.from({ length: 22 }, (_, i) => (
+          <rect key={i} x={i * 4.4} y="0" width={i % 3 ? 1.2 : 2.2} height="18" fill="#1C1A17" opacity=".18" />
+        ))}
+        <text x="0" y="30" className="svg-mono svg-mono--xs" fill="#5E5141">
+          ECO-S-01 → ∞
+        </text>
+      </g>
+    </svg>
+  );
+}
 
-export default function SpeakersPage() {
-  const identityCount = SPEAKERS.reduce((n, s) => n + s.identities.length, 0);
+export default function PastSpeakersPage() {
+  const past = pastEvents().sort((a, b) => b.vol - a.vol);
+  const archived = past.flatMap((e) => e.speakers.map(speakerById).filter((s) => s !== undefined).map((s) => ({ s, e })));
+  const pending = upcomingEvents().sort((a, b) => a.vol - b.vol)[0];
+  const pendingLineup = pending ? pending.speakers.map(speakerById).filter((s) => s !== undefined) : [];
 
   return (
     <>
-      <PageHero
-        eyebrow="Speakers · Cross-Pollination Vol. 01"
-        title={
-          <>
-            {ZH_NUM[SPEAKERS.length] ?? SPEAKERS.length} 位講者，
-            <br />
-            <em>{ZH_NUM[identityCount] ?? identityCount} 種</em>身份。
-          </>
-        }
+      <PageTitle
+        catalog={["Past Speakers · 歷屆講者", "Herbarium", `${archived.length} speakers archived`]}
+        title="歷屆講者"
+        en="An herbarium of everyone who has spoken at Ecotone"
         lead={
-          <>
-            我們刻意邀請「一個人就是一個 <span className="en">ecotone</span>」的講者 —
-            他們同時在實驗室、診間、文學系、設計事務所與基金會之間來回。多重身份不是履歷上的裝飾，而是他們看見連結的方式。
-          </>
+          <p>
+            每一冊論壇結束後，那一冊的講者會被正式收錄進這份名錄 — 帶著他們所有的身份。這裡會隨著論壇一冊一冊長大，成為一份跨學科、跨國界的名錄。
+          </p>
         }
-      >
-        <nav className="speaker-jump" aria-label="講者快速導覽">
-          {SPEAKERS.map((s) => (
-            <a key={s.id} href={`#${s.id}`}>
-              {s.name}
-            </a>
-          ))}
-        </nav>
-      </PageHero>
+      />
 
-      <section className="section" style={{ paddingTop: "clamp(24px,4vw,48px)" }}>
-        <div className="container">
-          {SPEAKERS.map((s) => (
-            <article className="profile" id={s.id} key={s.id}>
-              <div>
-                <Portrait s={s} className="portrait reveal" />
+      {archived.length === 0 ? (
+        <section className="sec sec--tight" aria-labelledby="empty-h">
+          <div className="wrap empty-cabinet">
+            <div className="reveal">
+              <EmptyMount />
+            </div>
+            <div className="reveal">
+              <p className="catno mono">
+                <span>Herbarium · status: awaiting first accession</span>
+              </p>
+              <WaterlineHeading as="h2" id="empty-h" contained en="The collection begins after Vol. 01 — November 2026.">
+                歷屆講者名錄，
+                <br />
+                還在等第一批講者。
+              </WaterlineHeading>
+              <p className="lead">
+                第一冊 <i>{pending?.title ?? "Cross-Pollination"}</i> 將於 {pending?.dateLabel ?? "2026 年 11 月"}舉行。活動結束後，這一冊的講者會自動收錄在這裡；在那之前，請到活動頁認識他們。
+              </p>
+              {pending && pendingLineup.length > 0 && (
+                <div className="pending">
+                  <p className="mono pending-h">
+                    Pending accession · 待收錄 — Vol. {pad2(pending.vol)}
+                  </p>
+                  <ul>
+                    {pendingLineup.map((s) => (
+                      <li key={s.id}>
+                        <Link href={`/events/${pending.slug}#${s.id}`}>
+                          <span className="pencil">{s.name}</span>
+                          <span className="mono muted">
+                            {s.identities.length} label{s.identities.length > 1 ? "s" : ""}
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              <div className="actions">
+                {pending && (
+                  <Link className="btn btn--ink" href={`/events/${pending.slug}#speakers`}>
+                    看 Vol. {pad2(pending.vol)} 的講者
+                    <span className="mani" aria-hidden="true">
+                      ☞
+                    </span>
+                  </Link>
+                )}
               </div>
-              <div className="reveal">
-                <div className="eyebrow">{s.eyebrow}</div>
-                <h2>{s.name}</h2>
-                <div className="en-name">{s.nameEn}</div>
-                {s.orgs.length > 0 && (
-                  <div className="affils">
-                    {s.orgs.map((k) => (
-                      <OrgLink key={k} org={k} className="affil">
-                        {ORGS[k].logo && <Logo src={ORGS[k].logo} />}
-                        {ORGS[k].name}
-                      </OrgLink>
+            </div>
+          </div>
+        </section>
+      ) : (
+        <>
+          {past.map((e) => {
+            const people = e.speakers.map(speakerById).filter((s) => s !== undefined);
+            return (
+              <section key={e.slug} className="sec sec--tight" aria-labelledby={`vol-${e.vol}`}>
+                <div className="wrap">
+                  <PlateHead no={roman(e.vol)} id={`vol-${e.vol}`} title={e.title} en={e.titleZh} side={`Vol. ${pad2(e.vol)} · ${e.dateLabel}`} />
+                  <div className="sheets">
+                    {people.map((s) => (
+                      <div key={s.id} className="reveal">
+                        <SpecimenSheet s={s} full headingLevel={3} vol={`Vol. ${pad2(e.vol)} · ${e.title}`} />
+                      </div>
                     ))}
                   </div>
-                )}
-                <div className="identity-stack">
-                  {s.identities.map((id, i) => (
-                    <div className="identity" key={id.title}>
-                      <span className="idx">{String(i + 1).padStart(2, "0")}</span>
-                      <div>
-                        <strong>{id.title}</strong>
-                        <span>{id.detail}</span>
-                      </div>
-                    </div>
-                  ))}
                 </div>
-                <Rich as="p" className="muted" html={s.bio} />
-                <div className="talk-box">
-                  <div className="label">Talk</div>
-                  <p>{s.talk ?? "講題確認中"}</p>
-                </div>
-                {s.draftNote && (
-                  <p className="draft-note" style={{ marginTop: "1.4rem" }}>
-                    ＊{s.draftNote}
-                  </p>
-                )}
+              </section>
+            );
+          })}
+          <PlateEdge from="var(--paper)" to="var(--cyan)" mode="lace" seed={55} />
+          <section className="sec sec--cyan" aria-labelledby="sp-atlas">
+            <div className="wrap">
+              <PlateHead no="§" label="Atlas" id="sp-atlas" title="他們把哪些世界接在一起" en="Crossings" />
+              <div className="atlas-solo reveal">
+                <CrossingAtlas
+                  idPrefix="sp-atlas"
+                  speakers={archived.map(({ s }) => ({ id: s.id, name: s.name, disciplines: s.disciplines, places: s.places }))}
+                  disciplines={DISCIPLINES}
+                />
               </div>
-            </article>
-          ))}
-        </div>
-      </section>
+            </div>
+          </section>
+          <PlateEdge from="var(--cyan)" to="var(--paper)" mode="lace" seed={89} />
+        </>
+      )}
 
-      <section className="section--tight section--dark">
-        <div className="container cta-band">
-          <h2>
-            每一位講者，各自藏著一張 <span className="en">Secret Slide</span>。
+      <section className="cta-band" aria-labelledby="sp-cta">
+        <div className="wrap cta-row">
+          <h2 id="sp-cta">
+            想成為下一位講者？
+            <br />
+            <span className="muted">我們正在徵集身上貼著好幾張標籤的講者。</span>
           </h2>
-          <Link className="btn btn--gold" href="/events/cross-pollination-2026#secret-slide">
-            什麼是 Secret Slide？ <span className="arrow">→</span>
-          </Link>
+          <CallLink />
         </div>
       </section>
     </>

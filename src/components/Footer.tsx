@@ -1,36 +1,48 @@
 import Link from "next/link";
-import { CO_ORGANIZERS, NAV, ORGS } from "@/content/site";
+import { CO_ORGANIZERS, NAV, ORGS, CALL_NAV, SITE } from "@/content/site";
+import BrandMark from "./BrandMark";
 import OrgLink from "./OrgLink";
+import FollowCard from "./Follow";
 
 export default function Footer() {
   return (
-    <footer className="site-footer">
-      <div className="container">
-        <div className="footer-grid">
-          <div className="footer-brand">
-            <div className="brand-name">
-              <span className="en">Ecotone</span>
-              <span className="zh">兼容並續</span>
-            </div>
-            <p style={{ marginTop: ".6rem", maxWidth: "28em" }}>
-              跨領域永續論壇 — 由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起。在學科的交界處，讓永續長出新的物種。
+    <footer className="colophon">
+      <div className="wrap">
+        <div className="colo-grid">
+          <div className="colo-brand">
+            <p className="brand-line">
+              <BrandMark size={36} />
+              <span>
+                <b>Ecotone</b>｜{SITE.nameZh}
+              </span>
             </p>
+            <p className="muted">
+              {SITE.subtitle} — 由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起。{SITE.tagline}
+            </p>
+            <FollowCard compact />
           </div>
-          <div>
-            <h4>Explore</h4>
+          <nav aria-label="頁尾選單">
+            <h2 className="mono colo-h">Index · 目錄</h2>
             <ul>
+              <li>
+                <Link href="/">首頁 <i>Frontispiece</i></Link>
+              </li>
               {NAV.map((n) => (
                 <li key={n.href}>
-                  <Link href={n.href}>{n.label}</Link>
+                  <Link href={n.href}>
+                    {n.label} <i>{n.en}</i>
+                  </Link>
                 </li>
               ))}
               <li>
-                <Link href="/contact">報名 / 聯絡</Link>
+                <Link href={CALL_NAV.href}>
+                  {CALL_NAV.label} / 聯絡 <i>{CALL_NAV.en}</i>
+                </Link>
               </li>
             </ul>
-          </div>
+          </nav>
           <div>
-            <h4>Partners</h4>
+            <h2 className="mono colo-h">Collectors · 共同主辦</h2>
             <ul>
               {CO_ORGANIZERS.map(({ key }) => (
                 <li key={key}>
@@ -40,9 +52,9 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="footer-bottom">
+        <div className="fine mono">
           <span>© {new Date().getFullYear()} Ecotone 兼容並續 · Interdisciplinary Sustainability Forum</span>
-          <span>NTU × NYCU × SOS Foundation</span>
+          <span>Colophon — set in Noto Serif TC, Cormorant Garamond &amp; IBM Plex Mono</span>
         </div>
       </div>
     </footer>

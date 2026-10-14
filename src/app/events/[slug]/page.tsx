@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import PageHero from "@/components/PageHero";
-import SpeakerCard from "@/components/SpeakerCard";
-import SectionHead from "@/components/SectionHead";
-import SecretSlide from "@/components/SecretSlide";
-import RegisterButton from "@/components/RegisterButton";
+import { PlateHead } from "@/components/Typography";
+import WaterlineHeading from "@/components/WaterlineHeading";
+import { PlateEdge, MareyDivider } from "@/components/Dividers";
+import { ProgrammeToc, VolumeEmblem } from "@/components/Volume";
+import CrossingAtlas from "@/components/CrossingAtlas";
+import NextCrossing from "@/components/NextCrossing";
+import SpecimenSheet from "@/components/Specimen";
+import { CallLink } from "@/components/SpeakerCall";
 import Rich from "@/components/Rich";
+import FollowCard from "@/components/Follow";
+import { EVENT_PLATES } from "@/components/plates";
 import { EVENTS, eventBySlug } from "@/content/events";
-import { speakerById } from "@/content/speakers";
+import { catalogNo, speakerById } from "@/content/speakers";
+import { DISCIPLINES } from "@/content/disciplines";
+import { DESIDERATA } from "@/content/crossings";
+import { pad2, roman } from "@/lib/engrave";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -21,11 +29,11 @@ export const dynamicParams = false;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const e = eventBySlug((await params).slug);
   if (!e) return {};
-  const desc = `Ecotone Vol. ${String(e.vol).padStart(2, "0")} — ${e.title} ${e.kind}，${e.dateLabel}。`;
+  const desc = `Ecotone Vol. ${pad2(e.vol)} — ${e.title}「${e.titleZh}」${e.kind}，${e.dateLabel}，${e.venueNote}。`;
   return {
     title: `${e.title} ${e.dateShort}`,
     description: desc,
-    openGraph: { title: `${e.title}｜Ecotone Vol. ${String(e.vol).padStart(2, "0")}`, description: desc },
+    openGraph: { title: `${e.title}｜Ecotone Vol. ${pad2(e.vol)}`, description: desc },
   };
 }
 
@@ -33,167 +41,227 @@ export default async function EventPage({ params }: Props) {
   const e = eventBySlug((await params).slug);
   if (!e) notFound();
   const lineup = e.speakers.map(speakerById).filter((s) => s !== undefined);
-  const vol = String(e.vol).padStart(2, "0");
+  const vol = `Vol. ${pad2(e.vol)}`;
+  const covered = new Set(lineup.flatMap((s) => s.disciplines));
+  const identityCount = lineup.reduce((n, s) => n + s.identities.length, 0);
+  const desiderata = [...DESIDERATA].sort((x, y) => Number(covered.has(x.a)) + Number(covered.has(x.b)) - (Number(covered.has(y.a)) + Number(covered.has(y.b))));
+  const places = new Set(lineup.flatMap((s) => s.places.map((p) => p.name)));
+  const Plate = e.plate ? EVENT_PLATES[e.plate] : null;
 
   return (
     <>
-      <PageHero
-        full
-        eyebrow={`Ecotone Vol. ${vol} · ${e.dateShort}`}
-        title={
-          <>
-            <span className="en">{e.title}</span>
-            <br />
-            {e.titleZh}。
-          </>
-        }
-        lead={<Rich html={e.intro[0]} />}
-      >
-        <div className="hero-actions">
-          <RegisterButton />
-          {e.hasSecretSlide && (
-            <a className="btn btn--ghost" href="#secret-slide">
-              Secret Slide 是什麼？
-            </a>
-          )}
+      {/* Title page (+ the volume's engraved plate) */}
+      <section className={`title-hero${Plate ? " title-hero--plate" : ""}`} aria-labelledby="ev-title">
+        <div className="wrap title-hero-grid">
+          <div className="title-hero-inner">
+            <VolumeEmblem e={e} size={112} />
+            <p className="mono vol-line">
+              Ecotone｜兼容並續 · Volume {roman(e.vol)} · {e.kind}
+            </p>
+            <WaterlineHeading id="ev-title" align={Plate ? "start" : "center"} contained={Boolean(Plate)} en={e.titleZh}>
+              <span lang="en" className="ev-en">
+                {e.title}
+              </span>
+            </WaterlineHeading>
+            <div className="lead">
+              {e.intro.map((p) => (
+                <Rich key={p} as="p" html={p} />
+              ))}
+            </div>
+            <p className="attendance mono" role="note">
+              <span className="cin">Attendance · 參加方式</span> {e.attendance}
+            </p>
+            <div className="actions">
+              <a className="btn btn--ink" href="#speakers">
+                本冊講者 <small>{lineup.length} SPEAKERS</small>
+                <span className="mani" aria-hidden="true">
+                  ☞
+                </span>
+              </a>
+              <a className="txtlink" href="#contents">
+                目次 <i>Contents</i>
+              </a>
+            </div>
+          </div>
+          {Plate && <Plate plateNo={roman(e.vol)} />}
         </div>
-        <div className="hero-meta">
-          <div>
-            <strong>{e.dateLabel}</strong>
-            {e.dateNote}
-          </div>
-          <div>
-            <strong>{e.venue}</strong>
-            {e.venueNote}
-          </div>
-          <div>
-            <strong>
-              {lineup.length} Talks{e.hasSecretSlide ? ` + ${lineup.length} Secret Slides` : ""}
-            </strong>
-            {e.language}，{e.languageNote}
-          </div>
-        </div>
-      </PageHero>
+      </section>
 
-      {/* FACTS */}
-      <section className="section--tight">
-        <div className="container">
-          <div className="facts reveal">
-            <div className="fact">
-              <div className="label">Date</div>
-              <div className="value">{e.dateLabel}</div>
-              <div className="note">{e.dateNote}</div>
+      {/* Specimen label: facts */}
+      <section className="sec sec--tight" aria-labelledby="facts">
+        <div className="wrap">
+          <h2 id="facts" className="sr-only">
+            活動資訊
+          </h2>
+          <dl className="label-card label-card--wide reveal">
+            <div>
+              <dt>Date · 日期</dt>
+              <dd>
+                {e.dateLabel}
+                <span className="muted">{e.dateNote}</span>
+              </dd>
             </div>
-            <div className="fact">
-              <div className="label">Venue</div>
-              <div className="value">{e.venue}</div>
-              <div className="note">{e.venueNote}</div>
+            <div>
+              <dt>Loc. · 地點</dt>
+              <dd>
+                {e.venue}
+                <span className="muted">{e.venueNote}</span>
+              </dd>
             </div>
-            <div className="fact">
-              <div className="label">Format</div>
-              <div className="value">{e.format}</div>
-              <div className="note">{e.formatNote}</div>
+            <div>
+              <dt>Format · 形式</dt>
+              <dd>
+                {e.format}
+                <span className="muted">{e.formatNote}</span>
+              </dd>
             </div>
-            <div className="fact">
-              <div className="label">Language</div>
-              <div className="value">{e.language}</div>
-              <div className="note">{e.languageNote}</div>
+            <div>
+              <dt>Lang. · 語言</dt>
+              <dd>
+                {e.language}
+                <span className="muted">{e.languageNote}</span>
+              </dd>
+            </div>
+          </dl>
+          <div className="follow-row reveal">
+            <FollowCard note={`${e.title} 的確切日期與地點尚未公布。留下你的 e-mail，資訊確定時我們會第一時間通知你；之後的每一冊，也不會錯過。`} />
+          </div>
+        </div>
+      </section>
+
+      {e.premise && (
+        <section className="sec sec--tight" aria-labelledby="premise">
+          <div className="wrap spread">
+            <div className="reveal">
+              <p className="catno mono">
+                <span>{vol} · Premise</span>
+              </p>
+              <h2 id="premise" className="h-sec">
+                {e.premise.title}
+              </h2>
+            </div>
+            <div className="gutter" aria-hidden="true" />
+            <div className="reveal prose">
+              {e.premise.body.map((p) => (
+                <Rich key={p} as="p" html={p} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <PlateEdge from="var(--paper)" to="var(--cyan)" mode="lace" seed={e.vol * 13} label={`ECOTONE · ${vol}`} />
+
+      {/* Crossings of this volume */}
+      <section className="sec sec--cyan" aria-labelledby="ev-crossings">
+        <div className="wrap">
+          <PlateHead
+            no={roman(e.vol)}
+            id="ev-crossings"
+            title="本冊的交會"
+            en="Crossings of this Volume"
+            side={`${lineup.length} speakers · ${identityCount} identities · ${covered.size} fields · ${places.size} places`}
+          />
+          <div className="atlas-grid">
+            <div className="reveal">
+              <CrossingAtlas
+                idPrefix="ev-atlas"
+                speakers={lineup.map((s) => ({ id: s.id, name: s.name, disciplines: s.disciplines, places: s.places }))}
+                disciplines={DISCIPLINES}
+                caption={`${vol} 觸及 ${covered.size} / ${DISCIPLINES.length} 個學科、${places.size} 個地方。學科標註待講者確認。`}
+              />
+            </div>
+            <div className="reveal">
+              <NextCrossing items={desiderata} disciplines={DISCIPLINES} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ABOUT */}
-      <section className="section" style={{ paddingTop: "clamp(32px,5vw,64px)" }}>
-        <div className="container split">
+      <PlateEdge from="var(--cyan)" to="var(--paper)" mode="lace" seed={e.vol * 17} />
+
+      {/* Specimens: the speakers of this volume */}
+      <section className="sec" id="speakers" aria-labelledby="lineup">
+        <div className="wrap">
+          <PlateHead no="§" label="Speakers" id="lineup" title="本冊講者" en="Speakers with many identities" side={`${lineup.length} speakers · ${identityCount} identities`} />
+          <p className="lead plate-intro reveal">
+            我們的講者，每一位都有好幾種身份 — 一個人，橫跨好幾個領域；地上的每一朵菇，都長在同一個菌絲體上。
+          </p>
+          <nav className="jump reveal" aria-label="本冊講者快速導覽">
+            <ol>
+              {lineup.map((s) => (
+                <li key={s.id}>
+                  <a href={`#${s.id}`}>
+                    <span className="mono">{catalogNo(s)}</span> {s.name}
+                    <span className="lbls" aria-label={`${s.identities.length} 種身份`}>
+                      {s.identities.map((id) => (
+                        <span key={id.title} />
+                      ))}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+          <div className="sheets">
+            {lineup.map((s) => (
+              <div key={s.id} className="reveal">
+                <SpecimenSheet s={s} full headingLevel={3} vol={`${vol} · ${e.title}`} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <MareyDivider caption={false} />
+
+      {/* Programme as table of contents */}
+      <section className="sec" id="contents" aria-labelledby="toc-h">
+        <div className="wrap spread">
           <div className="reveal">
-            <div className="eyebrow">About the Series</div>
-            <h2 className="h-section">
-              不是 {lineup.length} 場演講，
-              <br />
-              是一場授粉實驗。
+            <p className="catno mono">
+              <span>{vol} · Contents</span>
+            </p>
+            <h2 id="toc-h" className="h-sec">
+              目次 <i>Programme</i>
+            </h2>
+            <p className="muted">流程為暫定版本，正式時間將於日期確認後公布。</p>
+          </div>
+          <div className="gutter" aria-hidden="true" />
+          <div className="reveal">
+            <ProgrammeToc e={e} />
+          </div>
+        </div>
+      </section>
+
+      {/* Voices teaser */}
+      <section className="sec sec--tight sec--folio" aria-labelledby="ev-voices">
+        <div className="wrap split">
+          <div className="reveal">
+            <p className="catno mono">
+              <span>Atlas · Voices from Abroad</span>
+            </p>
+            <h2 id="ev-voices" className="h-sec">
+              來自海外的聲音
             </h2>
           </div>
           <div className="reveal">
-            <div className="accent-bar" />
-            <p className="lead">
-              一般的論壇是「輪流發言」：每個人講完自己的，聽眾各取所需。<span className="en">Cross-Pollination</span>{" "}
-              想做的不一樣 — 我們要求每位講者，在講自己專業的同時，也要冒一點險，把手伸進別人的領域。
-            </p>
-            <p className="muted">
-              氣候科學家會被文學研究者追問「你怎麼描述一個你看不到的未來？」；景觀建築師會被牙醫問「你的設計怎麼算碳？」。我們相信，真正有意思的永續方案，都長在這些{" "}
-              <span className="en">awkward but productive</span> 的對話裡。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {e.hasSecretSlide && <SecretSlide />}
-
-      {/* LINE-UP */}
-      <section className="section section--paper2">
-        <div className="container">
-          <SectionHead eyebrow="Line-up" title="講者陣容" href="/speakers" linkLabel="完整介紹" />
-          <div className="speaker-grid">
-            {lineup.map((s) => (
-              <SpeakerCard key={s.id} s={s} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PROGRAM */}
-      <section className="section">
-        <div className="container split">
-          <div className="reveal">
-            <div className="eyebrow">Program (Tentative)</div>
-            <h2 className="h-section">活動流程</h2>
-            <p className="muted">流程為暫定版本，正式時間將於日期確認後公布。</p>
-          </div>
-          <ol className="timeline reveal">
-            {e.program.map((p) => (
-              <li key={p.time + p.title}>
-                <span className="t">{p.time}</span>
-                <div>
-                  <h4>{p.title}</h4>
-                  <p>{p.detail}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* VOICES TEASER */}
-      <section className="section section--dark">
-        <div className="container split">
-          <div className="reveal">
-            <div className="eyebrow">Voices from Abroad</div>
-            <h2 className="h-section">來自海外的聲音</h2>
-          </div>
-          <div className="reveal">
-            <p className="lead">
-              永續從來不是一個國家的事。我們邀請海外的研究者、設計師與實踐者錄製短片，回應這次論壇的主題 — 在現場播放，也會收錄在網站上。
-            </p>
-            <Link className="btn btn--ghost" href="/voices" style={{ marginTop: "1rem" }}>
-              前往海外聲音 <span className="arrow">→</span>
+            <p className="lead">永續從來不是一個國家的事。我們邀請海外的研究者、設計師與實踐者錄製短片回應本冊主題，在現場播放，也收錄在地圖集裡。</p>
+            <Link className="txtlink" href="/voices">
+              打開地圖集 <i>Open the Atlas</i> <span aria-hidden="true">☞</span>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="section--tight">
-        <div className="container cta-band">
-          <h2>
-            名額有限。想親眼看見那 {lineup.length} 張 <span className="en">Secret Slides</span>？
+      <section className="cta-band" aria-labelledby="ev-cta">
+        <div className="wrap cta-row">
+          <h2 id="ev-cta">
+            下一冊的講者，也許是你。
+            <br />
+            <span className="muted">我們正在徵集同時活在好幾個學科、好幾個國家裡的講者。</span>
           </h2>
-          <div style={{ display: "flex", gap: ".8rem", flexWrap: "wrap" }}>
-            <RegisterButton variant="dark" />
-            <Link className="btn btn--ghost" href="/contact">
-              聯絡我們
-            </Link>
-          </div>
+          <CallLink />
         </div>
       </section>
     </>

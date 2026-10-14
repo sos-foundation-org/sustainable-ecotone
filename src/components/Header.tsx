@@ -2,66 +2,96 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { NAV } from "@/content/site";
+import { useEffect, useRef, useState } from "react";
+import { NAV, CALL_NAV } from "@/content/site";
 import BrandMark from "./BrandMark";
 
 export default function Header() {
   const pathname = usePathname();
-  const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
+  const [lastPath, setLastPath] = useState(pathname);
+  const btn = useRef<HTMLButtonElement>(null);
+  const nav = useRef<HTMLElement>(null);
+  const wasOpen = useRef(false);
 
-  useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  // close the menu on navigation (derived state, no effect needed)
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    setOpen(false);
+  }
 
+  // mobile menu: scroll lock, focus in on open / back on close, Escape, Tab trap
   useEffect(() => {
-    document.body.classList.toggle("nav-open", open);
+    const root = document.documentElement;
+    if (!open) {
+      root.classList.remove("menu-open");
+      if (wasOpen.current) btn.current?.focus();
+      wasOpen.current = false;
+      return;
+    }
+    wasOpen.current = true;
+    root.classList.add("menu-open");
+    nav.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !nav.current || !btn.current) return;
+      const items = [btn.current, ...Array.from(nav.current.querySelectorAll<HTMLElement>("a"))];
+      const i = items.indexOf(document.activeElement as HTMLElement);
+      const next = e.shiftKey ? (i <= 0 ? items.length - 1 : i - 1) : i === items.length - 1 ? 0 : i + 1;
+      e.preventDefault();
+      items[next]?.focus();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      root.classList.remove("menu-open");
+    };
   }, [open]);
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
-  const close = () => setOpen(false);
 
   return (
-    <header className={`site-header${solid ? " is-solid" : ""}`}>
-      <div className="container nav">
-        <Link className="brand" href="/" aria-label="Ecotone 兼容並續 首頁" onClick={close}>
+    <header className={`mast${open ? " is-open" : ""}`}>
+      <div className="wrap mast-row">
+        <Link className="brand" href="/" aria-label="Ecotone 兼容並續 首頁">
           <BrandMark />
           <span className="brand-text">
             <span className="brand-name">
-              <span className="en">Ecotone</span>
-              <span className="zh">兼容並續</span>
+              <b>Ecotone</b>
+              <em aria-hidden="true">｜</em>
+              <span>兼容並續</span>
             </span>
             <small>跨領域永續論壇</small>
           </span>
         </Link>
-        <button
-          className="nav-toggle"
-          aria-label={open ? "關閉選單" : "開啟選單"}
-          aria-expanded={open}
-          onClick={() => setOpen((o) => !o)}
-        >
-          <span />
-          <span />
-          <span />
+        {/* the main conversion stays visible on small screens */}
+        <Link className="mast-cta" href={CALL_NAV.href} aria-current={isActive(CALL_NAV.href) ? "page" : undefined}>
+          {CALL_NAV.label}
+        </Link>
+        <button ref={btn} className="menu-btn" type="button" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen((o) => !o)}>
+          {open ? "關閉" : "目錄"} <i>{open ? "Close" : "Index"}</i>
         </button>
-        <ul className="nav-links">
-          {NAV.map((n) => (
-            <li key={n.href}>
-              <Link href={n.href} aria-current={isActive(n.href) ? "page" : undefined} onClick={close}>
-                {n.label}
+        <nav id="site-nav" ref={nav} className="nav" aria-label="主選單">
+          <ul>
+            {NAV.map((n) => (
+              <li key={n.href}>
+                <Link href={n.href} aria-current={isActive(n.href) ? "page" : undefined}>
+                  {n.label}
+                  <small>{n.en}</small>
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link className="nav-cta" href={CALL_NAV.href} aria-current={isActive(CALL_NAV.href) ? "page" : undefined}>
+                {CALL_NAV.label}
+                <small>{CALL_NAV.en}</small>
               </Link>
             </li>
-          ))}
-          <li>
-            <Link className="nav-cta" href="/contact" aria-current={isActive("/contact") ? "page" : undefined} onClick={close}>
-              報名 / 聯絡
-            </Link>
-          </li>
-        </ul>
+          </ul>
+        </nav>
       </div>
     </header>
   );

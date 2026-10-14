@@ -24,23 +24,25 @@ npm run build
 
 | 檔案 | 內容 |
 |---|---|
-| `site.ts` | 報名網址 `registrationUrl`、聯絡信箱 `contactEmail`、合作單位官網與 logo（`ORGS`） |
-| `events.ts` | 活動列表。**新增一場活動 = 加一筆**，`/events/<slug>` 會自動產生 |
-| `speakers.ts` | 講者、多重身份 (`identities`)、介紹、照片 |
-| `voices.ts` | 海外聲音影片。填 `youtubeId` 或 `src`（mp4 放 `public/voices/`）就會上線 |
+| `site.ts` | 講者招募表單 `speakerFormUrl`、追蹤未來活動表單 `followFormUrl`、聯絡信箱、合作單位（`ORGS`）、導覽、原則、FAQ |
+| `events.ts` | 活動列表。**新增一場活動 = 加一筆**；`/events/<slug>`、圖版編號與年輪徽記會自動產生。`plate` 可選用一張銅版畫圖版（目前有 `"mangrove"`）。`status: "past"` 的活動，其講者會自動收錄到「歷屆講者」 |
+| `speakers.ts` | 講者、多重身份 (`identities`)、學科 (`disciplines`)、地點 (`places`)、介紹、照片 |
+| `disciplines.ts` | 學科與其製圖線型（新增學科需在 `EngraveDefs.tsx` 補一個 `lt-<key>` pattern） |
+| `crossings.ts` | 首頁「交會圖版」與「下一跳 / Desiderata」提問 |
+| `voices.ts` | 海外聲音影片：`youtubeId` 或 `src`、`poster`、`lat`/`lng`、時區 `tz` |
 
-- 講者照片：放 `public/speakers/<id>.jpg`，在 `speakers.ts` 填 `photo: "/speakers/<id>.jpg"`
-- Logo：在 `public/logos/`
+- 講者照片：放 `public/speakers/<id>.jpg`（4:5，至少 1600×2000），在 `speakers.ts` 填 `photo: "/speakers/<id>.jpg"`
+- 兩個表單網址留空時，按鈕會顯示「表單即將開放」/「追蹤表單即將開放」
+- `/contact` 會轉址到 `/call-for-speakers`（講者招募＋一般聯絡）
 
 ## 待補 / Placeholder 清單
 
 - [ ] 活動確切日期、地點（`events.ts`）
-- [ ] 報名表單網址、聯絡信箱（`site.ts`）
+- [ ] 講者招募表單、追蹤未來活動表單、聯絡信箱（`site.ts`）
 - [ ] SALAD Dressing 官網與正式 logo（目前暫用 ArchDaily 頁面與自製佔位圖 `salad-placeholder.svg`）
-- [ ] BioNarr 官網
-- [ ] 講者照片、講題、英文姓名確認，以及標記「草稿」的介紹內容
-- [ ] Secret Slide 規則定案
-- [ ] 海外聲音影片與名單
+- [ ] BioNarr 官網與 logo
+- [ ] 講者照片、講題、英文姓名確認，以及標記「草稿」的介紹內容；學科標註 `disciplines` 待講者確認
+- [ ] 海外聲音影片、封面、名單與地點
 - [ ] 校徽使用授權：NTU / NYCU / NDHU 校徽取自 Wikipedia（非自由授權的合理使用檔案），正式上線前請向各校公關確認
 
 ## 部署（Vercel）
