@@ -1,19 +1,51 @@
 import { SITE } from "@/content/site";
+import type { Lang } from "@/lib/i18n";
+
+// The follow form is bilingual already: both languages link to the same SITE.followFormUrl.
+const T = {
+  zh: {
+    cta: "留下 e-mail",
+    ctaSmall: "FOLLOW · 另開新視窗",
+    newTab: "（另開新視窗）",
+    pendingText: "追蹤表單即將開放 · opening soon",
+    pending: "追蹤表單即將開放",
+    title: "追蹤未來活動",
+    titleSub: "Follow future volumes",
+    short: "新的一冊公布時，第一時間通知你。",
+    head: ["Semina · 種子袋", "Follow · 追蹤"],
+    note: "水筆仔的胎生苗會隨潮水漂流，等到合適的地方才落地生根。留下你的 e-mail，下一冊公布時（日期、地點、講者），我們會第一時間通知你。",
+    fine: "只用來寄送活動消息 · 想成為講者，請見「成為講者」",
+  },
+  en: {
+    cta: "Sign up by email",
+    ctaSmall: "OPENS IN A NEW TAB",
+    newTab: " (opens in a new tab)",
+    pendingText: "Sign-up form opening soon",
+    pending: "Sign-up form opening soon",
+    title: "Follow future events",
+    titleSub: "",
+    short: "Be the first to hear when a new volume is announced.",
+    head: ["Semina · Seed packet", "Follow"],
+    note: "A mangrove’s seedlings drift on the tide until they find the right place to take root. Leave your email and we will let you know the moment the next volume (date, venue, speakers) is announced.",
+    fine: "Event news only · To speak, see Call for Speakers",
+  },
+} satisfies Record<Lang, unknown>;
 
 /** Opens the "follow future events" Google Form, or shows a graceful pending state while the URL is empty. */
-export function FollowButton({ variant = "line" }: { variant?: "line" | "ink" | "text" }) {
+export function FollowButton({ variant = "line", lang = "zh" }: { variant?: "line" | "ink" | "text"; lang?: Lang }) {
+  const t = T[lang];
   if (SITE.followFormUrl) {
     if (variant === "text") {
       return (
         <a className="txtlink" href={SITE.followFormUrl} target="_blank" rel="noopener noreferrer">
-          留下 e-mail <i>Follow</i> <span aria-hidden="true">↗</span>
-          <span className="sr-only">（另開新視窗）</span>
+          {t.cta} {lang === "zh" && <i>Follow</i>} <span aria-hidden="true">↗</span>
+          <span className="sr-only">{t.newTab}</span>
         </a>
       );
     }
     return (
       <a className={`btn btn--${variant}`} href={SITE.followFormUrl} target="_blank" rel="noopener noreferrer">
-        留下 e-mail <small>FOLLOW · 另開新視窗</small>
+        {t.cta} <small>{t.ctaSmall}</small>
         <span className="mani" aria-hidden="true">
           ☞
         </span>
@@ -21,11 +53,11 @@ export function FollowButton({ variant = "line" }: { variant?: "line" | "ink" | 
     );
   }
   if (variant === "text") {
-    return <span className="follow-pending mono">追蹤表單即將開放 · opening soon</span>;
+    return <span className="follow-pending mono">{t.pendingText}</span>;
   }
   return (
     <p className={`btn btn--${variant} btn--pending`} role="status">
-      追蹤表單即將開放 <small>OPENING SOON</small>
+      {t.pending} <small>OPENING SOON</small>
     </p>
   );
 }
@@ -46,40 +78,39 @@ function Propagule() {
 }
 
 /**
- * 追蹤未來活動 — a seed packet. Distinct from the speaker call: this is for
- * people who want to be told when a new volume is announced (e-mail only).
- * `compact` is the slim footer version.
+ * 追蹤未來活動 / Follow future events — a seed packet. Distinct from the speaker
+ * call: this is for people who want to be told when a new volume is announced
+ * (e-mail only). `compact` is the slim footer version.
  */
-export default function FollowCard({ compact = false, note, headingId = "follow-h" }: { compact?: boolean; note?: string; headingId?: string }) {
+export default function FollowCard({ compact = false, note, headingId = "follow-h", lang = "zh" }: { compact?: boolean; note?: string; headingId?: string; lang?: Lang }) {
+  const t = T[lang];
   if (compact) {
     return (
       <div className="follow-compact">
         <p>
-          <b>追蹤未來活動</b> <i>Follow future volumes</i>
+          <b>{t.title}</b> {t.titleSub && <i>{t.titleSub}</i>}
           <br />
-          <span className="muted small">新的一冊公布時，第一時間通知你。</span>
+          <span className="muted small">{t.short}</span>
         </p>
-        <FollowButton variant="text" />
+        <FollowButton variant="text" lang={lang} />
       </div>
     );
   }
   return (
     <aside className="seed-packet" aria-labelledby={headingId}>
       <div className="seed-head mono">
-        <span>Semina · 種子袋</span>
-        <span>Follow · 追蹤</span>
+        <span>{t.head[0]}</span>
+        <span>{t.head[1]}</span>
       </div>
       <div className="seed-body">
         <Propagule />
         <div>
           <h2 id={headingId} className="seed-title">
-            追蹤未來活動 <i>Follow future volumes</i>
+            {t.title} {t.titleSub && <i>{t.titleSub}</i>}
           </h2>
-          <p className="muted">
-            {note ?? "水筆仔的胎生苗會隨潮水漂流，等到合適的地方才落地生根。留下你的 e-mail，下一冊公布時（日期、地點、講者），我們會第一時間通知你。"}
-          </p>
-          <FollowButton />
-          <p className="seed-fine mono">只用來寄送活動消息 · 想成為講者，請見「成為講者」</p>
+          <p className="muted">{note ?? t.note}</p>
+          <FollowButton lang={lang} />
+          <p className="seed-fine mono">{t.fine}</p>
         </div>
       </div>
     </aside>

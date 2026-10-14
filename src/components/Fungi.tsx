@@ -1,11 +1,26 @@
 import { FUNGUS_SPECIES, hypha, hyphaLink, mulberry32, r2, roman, seedFrom } from "@/lib/engrave";
+import type { Lang } from "@/lib/i18n";
+
+const T = {
+  zh: {
+    aria: (n: number, names: string[]) => `一個菌絲體，${n} 個子實體：${names.join("、")}`,
+    cap: (n: number) => `Genet · 一個菌絲體，${n} 個子實體`,
+    each: "· 每一朵菇，是一種身份",
+  },
+  en: {
+    aria: (n: number, names: string[]) => `One mycelium, ${n} fruiting bod${n === 1 ? "y" : "ies"}: ${names.join("; ")}`,
+    cap: (n: number) => `Genet · one mycelium, ${n} fruiting bod${n === 1 ? "y" : "ies"}`,
+    each: "· each mushroom is one identity",
+  },
+} satisfies Record<Lang, unknown>;
 
 /**
  * Genet strip for a specimen sheet. In mycology one individual (a genet) can
  * fruit as many mushrooms; here every fruiting body is one of the speaker's
  * identities, all joined by the same mycelium under the soil line.
  */
-export function Genet({ seed, count, names }: { seed: string; count: number; names: string[] }) {
+export function Genet({ seed, count, names, lang = "zh" }: { seed: string; count: number; names: string[]; lang?: Lang }) {
+  const t = T[lang];
   const rnd = mulberry32(seedFrom(seed));
   const W = 300;
   const soil = 78;
@@ -20,7 +35,7 @@ export function Genet({ seed, count, names }: { seed: string; count: number; nam
 
   return (
     <figure className="genet">
-      <svg viewBox={`0 0 ${W} 120`} role="img" aria-label={`一個菌絲體，${count} 個子實體：${names.join("、")}`}>
+      <svg viewBox={`0 0 ${W} 120`} role="img" aria-label={t.aria(count, names)}>
         <rect x="0" y={soil} width={W} height={120 - soil} fill="url(#stip)" opacity=".18" />
         <g fill="none" stroke="#1C1A17" strokeWidth=".55" opacity=".75" strokeLinecap="round" strokeLinejoin="round">
           {threads.map((d, i) => (
@@ -43,7 +58,7 @@ export function Genet({ seed, count, names }: { seed: string; count: number; nam
         })}
       </svg>
       <figcaption className="mono">
-        Genet · 一個菌絲體，{count} 個子實體 <span className="k-zh">· 每一朵菇，是一種身份</span>
+        {t.cap(count)} <span className="k-zh">{t.each}</span>
       </figcaption>
     </figure>
   );

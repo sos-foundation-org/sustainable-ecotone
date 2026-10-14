@@ -1,10 +1,13 @@
 import { edgeBand, r2 } from "@/lib/engrave";
+import type { Lang } from "@/lib/i18n";
+
+const CAPTION = { zh: "跳躍：從一個學科，到另一個學科。", en: "A leap from one discipline to another." } satisfies Record<Lang, string>;
 
 /**
  * Chronophotographic leap (after É.-J. Marey): seven ghost grasshoppers along a
  * parabola. The ghosts ink in when the divider scrolls into view.
  */
-export function MareyDivider({ caption = true }: { caption?: boolean }) {
+export function MareyDivider({ caption = true, lang = "zh" }: { caption?: boolean; lang?: Lang }) {
   const P0 = [90, 132];
   const P1 = [600, -88];
   const P2 = [1110, 132];
@@ -42,7 +45,9 @@ export function MareyDivider({ caption = true }: { caption?: boolean }) {
       </svg>
       {caption && (
         <p>
-          <i>Fig. Saltation.</i>　跳躍：從一個學科，到另一個學科。
+          <i>Fig. Saltation.</i>
+          {lang === "zh" ? "　" : " "}
+          {CAPTION[lang]}
         </p>
       )}
     </div>

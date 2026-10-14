@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { Lang } from "@/lib/i18n";
 
 const PAIRS: [string, string, string, string][] = [
   ["森林", "Forest", "草原", "Grassland"],
@@ -12,14 +13,32 @@ const PAIRS: [string, string, string, string][] = [
   ["臺北", "Taipei", "新加坡", "Singapore"],
 ];
 
+const T = {
+  zh: {
+    title: "邊緣效應示意圖：兩側各自的物種曲線在交界處重疊，總豐富度在交會帶達到高峰。",
+    richness: "豐富度 · richness",
+    zone: "交會帶",
+    cap: "邊緣效應：交會帶的物種，多於任一側。",
+    swap: "換一組學科",
+  },
+  en: {
+    title: "The edge effect: the species curves of the two sides overlap at the boundary, and total richness peaks in the ecotone.",
+    richness: "richness",
+    zone: "where they meet",
+    cap: "The edge effect: the ecotone holds more species than either side.",
+    swap: "Try another pair",
+  },
+} satisfies Record<Lang, unknown>;
+
 /** Fig. 2 — the edge effect. The two sides can be swapped for any pair of disciplines (user-driven, never auto-rotating). */
-export default function EdgeEffectFigure() {
+export default function EdgeEffectFigure({ lang = "zh" }: { lang?: Lang }) {
   const [i, setI] = useState(0);
   const [a, aEn, b, bEn] = PAIRS[i];
+  const t = T[lang];
   return (
     <figure className="fig2 reveal">
       <svg viewBox="0 0 560 310" role="img" aria-labelledby="fig2-title">
-        <title id="fig2-title">邊緣效應示意圖：兩側各自的物種曲線在交界處重疊，總豐富度在交會帶達到高峰。</title>
+        <title id="fig2-title">{t.title}</title>
         <rect className="band" x="222" y="34" width="136" height="226" fill="url(#hatchC)" opacity=".55" />
         <line className="band" x1="222" y1="34" x2="222" y2="260" stroke="var(--cinnabar)" strokeWidth=".7" strokeDasharray="2 3" />
         <line className="band" x1="358" y1="34" x2="358" y2="260" stroke="var(--cinnabar)" strokeWidth=".7" strokeDasharray="2 3" />
@@ -37,21 +56,34 @@ export default function EdgeEffectFigure() {
           edge effect
         </text>
         <text x="40" y="146" transform="rotate(-90 40 146)" textAnchor="middle" className="svg-zh svg-zh--sm" fill="var(--sepia)">
-          豐富度 · richness
+          {t.richness}
         </text>
         <g className="svg-zh" fill="var(--ink)" aria-live="polite">
-          <text x="62" y="288">
-            {a} <tspan className="svg-italic">{aEn}</tspan>
-          </text>
-          <text x="522" y="288" textAnchor="end">
-            {b} <tspan className="svg-italic">{bEn}</tspan>
-          </text>
+          {lang === "zh" ? (
+            <>
+              <text x="62" y="288">
+                {a} <tspan className="svg-italic">{aEn}</tspan>
+              </text>
+              <text x="522" y="288" textAnchor="end">
+                {b} <tspan className="svg-italic">{bEn}</tspan>
+              </text>
+            </>
+          ) : (
+            <>
+              <text x="62" y="288" className="svg-italic svg-italic--lg">
+                {aEn}
+              </text>
+              <text x="522" y="288" textAnchor="end" className="svg-italic svg-italic--lg">
+                {bEn}
+              </text>
+            </>
+          )}
         </g>
         <text x="290" y="288" textAnchor="middle" className="svg-mono" fill="var(--cinnabar)">
           ECOTONE
         </text>
         <text x="290" y="303" textAnchor="middle" className="svg-zh svg-zh--sm" fill="var(--cinnabar)">
-          交會帶
+          {t.zone}
         </text>
         <g className="svg-italic" fill="var(--sepia)">
           <text x="120" y="68">species of A</text>
@@ -62,10 +94,12 @@ export default function EdgeEffectFigure() {
       </svg>
       <figcaption className="fig-cap">
         <span>
-          <b>Fig. 2</b>　邊緣效應：交會帶的物種，多於任一側。
+          <b>Fig. 2</b>
+          {lang === "zh" ? "　" : " "}
+          {t.cap}
         </span>
         <button type="button" className="text-btn" onClick={() => setI((n) => (n + 1) % PAIRS.length)}>
-          換一組學科 <span aria-hidden="true">↻</span>
+          {t.swap} <span aria-hidden="true">↻</span>
         </button>
       </figcaption>
     </figure>

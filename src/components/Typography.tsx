@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { Lang } from "@/lib/i18n";
 import WaterlineHeading from "./WaterlineHeading";
 
 /** Plate head: PLATE + roman numeral, bilingual title, catalogue reference. */
@@ -9,13 +10,16 @@ export function PlateHead({
   en,
   side,
   id,
+  lang = "zh",
 }: {
   no: string;
   label?: string;
   title: ReactNode;
+  /** optional italic subtitle (on Chinese pages usually the English gloss) */
   en?: string;
   side?: string;
   id?: string;
+  lang?: Lang;
 }) {
   return (
     <header className="plate-head reveal">
@@ -25,7 +29,8 @@ export function PlateHead({
       </div>
       <h2 id={id}>
         <span className="sr-only">
-          {label} {no}：
+          {label} {no}
+          {lang === "zh" ? "：" : ": "}
         </span>
         {title}
         {en && <i> {en}</i>}

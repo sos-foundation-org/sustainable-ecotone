@@ -6,6 +6,30 @@ import type { Place } from "@/content/speakers";
 import type { Voice } from "@/content/voices";
 import { fmtCoord, r2, seedFrom } from "@/lib/engrave";
 import { hyphaPath, rng, toPath, walker, type Rng } from "@/lib/mycelium";
+import type { Lang } from "@/lib/i18n";
+
+const T = {
+  zh: {
+    title: "交會圖譜：上方是學科，中間每位講者是同一條根莖上的一個節點，下方是他們所在的地方。每條根代表一個真實的連結；完整列表見圖下說明。",
+    fields: "↑ 學科 fields",
+    places: "↓ 地方 places",
+    vacant: " · 待連結",
+    voice: "多元聲音 · voice",
+    vacantHead: "待連結的學科 · vacant fields",
+    sep: "、",
+    key: "講者與其學科、地點",
+  },
+  en: {
+    title: "Atlas of Crossings: fields float above; in the middle, each speaker is a knot on one shared rhizome; below lie the places where they work. Every root is a real connection. The full list follows the figure.",
+    fields: "↑ fields",
+    places: "↓ places",
+    vacant: " · open",
+    voice: "Diverse Voices",
+    vacantHead: "Vacant fields",
+    sep: ", ",
+    key: "Speakers, their fields and places",
+  },
+} satisfies Record<Lang, unknown>;
 
 export type AtlasSpeaker = {
   id: string;
@@ -40,7 +64,9 @@ function root(a: Pt, b: Pt, R: Rng, owner: string, to: string, out: Root[], lace
   }
 }
 
-function build(speakers: AtlasSpeaker[], disciplines: Discipline[], places: AtlasPlace[], seed: number, narrow: boolean): Layout {
+function build(speakers: AtlasSpeaker[], disciplines: Discipline[], places: AtlasPlace[], seed: number, narrow: boolean, lang: Lang): Layout {
+  // English field names run longer: keep their labels inside the plate
+  const en = lang === "en";
   const R = rng(seed);
   const covered = new Set(speakers.flatMap((s) => s.disciplines));
   const discList = narrow ? disciplines.filter((d) => covered.has(d.key)) : disciplines;
@@ -55,7 +81,7 @@ function build(speakers: AtlasSpeaker[], disciplines: Discipline[], places: Atla
   let shore: number;
   if (narrow) {
     const rowD = Math.ceil(discList.length / 2);
-    disc = discList.map((d, i) => ({ ...d, vacant: !covered.has(d.key), x: r2((i % 2 ? 236 : 46) + jit(30)), y: r2(40 + Math.floor(i / 2) * 58 + (i % 2) * 22) }));
+    disc = discList.map((d, i) => ({ ...d, vacant: !covered.has(d.key), x: r2((i % 2 ? (en ? 196 : 236) : 46) + jit(30)), y: r2(40 + Math.floor(i / 2) * 58 + (i % 2) * 22) }));
     const y0 = 40 + rowD * 58 + 50;
     spk = speakers.map((s, i) => ({ ...s, x: r2((i % 2 ? 250 : 120) + jit(24)), y: r2(y0 + i * 62) }));
     shore = y0 + speakers.length * 62 + 6;
@@ -72,7 +98,7 @@ function build(speakers: AtlasSpeaker[], disciplines: Discipline[], places: Atla
       let best: Pt = { x: 0, y: 0 };
       let bestD = -1;
       for (let t = 0; t < 60; t++) {
-        const c = { x: 30 + R() * (W - 150), y: 34 + R() * 150 };
+        const c = { x: 30 + R() * (W - (en ? 230 : 150)), y: 34 + R() * 150 };
         const dd = Math.min(999, ...placed.map((p) => Math.hypot(p.x - c.x, (p.y - c.y) * 2.2)));
         if (dd > bestD) {
           bestD = dd;
@@ -123,6 +149,7 @@ export default function CrossingAtlas({
   caption,
   idPrefix = "atlas",
   voices,
+  lang = "zh",
 }: {
   speakers: AtlasSpeaker[];
   disciplines: Discipline[];
@@ -130,7 +157,9 @@ export default function CrossingAtlas({
   idPrefix?: string;
   /** optional: also map Diverse Voices (多元聲音) as places across the sea */
   voices?: Voice[];
+  lang?: Lang;
 }) {
+  const t = T[lang];
   const [hl, setHl] = useState<string | null>(null);
   const [pinned, setPinned] = useState<string | null>(null);
   const active = hl ?? pinned;
@@ -139,12 +168,12 @@ export default function CrossingAtlas({
     const out: AtlasPlace[] = [];
     for (const s of speakers) for (const p of s.places) if (!out.some((q) => q.key === p.name)) out.push({ key: p.name, name: p.name, sub: `${p.approx ? "≈ " : ""}${fmtCoord(p.lat, p.lng)}`, kind: "speaker" });
     const near = (lat: number, lng: number) => speakers.some((s) => s.places.some((p) => Math.abs(p.lat - lat) < 1.5 && Math.abs(p.lng - lng) < 1.5));
-    for (const v of voices ?? []) if (v.lat !== undefined && v.lng !== undefined && !near(v.lat, v.lng) && !out.some((q) => q.key === v.location)) out.push({ key: v.location, name: v.location, sub: "多元聲音 · voice", kind: "voice" });
+    for (const v of voices ?? []) if (v.lat !== undefined && v.lng !== undefined && !near(v.lat, v.lng) && !out.some((q) => q.key === v.location)) out.push({ key: v.location, name: v.location, sub: t.voice, kind: "voice" });
     return out;
-  }, [speakers, voices]);
+  }, [speakers, voices, t.voice]);
   const seed = seedFrom(idPrefix + speakers.map((s) => s.id).join());
-  const wide = useMemo(() => build(speakers, disciplines, places, seed, false), [speakers, disciplines, places, seed]);
-  const narrow = useMemo(() => build(speakers, disciplines, places, seed, true), [speakers, disciplines, places, seed]);
+  const wide = useMemo(() => build(speakers, disciplines, places, seed, false, lang), [speakers, disciplines, places, seed, lang]);
+  const narrow = useMemo(() => build(speakers, disciplines, places, seed, true, lang), [speakers, disciplines, places, seed, lang]);
   const covered = new Set(speakers.flatMap((s) => s.disciplines));
   const vacant = disciplines.filter((d) => !covered.has(d.key));
 
@@ -159,13 +188,13 @@ export default function CrossingAtlas({
 
   const plate = (L: Layout, variant: "wide" | "narrow") => (
     <svg className={`atlas-svg atlas-svg--${variant}`} viewBox={`0 0 ${L.W} ${L.H}`} role="img" aria-labelledby={`${idPrefix}-${variant}-t`}>
-      <title id={`${idPrefix}-${variant}-t`}>交會圖譜：上方是學科，中間每位講者是同一條根莖上的一個節點，下方是他們所在的地方。每條根代表一個真實的連結；完整列表見圖下說明。</title>
+      <title id={`${idPrefix}-${variant}-t`}>{t.title}</title>
       <path className="atlas-shore" d={`M0 ${L.shore}C${L.W * 0.25} ${L.shore - 6} ${L.W * 0.5} ${L.shore + 6} ${L.W * 0.75} ${L.shore}S${L.W} ${L.shore - 4} ${L.W} ${L.shore}`} />
       <text x={8} y={L.shore - 8} className="atlas-tag">
-        ↑ 學科 fields
+        {t.fields}
       </text>
       <text x={8} y={L.shore + 18} className="atlas-tag">
-        ↓ 地方 places
+        {t.places}
       </text>
       <g className="atlas-roots">
         <path className="atlas-rhizome" d={L.rhizome} />
@@ -185,11 +214,11 @@ export default function CrossingAtlas({
           <rect width="28" height="16" fill={`url(#lt-${d.key})`} />
           <rect width="28" height="16" className="frame" />
           <text x="36" y="13" className="atlas-label">
-            {d.zh}
+            {d.name[lang]}
           </text>
           <text x="36" y="29" className="atlas-sub">
             {d.code}
-            {d.vacant ? " · 待連結" : ""}
+            {d.vacant ? t.vacant : ""}
           </text>
         </g>
       ))}
@@ -230,13 +259,13 @@ export default function CrossingAtlas({
         {plate(narrow, "narrow")}
         {vacant.length > 0 && (
           <p className="atlas-vacant">
-            <span className="mono">待連結的學科 · vacant fields</span> {vacant.map((d) => d.zh).join("、")}
+            <span className="mono">{t.vacantHead}</span> {vacant.map((d) => d.name[lang]).join(t.sep)}
           </p>
         )}
         {caption && <figcaption className="fig-cap fig-cap--light">{caption}</figcaption>}
       </figure>
 
-      <ul className="atlas-key" aria-label="講者與其學科、地點">
+      <ul className="atlas-key" aria-label={t.key}>
         {speakers.map((s) => (
           <li key={s.id}>
             <button
@@ -250,7 +279,7 @@ export default function CrossingAtlas({
             >
               <b>{s.name}</b>
               <span>
-                {s.disciplines.map((k) => disciplines.find((d) => d.key === k)?.zh).join("、")}
+                {s.disciplines.map((k) => disciplines.find((d) => d.key === k)?.name[lang]).join(t.sep)}
                 <span aria-hidden="true"> · </span>
                 <i>{s.places.map((p) => p.name).join(" ⇄ ")}</i>
               </span>

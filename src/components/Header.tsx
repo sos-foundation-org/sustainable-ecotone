@@ -3,16 +3,25 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { NAV, CALL_NAV } from "@/content/site";
+import { NAV, CALL_NAV, SITE } from "@/content/site";
+import { localePath, splitPath, type Lang } from "@/lib/i18n";
 import BrandMark from "./BrandMark";
+import LangSwitch from "./LangSwitch";
 
-export default function Header() {
+const T = {
+  zh: { home: "Ecotone 兼容並續 首頁", menu: ["目錄", "Index"], close: ["關閉", "Close"], nav: "主選單" },
+  en: { home: "Ecotone home", menu: ["Index", ""], close: ["Close", ""], nav: "Main menu" },
+} satisfies Record<Lang, unknown>;
+
+export default function Header({ lang }: { lang: Lang }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [lastPath, setLastPath] = useState(pathname);
   const btn = useRef<HTMLButtonElement>(null);
   const nav = useRef<HTMLElement>(null);
   const wasOpen = useRef(false);
+  const t = T[lang];
+  const href = (p: string) => localePath(lang, p);
 
   // close the menu on navigation (derived state, no effect needed)
   if (lastPath !== pathname) {
@@ -51,44 +60,51 @@ export default function Header() {
     };
   }, [open]);
 
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const path = splitPath(pathname).path;
+  const isActive = (p: string) => (p === "/" ? path === "/" : path.startsWith(p));
+  const [menuMain, menuSub] = open ? t.close : t.menu;
 
   return (
     <header className={`mast${open ? " is-open" : ""}`}>
       <div className="wrap mast-row">
-        <Link className="brand" href="/" aria-label="Ecotone 兼容並續 首頁">
+        <Link className="brand" href={href("/")} aria-label={t.home}>
           <BrandMark />
           <span className="brand-text">
             <span className="brand-name">
               <b>Ecotone</b>
               <em aria-hidden="true">｜</em>
-              <span>兼容並續</span>
+              <span className="brand-zh" lang="zh-Hant-TW">
+                兼容並續
+              </span>
             </span>
-            <small>跨領域永續論壇</small>
+            <small>{SITE.subtitle[lang]}</small>
           </span>
         </Link>
         {/* the main conversion stays visible on small screens */}
-        <Link className="mast-cta" href={CALL_NAV.href} aria-current={isActive(CALL_NAV.href) ? "page" : undefined}>
-          {CALL_NAV.label}
+        <Link className="mast-cta" href={href(CALL_NAV.href)} aria-current={isActive(CALL_NAV.href) ? "page" : undefined}>
+          {CALL_NAV.label[lang]}
         </Link>
         <button ref={btn} className="menu-btn" type="button" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen((o) => !o)}>
-          {open ? "關閉" : "目錄"} <i>{open ? "Close" : "Index"}</i>
+          {menuMain} {menuSub && <i>{menuSub}</i>}
         </button>
-        <nav id="site-nav" ref={nav} className="nav" aria-label="主選單">
+        <nav id="site-nav" ref={nav} className="nav" aria-label={t.nav}>
           <ul>
             {NAV.map((n) => (
               <li key={n.href}>
-                <Link href={n.href} aria-current={isActive(n.href) ? "page" : undefined}>
-                  {n.label}
-                  <small>{n.en}</small>
+                <Link href={href(n.href)} aria-current={isActive(n.href) ? "page" : undefined}>
+                  {n.label[lang]}
+                  <small>{n.sub[lang]}</small>
                 </Link>
               </li>
             ))}
             <li>
-              <Link className="nav-cta" href={CALL_NAV.href} aria-current={isActive(CALL_NAV.href) ? "page" : undefined}>
-                {CALL_NAV.label}
-                <small>{CALL_NAV.en}</small>
+              <Link className="nav-cta" href={href(CALL_NAV.href)} aria-current={isActive(CALL_NAV.href) ? "page" : undefined}>
+                {CALL_NAV.label[lang]}
+                <small>{CALL_NAV.sub[lang]}</small>
               </Link>
+            </li>
+            <li className="nav-lang">
+              <LangSwitch lang={lang} pathname={pathname} />
             </li>
           </ul>
         </nav>

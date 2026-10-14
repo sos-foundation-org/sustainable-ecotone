@@ -1,6 +1,12 @@
 import type { ReactNode } from "react";
 import { rng } from "@/lib/mycelium";
 import { r2 } from "@/lib/engrave";
+import type { Lang } from "@/lib/i18n";
+
+const T = {
+  zh: { heading: "多元聲音：影片", tag: "Waterline · 水線" },
+  en: { heading: "Diverse Voices: the films", tag: "Waterline" },
+} satisfies Record<Lang, unknown>;
 
 /**
  * Voices: the horizon becomes a waterline. Above it, dolphins leap the border
@@ -8,7 +14,8 @@ import { r2 } from "@/lib/engrave";
  * threads every voice's porthole. Whale song crosses whole ocean basins — so
  * do ideas. Decorative art is aria-hidden; the voices themselves are children.
  */
-export default function WhaleSea({ children, note }: { children: ReactNode; note?: ReactNode }) {
+export default function WhaleSea({ children, note, lang = "zh" }: { children: ReactNode; note?: ReactNode; lang?: Lang }) {
+  const t = T[lang];
   const R = rng(5);
   const fish = Array.from({ length: 14 }, () => ({
     x: r2(10 + R() * 120),
@@ -58,7 +65,7 @@ export default function WhaleSea({ children, note }: { children: ReactNode; note
       </svg>
 
       <h2 id="sea-h" className="sr-only">
-        多元聲音：影片
+        {t.heading}
       </h2>
 
       <div className="sea-sky" aria-hidden="true">
@@ -74,7 +81,7 @@ export default function WhaleSea({ children, note }: { children: ReactNode; note
         </div>
         <span className="sea-splash sea-splash--in" />
         <span className="sea-splash sea-splash--out" />
-        <span className="sea-tag mono">Waterline · 水線</span>
+        <span className="sea-tag mono">{t.tag}</span>
       </div>
       <div className="sea-line" aria-hidden="true" />
 

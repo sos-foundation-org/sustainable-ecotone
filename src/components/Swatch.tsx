@@ -1,13 +1,15 @@
 import { disciplineByKey, type DisciplineKey } from "@/content/disciplines";
+import type { Lang } from "@/lib/i18n";
 
 const DIMS = { sm: [36, 18], md: [36, 18], lg: [120, 36] } as const;
 
 /** An engraved linetype swatch for one discipline, optionally with its label. */
-export default function Swatch({ k, label = true, size = "md" }: { k: DisciplineKey; label?: boolean; size?: "sm" | "md" | "lg" }) {
+export default function Swatch({ k, label = true, size = "md", lang = "zh" }: { k: DisciplineKey; label?: boolean; size?: "sm" | "md" | "lg"; lang?: Lang }) {
   const d = disciplineByKey(k);
   const [w, h] = DIMS[size];
+  const title = lang === "zh" ? `${d.name.zh} ${d.name.en}` : d.name.en;
   return (
-    <span className={`swatch swatch--${size}`} title={label ? undefined : `${d.zh} ${d.en}`}>
+    <span className={`swatch swatch--${size}`} title={label ? undefined : title}>
       <svg viewBox={`0 0 ${w} ${h}`} aria-hidden="true">
         <rect width={w} height={h} fill="#FAF6EC" />
         <rect width={w} height={h} fill={`url(#lt-${k})`} />
@@ -15,10 +17,10 @@ export default function Swatch({ k, label = true, size = "md" }: { k: Discipline
       </svg>
       {label ? (
         <span className="swatch-label">
-          <span className="mono">{d.code}</span> {d.zh}
+          <span className="mono">{d.code}</span> {d.name[lang]}
         </span>
       ) : (
-        <span className="sr-only">{d.zh}</span>
+        <span className="sr-only">{d.name[lang]}</span>
       )}
     </span>
   );

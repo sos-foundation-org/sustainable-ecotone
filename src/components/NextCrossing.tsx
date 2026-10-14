@@ -2,17 +2,24 @@
 
 import { useState } from "react";
 import type { Desideratum } from "@/content/crossings";
-import LeapStage from "./LeapStage";
 import type { Discipline } from "@/content/disciplines";
+import type { Lang } from "@/lib/i18n";
+import LeapStage from "./LeapStage";
+
+const T = {
+  zh: { head: "Desiderata · 徵集清單", leap: "下一跳", note: "下一位講者，也許就來自你的學科。", q: ["「", "」"] },
+  en: { head: "Desiderata · Wanted", leap: "Next leap", note: "The next speaker may well come from your field.", q: ["“", "”"] },
+} satisfies Record<Lang, unknown>;
 
 /**
- * Desiderata — the museum's list of wanted specimens. Two disciplines face each
- * other across the gutter with a question; ☞ 下一跳 moves to the next pair,
- * with the grasshopper's leap. Pairs nobody has crossed yet come first.
+ * Desiderata — the museum's list of wanted crossings. Two disciplines face each
+ * other across the gutter with a question; ☞ 下一跳 / Next leap moves to the
+ * next pair, with the grasshopper's leap. Pairs nobody has crossed yet come first.
  */
-export default function NextCrossing({ items, disciplines }: { items: Desideratum[]; disciplines: Discipline[] }) {
+export default function NextCrossing({ items, disciplines, lang = "zh" }: { items: Desideratum[]; disciplines: Discipline[]; lang?: Lang }) {
   const [i, setI] = useState(0);
   const [leap, setLeap] = useState(0);
+  const t = T[lang];
   const item = items[i % items.length];
   const A = disciplines.find((d) => d.key === item.a)!;
   const B = disciplines.find((d) => d.key === item.b)!;
@@ -20,7 +27,7 @@ export default function NextCrossing({ items, disciplines }: { items: Desideratu
   return (
     <figure className="desiderata">
       <div className="desiderata-head mono">
-        <span>Desiderata · 徵集清單</span>
+        <span>{t.head}</span>
         <span>
           {String((i % items.length) + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
         </span>
@@ -40,17 +47,19 @@ export default function NextCrossing({ items, disciplines }: { items: Desideratu
       </div>
       <p className="desiderata-pair">
         <span>
-          <span className="mono">{A.code}</span> {A.zh}
+          <span className="mono">{A.code}</span> {A.name[lang]}
         </span>
         <span className="x" aria-hidden="true">
           ×
         </span>
         <span>
-          <span className="mono">{B.code}</span> {B.zh}
+          <span className="mono">{B.code}</span> {B.name[lang]}
         </span>
       </p>
       <blockquote className="desiderata-q" aria-live="polite">
-        「{item.question}」
+        {t.q[0]}
+        {item.question[lang]}
+        {t.q[1]}
       </blockquote>
       <figcaption>
         <button
@@ -64,9 +73,9 @@ export default function NextCrossing({ items, disciplines }: { items: Desideratu
           <span className="mani" aria-hidden="true">
             ☞
           </span>
-          下一跳 <i>Saltate</i>
+          {t.leap} {lang === "zh" && <i>Saltate</i>}
         </button>
-        <span className="desiderata-note">下一位講者，也許就來自你的學科。</span>
+        <span className="desiderata-note">{t.note}</span>
       </figcaption>
     </figure>
   );

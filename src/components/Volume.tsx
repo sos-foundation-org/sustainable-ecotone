@@ -1,5 +1,6 @@
 import type { ForumEvent } from "@/content/events";
 import { emblemRings, roman } from "@/lib/engrave";
+import type { Lang } from "@/lib/i18n";
 
 /** A volume's emblem: tree rings seeded from its slug, so every volume is unique and stable. */
 export function VolumeEmblem({ e, size = 120 }: { e: ForumEvent; size?: number }) {
@@ -25,17 +26,17 @@ export function VolumeEmblem({ e, size = 120 }: { e: ForumEvent; size?: number }
 }
 
 /** Programme set as a book's table of contents, with dotted leaders. */
-export function ProgrammeToc({ e }: { e: ForumEvent }) {
+export function ProgrammeToc({ e, lang = "zh" }: { e: ForumEvent; lang?: Lang }) {
   return (
     <ol className="toc">
       {e.program.map((p) => (
-        <li key={p.time + p.title}>
+        <li key={p.time + p.title.zh}>
           <div className="toc-row">
-            <span className="toc-title">{p.title}</span>
+            <span className="toc-title">{p.title[lang]}</span>
             <span className="toc-leader" aria-hidden="true" />
             <time className="toc-time mono">{p.time}</time>
           </div>
-          <p>{p.detail}</p>
+          <p>{p.detail[lang]}</p>
         </li>
       ))}
     </ol>

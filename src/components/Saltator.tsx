@@ -2,6 +2,9 @@
 
 import { useEffect, useRef } from "react";
 import { leap, prefersReducedMotion } from "@/lib/leap";
+import type { Lang } from "@/lib/i18n";
+
+const LABEL = { zh: "讓蝗蟲跳到另一根枝條", en: "Make the grasshopper leap to the other branch" } satisfies Record<Lang, string>;
 
 type Perch = { x: number; y: number; f: 1 | -1 };
 
@@ -10,7 +13,7 @@ type Perch = { x: number; y: number; f: 1 | -1 };
  * between two perches on click / Enter / Space, and once there and back by
  * itself after the plate has inked. Under reduced motion it relocates without the arc.
  */
-export default function Saltator({ perches, scale = 0.36, autoLeapMs = 1900 }: { perches: [Perch, Perch]; scale?: number; autoLeapMs?: number }) {
+export default function Saltator({ perches, scale = 0.36, autoLeapMs = 1900, lang = "zh" }: { perches: [Perch, Perch]; scale?: number; autoLeapMs?: number; lang?: Lang }) {
   const ref = useRef<SVGGElement>(null);
   const at = useRef(0);
   const busy = useRef(false);
@@ -78,7 +81,7 @@ export default function Saltator({ perches, scale = 0.36, autoLeapMs = 1900 }: {
       transform={`translate(${p.x} ${p.y}) scale(${scale * p.f} ${scale})`}
       tabIndex={0}
       role="button"
-      aria-label="讓蝗蟲跳到另一根枝條"
+      aria-label={LABEL[lang]}
       onClick={jump}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {

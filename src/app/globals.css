@@ -32,6 +32,7 @@
   --f-zh: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
   --f-lat: "Cormorant Garamond", "Noto Serif TC", Georgia, serif;
   --f-mono: "IBM Plex Mono", "Noto Serif TC", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-cjk: "Noto Serif TC", "Songti TC", "PMingLiU", serif; /* brand glyphs, on either language */
   --t-xs: 12px; /* legibility floor for any label */
   --mast-h: 68px;
 
@@ -201,6 +202,21 @@ i, .en { font-family: var(--f-lat); font-style: italic; font-size: 1.1em; letter
   .brand-name span { font-size: .84rem; letter-spacing: .06em; }
   .brand-text small { display: none; }
   .menu-btn i { display: none; }
+}
+
+/* language switch 「中｜EN」: the last item of the nav (inline on desktop, a row in the mobile menu) */
+.lang-switch { display: inline-flex; align-items: center; line-height: 1; color: var(--rule); }
+.lang-opt { display: inline-flex; align-items: center; }
+.lang-sep { font-family: var(--f-cjk); font-size: .8rem; }
+.nav .lang-switch a { display: inline-grid; place-items: center; min-width: 28px; min-height: 30px; padding: 4px 3px; flex-direction: row; color: var(--sepia); letter-spacing: .06em; font-size: var(--t-xs); font-family: var(--f-mono); box-shadow: none; }
+.nav .lang-switch a[lang|="zh"] { font-family: var(--f-cjk); font-size: .86rem; letter-spacing: 0; }
+.nav .lang-switch a:hover { color: var(--cinnabar); }
+.nav .lang-switch a[aria-current="page"] { color: var(--ink); box-shadow: inset 0 -1px 0 var(--cinnabar); }
+@media (min-width: 961px) { .nav-lang { margin-left: calc(-1 * clamp(4px, 1vw, 14px)); } }
+@media (max-width: 960px) {
+  .nav .nav-lang { border-bottom: 0; padding-top: 18px; }
+  .nav .lang-switch a { min-width: 44px; min-height: 44px; font-size: .9rem; }
+  .nav .lang-switch a[lang|="zh"] { font-size: 1.05rem; }
 }
 
 /* ── the waterline heading (signature, max one per page) ─── */
@@ -714,6 +730,26 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 .logo-row a:hover { border-color: var(--ink); }
 .more { margin-top: 28px; }
 
+/* co-organizers (who runs the forum) vs. speakers' affiliations (where speakers come from): kept visibly apart */
+.partners-head { margin-bottom: 26px; }
+.partners-h { font-size: clamp(1.4rem, 2.6vw, 2rem); line-height: 1.3; margin-bottom: 6px; }
+.partners-h i { font-weight: 400; color: var(--sepia); font-size: .7em; }
+.partners-head p, .partners-note { margin: 0; max-width: 40em; }
+.partners-note { margin: -18px 0 28px; }
+.stamps--lg .stamp { width: clamp(124px, 15vw, 156px); }
+.stamps .role { color: var(--cinnabar); }
+.affiliations { margin-top: clamp(40px, 6vw, 72px); border-top: 1px solid currentColor; padding-top: 18px; max-width: 760px; }
+.affiliations-h { font-size: 1.05rem; font-weight: 600; margin-bottom: 2px; }
+.affiliations-h i { font-weight: 400; color: var(--sepia); }
+.affiliations > p { margin: 0 0 12px; }
+.affil-list { list-style: none; display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: .86rem; }
+.affil-list a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--sepia); border-bottom: 1px dotted currentColor; }
+.affil-list a:hover { color: var(--cinnabar); }
+.affil-list img { height: 16px; width: auto; filter: grayscale(1); opacity: .75; }
+.sec--cyan .affiliations { border-top-color: rgba(180, 198, 212, .5); }
+.sec--cyan .affiliations-h i, .sec--cyan .affil-list a { color: var(--cyan-mute); }
+.sec--cyan .affil-list a:hover { color: var(--cin-light); }
+
 /* ── events index ────────────────────────────────────────── */
 .plates-index { list-style: none; border-top: 1px solid var(--ink); }
 .plates-index > li { border-bottom: 1px solid var(--ink); }
@@ -864,6 +900,78 @@ a.plate-row:hover { background: var(--card); }
 }
 
 html.menu-open, html.menu-open body { overflow: hidden; }
+
+/* ============================================================
+   English pages (<html lang="en">, under /en). Everything here is
+   scoped to html:lang(en), so the Chinese layout is untouched.
+   Running text is set in EB Garamond, display in Cormorant Garamond;
+   the few brand glyphs (兼容並續) keep Noto Serif TC via [lang|=zh].
+   ============================================================ */
+html:lang(en) {
+  /* every rule that asked for the TC serif now gets the Latin text face; CJK glyphs still fall back to Noto */
+  --f-zh: "EB Garamond", "Cormorant Garamond", "Noto Serif TC", Georgia, serif;
+  --f-lat: "Cormorant Garamond", "EB Garamond", Georgia, serif;
+}
+html:lang(en) body { font-size: 18px; line-height: 1.62; font-feature-settings: "kern", "liga", "onum"; }
+html:lang(en) [lang|="zh"] { font-family: var(--f-cjk); font-style: normal; }
+html:lang(en) .mono, html:lang(en) .btn small, html:lang(en) time { font-feature-settings: normal; }
+
+/* tracking suits Chinese, not lowercase Latin */
+html:lang(en) :is(h1, h2, h3, h4, .btn, .nav a, .mast-cta, .menu-btn, .brand-text small, .mini-sheet b, .title-page h3 small, .attendance, .k-zh, .genet figcaption, .jump a, .wanted b, .steps b, .stamps b, .atlas-key b, .desiderata-pair, .faq summary, .pencil, .seed-fine, .follow-pending, .port-who, .port-soon, .sheet-name h3, .label b, .toc-title):not(.mono) { letter-spacing: normal; }
+
+/* display headings: Cormorant at a larger size (its x-height is small), tighter leading */
+html:lang(en) :is(h1, h2, .call-big, .after-fig .big, .myco-kicker):not(.mono) { font-family: var(--f-lat); }
+html:lang(en) :is(h1, h2):not(.mono) { font-weight: 600; }
+html:lang(en) h3:not(.mono) { font-family: var(--f-zh); font-weight: 600; }
+html:lang(en) .pt-h1 { font-size: clamp(2.3rem, 5vw, 4.2rem); line-height: 1.08; }
+html:lang(en) .page-title.has-aside .pt-h1 { font-size: clamp(2.2rem, 4.2vw, 3.7rem); }
+html:lang(en) .h-sec { font-size: clamp(1.75rem, 3.3vw, 2.65rem); line-height: 1.14; }
+html:lang(en) .h-sec i { font-weight: 500; }
+html:lang(en) .plate-head h2 { font-size: clamp(1.65rem, 3.3vw, 2.6rem); line-height: 1.12; }
+html:lang(en) .plate-head h2 i { font-weight: 500; font-size: .6em; margin-top: 6px; }
+html:lang(en) .call-big { font-weight: 600; font-size: clamp(1.75rem, 3.4vw, 2.55rem); line-height: 1.18; }
+html:lang(en) .cta-row h2 { font-size: clamp(1.5rem, 2.9vw, 2.2rem); line-height: 1.25; }
+html:lang(en) .cta-row h2 .muted { font-family: var(--f-zh); font-size: .62em; line-height: 1.5; display: inline-block; margin-top: 6px; }
+html:lang(en) .after-fig .big { font-size: 1.55rem; line-height: 1.32; font-weight: 600; }
+html:lang(en) .accession h2 { font-size: 1.85rem; }
+html:lang(en) .seed-title { font-size: 1.5rem; }
+html:lang(en) .lead { font-size: clamp(1.08rem, 1.35vw, 1.2rem); }
+html:lang(en) .label-card--wide dd { font-weight: 500; }
+
+/* the waterline heading: Latin glyph bodies sit lower in the line box, so the tide line rides a little lower */
+html:lang(en) .wl { font-size: clamp(2.15rem, 5.4vw, 4.7rem); line-height: 1.06; --wl: calc(100% - .44lh); }
+html:lang(en) .empty-cabinet .wl { font-size: clamp(2.1rem, 4.2vw, 3.5rem); }
+html:lang(en) .wl-en { font-size: clamp(1.15rem, 1.7vw, 1.5rem); }
+html:lang(en) .title-hero .wl-en { font-family: var(--f-lat); font-style: italic; font-weight: 500; letter-spacing: 0; color: var(--sepia); font-size: clamp(1.25rem, 2.1vw, 1.75rem); }
+html:lang(en) .ev-en { font-size: 1.1em; }
+
+/* home hero: the Latin kicker, lead and leap card */
+html:lang(en) .myco-kicker { font-weight: 500; font-size: clamp(1.3rem, 2vw, 1.65rem); line-height: 1.32; max-width: 19em; }
+html:lang(en) .myco-kicker em { font-style: italic; }
+html:lang(en) .myco-lead p { font-size: 1.12rem; line-height: 1.62; }
+html:lang(en) .myco-lead p.sub { font-size: 1.02rem; }
+html:lang(en) .myco-pair { font-family: var(--f-lat); font-weight: 600; font-size: 1.6rem; }
+html:lang(en) .myco-q { font-size: 1.12rem; line-height: 1.5; font-family: var(--f-zh); font-weight: 400; }
+html:lang(en) .lex dt { font-family: var(--f-cjk); }
+html:lang(en) .lex li { line-height: 1.55; }
+
+/* sheets, labels and lists */
+html:lang(en) .sheet-name h3 { font-family: var(--f-lat); font-size: 2rem; line-height: 1.1; }
+html:lang(en) .mounted .initial { font-family: var(--f-lat); font-weight: 500; }
+html:lang(en) .mini-sheet b { font-family: var(--f-lat); font-size: 1.3rem; line-height: 1.15; }
+html:lang(en) .title-page h3 { font-family: var(--f-lat); font-weight: 500; }
+html:lang(en) .title-page h3 small { font-family: var(--f-lat); font-style: italic; font-weight: 500; font-size: 1.3rem; line-height: 1.3; }
+html:lang(en) .plate-row-title { font-weight: 500; }
+html:lang(en) .plate-row-title small { font-style: italic; font-size: 1.05rem; }
+html:lang(en) .desiderata-pair { font-size: 1.2rem; }
+html:lang(en) .desiderata-q { font-size: 1.2rem; line-height: 1.5; }
+html:lang(en) .port-q { line-height: 1.5; font-size: 1.05rem; }
+html:lang(en) .faq summary { font-weight: 600; }
+html:lang(en) .name-swap { font-family: var(--f-cjk); }
+@media (max-width: 420px) {
+  /* the brand glyphs give way to the call-to-action on the smallest phones */
+  html:lang(en) .brand-name em, html:lang(en) .brand-name .brand-zh { display: none; }
+}
 
 @media print {
   .mast, .colophon, .loupe, .lens-bar { display: none; }

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { PageTitle, PlateHead } from "@/components/Typography";
 import WaterlineHeading from "@/components/WaterlineHeading";
@@ -10,17 +9,32 @@ import { pastEvents, upcomingEvents } from "@/content/events";
 import { speakerById } from "@/content/speakers";
 import { DISCIPLINES } from "@/content/disciplines";
 import { pad2, roman } from "@/lib/engrave";
+import { localePath, type Lang } from "@/lib/i18n";
+import { pageMetadata } from "@/lib/meta";
 
-export const metadata: Metadata = {
-  title: "歷屆講者",
-  description: "Ecotone 兼容並續的歷屆講者名錄，持續增補中。每一冊論壇結束後，該冊的講者會自動收錄在這裡。",
-};
+export function speakersMetadata(lang: Lang) {
+  return pageMetadata({
+    lang,
+    path: "/speakers",
+    ...(lang === "zh"
+      ? { title: "歷屆講者", description: "Ecotone 兼容並續的歷屆講者名錄，持續增補中。每一冊論壇結束後，該冊的講者會自動收錄在這裡。" }
+      : {
+          title: "Past Speakers",
+          description: "The register of everyone who has spoken at Ecotone, growing with every volume. Once a forum has taken place, its speakers are added here automatically.",
+        }),
+  });
+}
 
 /** An empty, waiting herbarium mount: tape, an empty photo window, ghost fungi, a blank label. */
-function EmptyMount() {
+function EmptyMount({ lang }: { lang: Lang }) {
+  const zh = lang === "zh";
   return (
     <svg className="empty-mount" viewBox="0 0 560 380" role="img" aria-labelledby="em-t">
-      <title id="em-t">一張空白的台紙：照片的位置、菌絲與子實體都還只是虛線，標籤也還沒有填寫。</title>
+      <title id="em-t">
+        {zh
+          ? "一張空白的台紙：照片的位置、菌絲與子實體都還只是虛線，標籤也還沒有填寫。"
+          : "A blank mounting sheet: the portrait window, the mycelium and the fruiting bodies are only dotted outlines, and the label has yet to be filled in."}
+      </title>
       <rect x="20" y="16" width="520" height="348" fill="#FBF8F1" stroke="#1C1A17" strokeWidth="1" />
       <rect x="32" y="28" width="520" height="348" fill="none" stroke="#1C1A17" strokeWidth=".5" opacity=".35" />
       {[
@@ -35,8 +49,8 @@ function EmptyMount() {
       <text x="162" y="144" textAnchor="middle" className="svg-mono" fill="#5E5141">
         PORTRAIT
       </text>
-      <text x="162" y="164" textAnchor="middle" className="svg-zh" fill="#5E5141">
-        講者肖像 · 待補
+      <text x="162" y="164" textAnchor="middle" className={zh ? "svg-zh" : "svg-italic svg-italic--lg"} fill="#5E5141">
+        {zh ? "講者肖像 · 待補" : "to come"}
       </text>
       <path d="M290 230C330 226 380 234 430 230S500 226 520 230" fill="none" stroke="#1C1A17" strokeWidth=".8" />
       <g opacity=".28" color="#1C1A17">
@@ -52,7 +66,7 @@ function EmptyMount() {
         </text>
         <path d="M10 32h200M10 46h150" stroke="#1C1A17" strokeWidth=".5" strokeDasharray="1 3" />
         <text x="210" y="56" textAnchor="end" className="svg-mono svg-mono--xs" fill="#5E5141">
-          det. ＿＿＿＿
+          {zh ? "det. ＿＿＿＿" : "det. ________"}
         </text>
       </g>
       <g transform="translate(72 266)">
@@ -67,7 +81,9 @@ function EmptyMount() {
   );
 }
 
-export default function PastSpeakersPage() {
+export default function SpeakersPage({ lang }: { lang: Lang }) {
+  const zh = lang === "zh";
+  const href = (p: string) => localePath(lang, p);
   const past = pastEvents().sort((a, b) => b.vol - a.vol);
   const archived = past.flatMap((e) => e.speakers.map(speakerById).filter((s) => s !== undefined).map((s) => ({ s, e })));
   const pending = upcomingEvents().sort((a, b) => a.vol - b.vol)[0];
@@ -76,12 +92,14 @@ export default function PastSpeakersPage() {
   return (
     <>
       <PageTitle
-        catalog={["Past Speakers · 歷屆講者", "Herbarium", `${archived.length} speakers archived`]}
-        title="歷屆講者"
-        en="An herbarium of everyone who has spoken at Ecotone"
+        catalog={[zh ? "Past Speakers · 歷屆講者" : "Past Speakers", "Herbarium", `${archived.length} speakers archived`]}
+        title={zh ? "歷屆講者" : "Past Speakers"}
+        en={zh ? "An herbarium of everyone who has spoken at Ecotone" : "A growing register of everyone who has spoken at Ecotone"}
         lead={
           <p>
-            每一冊論壇結束後，那一冊的講者會帶著他們所有的身份，被正式收錄進這份名錄。這裡會隨著論壇一冊一冊長大，成為一份跨學科、也跨越各種邊界的名錄。
+            {zh
+              ? "每一冊論壇結束後，那一冊的講者會帶著他們所有的身份，被正式收錄進這份名錄。這裡會隨著論壇一冊一冊長大，成為一份跨學科、也跨越各種邊界的名錄。"
+              : "After each volume, its speakers are formally added to this register, together with all of their identities. It will grow volume by volume into a record that crosses disciplines, and every other kind of border."}
           </p>
         }
       />
@@ -90,30 +108,46 @@ export default function PastSpeakersPage() {
         <section className="sec sec--tight" aria-labelledby="empty-h">
           <div className="wrap empty-cabinet">
             <div className="reveal">
-              <EmptyMount />
+              <EmptyMount lang={lang} />
             </div>
             <div className="reveal">
               <p className="catno mono">
                 <span>Herbarium · status: awaiting first accession</span>
               </p>
               <WaterlineHeading as="h2" id="empty-h" contained en="The collection begins after Vol. 01, November 2026.">
-                歷屆講者名錄，
-                <br />
-                還在等第一批講者。
+                {zh ? (
+                  <>
+                    歷屆講者名錄，
+                    <br />
+                    還在等第一批講者。
+                  </>
+                ) : (
+                  <>
+                    The register is waiting
+                    <br />
+                    for its first speakers.
+                  </>
+                )}
               </WaterlineHeading>
               <p className="lead">
-                第一冊 <i>{pending?.title ?? "Cross-Pollination"}</i> 將於 {pending?.dateLabel ?? "2026 年 11 月"}舉行。活動結束後，這一冊的講者會自動收錄在這裡；在那之前，請到活動頁認識他們。
+                {zh ? (
+                  <>
+                    第一冊 <i>{pending?.title ?? "Cross-Pollination"}</i> 將於 {pending?.dateLabel.zh ?? "2026 年 11 月"}舉行。活動結束後，這一冊的講者會自動收錄在這裡；在那之前，請到活動頁認識他們。
+                  </>
+                ) : (
+                  <>
+                    The first volume, <i>{pending?.title ?? "Cross-Pollination"}</i>, takes place in {pending?.dateLabel.en ?? "November 2026"}. Once it is over, its speakers will be added here automatically. Until then, meet them on the event page.
+                  </>
+                )}
               </p>
               {pending && pendingLineup.length > 0 && (
                 <div className="pending">
-                  <p className="mono pending-h">
-                    Pending accession · 待收錄 · Vol. {pad2(pending.vol)}
-                  </p>
+                  <p className="mono pending-h">{zh ? `Pending accession · 待收錄 · Vol. ${pad2(pending.vol)}` : `Pending accession · Vol. ${pad2(pending.vol)}`}</p>
                   <ul>
                     {pendingLineup.map((s) => (
                       <li key={s.id}>
-                        <Link href={`/events/${pending.slug}#${s.id}`}>
-                          <span className="pencil">{s.name}</span>
+                        <Link href={href(`/events/${pending.slug}#${s.id}`)}>
+                          <span className="pencil">{s.name[lang]}</span>
                           <span className="mono muted">
                             {s.identities.length} label{s.identities.length > 1 ? "s" : ""}
                           </span>
@@ -125,8 +159,8 @@ export default function PastSpeakersPage() {
               )}
               <div className="actions">
                 {pending && (
-                  <Link className="btn btn--ink" href={`/events/${pending.slug}#speakers`}>
-                    看 Vol. {pad2(pending.vol)} 的講者
+                  <Link className="btn btn--ink" href={href(`/events/${pending.slug}#speakers`)}>
+                    {zh ? `看 Vol. ${pad2(pending.vol)} 的講者` : `Meet the Vol. ${pad2(pending.vol)} speakers`}
                     <span className="mani" aria-hidden="true">
                       ☞
                     </span>
@@ -143,11 +177,11 @@ export default function PastSpeakersPage() {
             return (
               <section key={e.slug} className="sec sec--tight" aria-labelledby={`vol-${e.vol}`}>
                 <div className="wrap">
-                  <PlateHead no={roman(e.vol)} id={`vol-${e.vol}`} title={e.title} en={e.titleZh} side={`Vol. ${pad2(e.vol)} · ${e.dateLabel}`} />
+                  <PlateHead lang={lang} no={roman(e.vol)} id={`vol-${e.vol}`} title={e.title} en={e.subtitle[lang]} side={`Vol. ${pad2(e.vol)} · ${e.dateLabel[lang]}`} />
                   <div className="sheets">
                     {people.map((s) => (
                       <div key={s.id} className="reveal">
-                        <SpecimenSheet s={s} full headingLevel={3} vol={`Vol. ${pad2(e.vol)} · ${e.title}`} />
+                        <SpecimenSheet s={s} full headingLevel={3} vol={`Vol. ${pad2(e.vol)} · ${e.title}`} lang={lang} />
                       </div>
                     ))}
                   </div>
@@ -158,11 +192,12 @@ export default function PastSpeakersPage() {
           <PlateEdge from="var(--paper)" to="var(--cyan)" mode="lace" seed={55} />
           <section className="sec sec--cyan" aria-labelledby="sp-atlas">
             <div className="wrap">
-              <PlateHead no="§" label="Atlas" id="sp-atlas" title="他們把哪些世界接在一起" en="Crossings" />
+              <PlateHead lang={lang} no="§" label="Atlas" id="sp-atlas" title={zh ? "他們把哪些世界接在一起" : "The worlds they join together"} en={zh ? "Crossings" : undefined} />
               <div className="atlas-solo reveal">
                 <CrossingAtlas
+                  lang={lang}
                   idPrefix="sp-atlas"
-                  speakers={archived.map(({ s }) => ({ id: s.id, name: s.name, disciplines: s.disciplines, places: s.places }))}
+                  speakers={archived.map(({ s }) => ({ id: s.id, name: s.name[lang], disciplines: s.disciplines, places: s.places }))}
                   disciplines={DISCIPLINES}
                 />
               </div>
@@ -175,11 +210,11 @@ export default function PastSpeakersPage() {
       <section className="cta-band" aria-labelledby="sp-cta">
         <div className="wrap cta-row">
           <h2 id="sp-cta">
-            想成為下一位講者？
+            {zh ? "想成為下一位講者？" : "Could you be the next speaker?"}
             <br />
-            <span className="muted">我們正在徵集身上貼著好幾張標籤的講者。</span>
+            <span className="muted">{zh ? "我們正在徵集身上貼著好幾張標籤的講者。" : "We are looking for speakers who carry more than one label."}</span>
           </h2>
-          <CallLink />
+          <CallLink lang={lang} />
         </div>
       </section>
     </>

@@ -6,6 +6,34 @@ import { grass, mushroom, rng, tree, type MushroomKind } from "@/lib/mycelium";
 import { leap as leapArc, prefersReducedMotion } from "@/lib/leap";
 import LeapStage from "../LeapStage";
 import { createWeb, type Focus, type Web, type WebNode, type WebSpeaker } from "./engine";
+import type { Lang } from "@/lib/i18n";
+
+const T = {
+  zh: {
+    hit: (name: string, sub: string, links: string[]) => `${name}（${sub}）：在地下網絡標出連結（${links.join("、")}）`,
+    up: "↑ 地上 · visible",
+    down: "↓ 地下 · the wood wide web",
+    list: "講者與學科、國家的連結",
+    sep: "、",
+    leapHead: "下一跳 · Next leap",
+    q: ["「", "」"],
+    btn: "讓蚱蜢跳一下",
+    font: '"Noto Serif TC", serif',
+    room: 84,
+  },
+  en: {
+    hit: (name: string, sub: string, links: string[]) => `${name} (${sub}): show connections in the underground network (${links.join(", ")})`,
+    up: "↑ above ground · visible",
+    down: "↓ below ground · the wood wide web",
+    list: "Speakers and the fields and countries they connect to",
+    sep: ", ",
+    leapHead: "Next leap",
+    q: ["“", "”"],
+    btn: "Let the grasshopper leap",
+    font: '"EB Garamond", "Cormorant Garamond", Georgia, serif',
+    room: 132,
+  },
+} satisfies Record<Lang, unknown>;
 
 export type HeroSpeaker = WebSpeaker & { name: string; sub: string; kind: MushroomKind; linkNames: string[] };
 export type HeroPair = { a: string; b: string; aLabel: [string, string]; bLabel: [string, string]; question: string };
@@ -38,6 +66,7 @@ export default function MycorrhizaHero({
   nodes,
   pairs,
   volume,
+  lang = "zh",
 }: {
   title: ReactNode;
   lead: ReactNode;
@@ -45,7 +74,9 @@ export default function MycorrhizaHero({
   nodes: WebNode[];
   pairs: HeroPair[];
   volume: HeroVolume;
+  lang?: Lang;
 }) {
+  const t = T[lang];
   const aboveRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
   const belowRef = useRef<HTMLDivElement>(null);
@@ -218,13 +249,15 @@ export default function MycorrhizaHero({
       nodes,
       speakers,
       exclude,
+      labelFont: t.font,
+      labelRoomMobile: t.room,
     });
     webRef.current = web;
     return () => {
       web.destroy();
       webRef.current = null;
     };
-  }, [flora, nodes, speakers]);
+  }, [flora, nodes, speakers, t.font, t.room]);
 
   const setFocus = useCallback((f: Focus) => {
     setFocusState(f);
@@ -315,7 +348,7 @@ export default function MycorrhizaHero({
                   className={`myco-hit${spkOn(s.id) ? " is-on" : ""}`}
                   style={{ left: m.cx - m.w / 2 - 6, top: m.top - 6, width: m.w + 12, height: flora.H - m.top + 6 }}
                   aria-pressed={spkOn(s.id)}
-                  aria-label={`${s.name}（${s.sub}）：在地下網絡標出連結（${s.linkNames.join("、")}）`}
+                  aria-label={t.hit(s.name, s.sub, s.linkNames)}
                   onPointerEnter={() => fine() && setFocus({ type: "spk", id: s.id })}
                   onPointerLeave={() => fine() && setFocus(null)}
                   onFocus={() => setFocus({ type: "spk", id: s.id })}
@@ -350,7 +383,7 @@ export default function MycorrhizaHero({
           </svg>
         </div>
         <span className="myco-tag myco-tag--up mono" aria-hidden="true">
-          ↑ 地上 · visible
+          {t.up}
         </span>
         <div className="myco-hz" />
       </div>
@@ -359,7 +392,7 @@ export default function MycorrhizaHero({
       <div className="myco-below" ref={belowRef}>
         <canvas ref={canvasRef} className="myco-web" aria-hidden="true" />
         <span className="myco-tag myco-tag--down mono" aria-hidden="true">
-          ↓ 地下 · the wood wide web
+          {t.down}
         </span>
         <div className="myco-depth mono" aria-hidden="true">
           <i style={{ top: "0%" }}>−10 cm</i>
@@ -367,10 +400,10 @@ export default function MycorrhizaHero({
           <i style={{ top: "66%" }}>−60 cm</i>
           <i style={{ top: "100%" }}>−1 m</i>
         </div>
-        <ul className="sr-only" aria-label="講者與學科、國家的連結">
+        <ul className="sr-only" aria-label={t.list}>
           {speakers.map((s) => (
             <li key={s.id}>
-              {s.name} → {s.linkNames.join("、")}
+              {s.name} → {s.linkNames.join(t.sep)}
             </li>
           ))}
         </ul>
@@ -381,7 +414,7 @@ export default function MycorrhizaHero({
           {pair && (
             <div className="myco-leap reveal" data-exclude>
               <div className="myco-leap-top mono">
-                <span>下一跳 · Next leap</span>
+                <span>{t.leapHead}</span>
                 <span>
                   {String((pi % pairs.length) + 1).padStart(2, "0")} / {String(pairs.length).padStart(2, "0")}
                 </span>
@@ -410,11 +443,15 @@ export default function MycorrhizaHero({
                   <span className="code">{pair.bLabel[0]}</span>
                   {pair.bLabel[1]}
                 </span>
-                <span className="myco-q">「{pair.question}」</span>
+                <span className="myco-q">
+                  {t.q[0]}
+                  {pair.question}
+                  {t.q[1]}
+                </span>
               </p>
               <button className="myco-leap-btn" type="button" onClick={leap} disabled={leaping}>
                 <span>
-                  讓蚱蜢跳一下 <i>· grow a new link</i>
+                  {t.btn} <i>· grow a new link</i>
                 </span>
                 <span className="arr" aria-hidden="true">
                   ↗

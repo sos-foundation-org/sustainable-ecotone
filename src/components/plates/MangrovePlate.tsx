@@ -1,6 +1,24 @@
 import { leafClusters, stipple, waterLines } from "@/lib/engrave";
 import Loupe from "../Loupe";
 import Saltator from "../Saltator";
+import type { Lang } from "@/lib/i18n";
+
+const T = {
+  zh: {
+    spots: ["蝗蟲", "彈塗魚", "胎生苗", "招潮蟹"],
+    title:
+      "銅版畫風格插圖：淡水河口的水筆仔紅樹林立在平均高潮線上。枝上停著一隻蝗蟲，潮線上有彈塗魚，水下的支柱根之間有魚游過，泥灘上有一隻招潮蟹。",
+    guanyin: "Mt. Guanyin 觀音山",
+    mhw: "MHW · 平均高潮線",
+  },
+  en: {
+    spots: ["grasshopper", "mudskipper", "propagule", "fiddler crab"],
+    title:
+      "Engraving-style illustration: a Kandelia mangrove on the Tamsui estuary, standing on the mean high-water line. A grasshopper perches on a branch, a mudskipper rests on the tideline, fish swim between the stilt roots below the water, and a fiddler crab crosses the mudflat.",
+    guanyin: "Mt. Guanyin",
+    mhw: "MHW · mean high water",
+  },
+} satisfies Record<Lang, unknown>;
 
 const INK = "#1C1A17";
 const CIN = "#A8321F";
@@ -45,7 +63,8 @@ const FISH: { x: number; y: number; s: number; delay: number; dur: number }[] = 
  * Rendered fully inked on the server; the ink pass and leaf sway are CSS, the
  * grasshopper and hand lens are small client islands.
  */
-export default function MangrovePlate({ plateNo = "I" }: { plateNo?: string }) {
+export default function MangrovePlate({ plateNo = "I", lang = "zh" }: { plateNo?: string; lang?: Lang }) {
+  const t = T[lang];
   const water = waterLines(20, 580, 437, 621);
   const mud = stipple(7, 900, 22, 578, 632, 76);
   const leaves = leafClusters(11, TIPS);
@@ -57,17 +76,16 @@ export default function MangrovePlate({ plateNo = "I" }: { plateNo?: string }) {
       <Loupe
         artId="mangrove-art"
         viewBox="0 0 600 760"
+        lang={lang}
         spots={[
-          { n: "1", x: 393, y: 140, label: "蝗蟲" },
-          { n: "2", x: 216, y: 414, label: "彈塗魚" },
-          { n: "3", x: 452, y: 300, label: "胎生苗" },
-          { n: "4", x: 466, y: 618, label: "招潮蟹" },
+          { n: "1", x: 393, y: 140, label: t.spots[0] },
+          { n: "2", x: 216, y: 414, label: t.spots[1] },
+          { n: "3", x: 452, y: 300, label: t.spots[2] },
+          { n: "4", x: 466, y: 618, label: t.spots[3] },
         ]}
       >
         <svg className="art" viewBox="0 0 600 760" role="img" aria-labelledby="mangrove-title">
-          <title id="mangrove-title">
-            銅版畫風格插圖：淡水河口的水筆仔紅樹林立在平均高潮線上。枝上停著一隻蝗蟲，潮線上有彈塗魚，水下的支柱根之間有魚游過，泥灘上有一隻招潮蟹。
-          </title>
+          <title id="mangrove-title">{t.title}</title>
           <g id="mangrove-art">
             <rect width="600" height="760" fill={PAPER} />
             <rect x="12" y="12" width="576" height="736" fill="none" stroke={INK} strokeWidth="1.6" />
@@ -85,7 +103,7 @@ export default function MangrovePlate({ plateNo = "I" }: { plateNo?: string }) {
               <path className="ink" {...ink()} d="M20 424C70 416 110 392 160 380C200 372 226 346 258 340C288 342 318 362 356 374C416 392 500 406 580 414" fill="none" stroke={SEP} strokeWidth=".7" />
               <path d="M160 380C200 372 226 346 258 340C288 342 318 362 356 374C330 380 300 384 258 386C220 386 190 384 160 380Z" fill="url(#hatchW)" opacity=".45" />
               <text x="530" y="398" textAnchor="middle" className="svg-italic" fill={SEP}>
-                Mt. Guanyin 觀音山
+                {t.guanyin}
               </text>
 
               {/* stilt roots */}
@@ -127,7 +145,7 @@ export default function MangrovePlate({ plateNo = "I" }: { plateNo?: string }) {
               {/* mean high-water line: the ecotone itself */}
               <path d="M20 430C60 427 100 433 140 430C180 427 220 433 260 430C300 427 340 433 380 430C420 427 460 433 500 430C540 427 560 432 580 430" fill="none" stroke={CIN} strokeWidth=".9" strokeDasharray="5 3" />
               <text x="572" y="422" textAnchor="end" className="svg-mono svg-mono--sm" fill={CIN}>
-                MHW · 平均高潮線
+                {t.mhw}
               </text>
 
               <g fill="none" stroke={INK}>
@@ -170,6 +188,7 @@ export default function MangrovePlate({ plateNo = "I" }: { plateNo?: string }) {
             </g>
 
             <Saltator
+              lang={lang}
               perches={[
                 { x: 393, y: 161, f: 1 },
                 { x: 217, y: 227, f: -1 },
@@ -186,28 +205,53 @@ export default function MangrovePlate({ plateNo = "I" }: { plateNo?: string }) {
           </g>
         </svg>
       </Loupe>
-      <figcaption>
-        <span className="t">
-          <b>Pl. {plateNo}</b>　水筆仔 <i>Kandelia obovata</i>，與它的交界訪客。淡水河口。
-        </span>
-        <span>
-          紅樹林一半在海、一半在陸，是最典型的 <i>ecotone</i>。<span className="hint-fine">移動滑鼠以放大鏡觀察，</span>或按下方的編號放大細節；點一下蝗蟲，看牠跳躍。
-        </span>
-        <ol className="plate-key">
-          <li>
-            <b>1</b>蝗蟲 <i>Saltatoria</i> · 跳躍者
-          </li>
-          <li>
-            <b>2</b>彈塗魚 <i>Periophthalmus</i> · 會走路的魚
-          </li>
-          <li>
-            <b>3</b>胎生苗 · 「水中的筆」
-          </li>
-          <li>
-            <b>4</b>招潮蟹 <i>Uca</i> · 潮間帶的住民
-          </li>
-        </ol>
-      </figcaption>
+      {lang === "zh" ? (
+        <figcaption>
+          <span className="t">
+            <b>Pl. {plateNo}</b>　水筆仔 <i>Kandelia obovata</i>，與它的交界訪客。淡水河口。
+          </span>
+          <span>
+            紅樹林一半在海、一半在陸，是最典型的 <i>ecotone</i>。<span className="hint-fine">移動滑鼠以放大鏡觀察，</span>或按下方的編號放大細節；點一下蝗蟲，看牠跳躍。
+          </span>
+          <ol className="plate-key">
+            <li>
+              <b>1</b>蝗蟲 <i>Saltatoria</i> · 跳躍者
+            </li>
+            <li>
+              <b>2</b>彈塗魚 <i>Periophthalmus</i> · 會走路的魚
+            </li>
+            <li>
+              <b>3</b>胎生苗 · 「水中的筆」
+            </li>
+            <li>
+              <b>4</b>招潮蟹 <i>Uca</i> · 潮間帶的住民
+            </li>
+          </ol>
+        </figcaption>
+      ) : (
+        <figcaption>
+          <span className="t">
+            <b>Pl. {plateNo}</b> <i>Kandelia obovata</i> and its border visitors. Tamsui estuary.
+          </span>
+          <span>
+            Half in the sea and half on land, a mangrove is the classic <i>ecotone</i>. <span className="hint-fine">Move your mouse to look through the hand lens, </span>or press the numbers below to magnify a detail. Click the grasshopper to watch it leap.
+          </span>
+          <ol className="plate-key">
+            <li>
+              <b>1</b>Grasshopper <i>Saltatoria</i> · the leaper
+            </li>
+            <li>
+              <b>2</b>Mudskipper <i>Periophthalmus</i> · the fish that walks
+            </li>
+            <li>
+              <b>3</b>Propagule · the “water pen” that gives the tree its Chinese name
+            </li>
+            <li>
+              <b>4</b>Fiddler crab <i>Uca</i> · a resident of the intertidal zone
+            </li>
+          </ol>
+        </figcaption>
+      )}
     </figure>
   );
 }

@@ -6,7 +6,7 @@
 
 import { hyphaPath, measure, pointAt, rng, walker, type Pt } from "@/lib/mycelium";
 
-export type WebNode = { id: string; code: string; zh: string; type: "disc" | "ctry"; vacant: boolean };
+export type WebNode = { id: string; code: string; label: string; type: "disc" | "ctry"; vacant: boolean };
 export type WebSpeaker = { id: string; links: string[] };
 export type Focus = { type: "spk"; id: string } | { type: "pair"; a: string; b: string } | null;
 
@@ -26,6 +26,10 @@ export type WebOptions = {
   nodes: WebNode[];
   speakers: WebSpeaker[];
   exclude: [number, number, number, number][];
+  /** canvas font stack for node labels (Chinese: Noto Serif TC; English: EB Garamond) */
+  labelFont?: string;
+  /** room kept free right of the rightmost node for its label, on mobile (longer for English names) */
+  labelRoomMobile?: number;
 };
 
 const HY = "233,223,198";
@@ -49,6 +53,7 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
   const ctx = canvas.getContext("2d")!;
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const { W, H, mobile, reduced } = o;
+  const labelFont = o.labelFont ?? '"Noto Serif TC", serif';
   canvas.width = Math.round(W * dpr);
   canvas.height = Math.round(H * dpr);
   const R = rng(42);
@@ -57,7 +62,7 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
 
   // ── place nodes: seeded rejection sampling, avoiding the text blocks ──
   const x0 = mobile ? 24 : Math.max(96, (W - 1320) / 2 + 96);
-  const x1 = W - (mobile ? 84 : Math.max(190, (W - 1320) / 2 + 190)); // clear of the depth gauge
+  const x1 = W - (mobile ? (o.labelRoomMobile ?? 84) : Math.max(190, (W - 1320) / 2 + 190)); // clear of the depth gauge
   const y0 = 64;
   const y1 = H - 40;
   let minD = mobile ? 66 : 118;
@@ -76,7 +81,7 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
     placed.push([x, y]);
     nodes.set(n.id, { ...n, x, y, p: 0 });
   }
-  for (const b of o.bases) nodes.set("s:" + b.id, { id: "s:" + b.id, code: "", zh: "", type: "disc", vacant: false, x: b.x, y: 2, p: 1 });
+  for (const b of o.bases) nodes.set("s:" + b.id, { id: "s:" + b.id, code: "", label: "", type: "disc", vacant: false, x: b.x, y: 2, p: 1 });
 
   // ── real edges: speaker → discipline / country ──
   const edges: Edge[] = [];
@@ -373,9 +378,9 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
         ctx.font = `500 ${(8.5 + 2.5 * pr).toFixed(1)}px "IBM Plex Mono", monospace`;
         ctx.fillStyle = on ? SPORE : n.type === "ctry" ? GLOW : "#B3AA94";
         ctx.fillText(n.code, n.x + 13, n.y - 3);
-        ctx.font = `${pr > 0.75 ? 600 : pr < 0.3 ? 300 : 400} ${zs.toFixed(1)}px "Noto Serif TC", serif`;
+        ctx.font = `${pr > 0.75 ? 600 : pr < 0.3 ? 300 : 400} ${zs.toFixed(1)}px ${labelFont}`;
         ctx.fillStyle = on ? "#F3E6C0" : `rgb(${HY})`;
-        ctx.fillText(n.zh, n.x + 13, n.y + 3 + zs * 0.75);
+        ctx.fillText(n.label, n.x + 13, n.y + 3 + zs * 0.75);
         ctx.globalAlpha = 1;
       }
     }

@@ -1,6 +1,12 @@
 "use client";
 
 import { useRef, useState, type ReactNode } from "react";
+import type { Lang } from "@/lib/i18n";
+
+const T = {
+  zh: { group: "放大鏡：選擇要放大的部位", zoom: (l: string) => `：放大 ${l}` },
+  en: { group: "Hand lens: choose a detail to magnify", zoom: (l: string) => `: magnify the ${l}` },
+} satisfies Record<Lang, unknown>;
 
 type Spot = { n: string; x: number; y: number; label: string };
 
@@ -11,7 +17,8 @@ type Spot = { n: string; x: number; y: number; label: string };
  *   the plate key (press again to put the lens away).
  * The overlay re-uses the plate art via <use href="#artId">.
  */
-export default function Loupe({ artId, viewBox, zoom = 2.4, spots = [], children }: { artId: string; viewBox: string; zoom?: number; spots?: Spot[]; children: ReactNode }) {
+export default function Loupe({ artId, viewBox, zoom = 2.4, spots = [], lang = "zh", children }: { artId: string; viewBox: string; zoom?: number; spots?: Spot[]; lang?: Lang; children: ReactNode }) {
+  const t = T[lang];
   const box = useRef<HTMLDivElement>(null);
   const lens = useRef<SVGSVGElement>(null);
   const [spot, setSpot] = useState<string | null>(null);
@@ -80,14 +87,14 @@ export default function Loupe({ artId, viewBox, zoom = 2.4, spots = [], children
         </svg>
       </div>
       {spots.length > 0 && (
-        <div className="lens-bar" role="group" aria-label="放大鏡：選擇要放大的部位">
+        <div className="lens-bar" role="group" aria-label={t.group}>
           <span className="mono">
             <span aria-hidden="true">⌕</span> Loupe × {zoom}
           </span>
           {spots.map((s) => (
             <button key={s.n} type="button" aria-pressed={spot === s.n} onClick={() => toggleSpot(s)} title={s.label}>
               {s.n}
-              <span className="sr-only">：放大 {s.label}</span>
+              <span className="sr-only">{t.zoom(s.label)}</span>
             </button>
           ))}
         </div>
