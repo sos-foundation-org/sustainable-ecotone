@@ -14,7 +14,7 @@ import { pad2, roman } from "@/lib/engrave";
 
 export const metadata: Metadata = {
   title: "關於",
-  description: "Ecotone 兼容並續由國立臺灣大學、國立陽明交通大學與 SOS Foundation 三方共同發起 — 名字的由來、三方的角色，以及我們想長期做的事。",
+  description: "Ecotone 兼容並續由國立臺灣大學、國立陽明交通大學與 SOS Foundation 三方共同發起。這裡有名字的由來、三方的角色，以及我們想長期做的事。",
 };
 
 /** Three hatched circles (Euler diagram): the triple overlap is 兼容並續. */
@@ -76,7 +76,7 @@ export default function AboutPage() {
         }
         lead={
           <p>
-            Ecotone 兼容並續是一個由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起的跨領域永續論壇。我們想做的不是一場漂亮的活動，而是一部可以一直增補下去的圖譜 — 一個長期的 <i>platform</i>。
+            Ecotone 兼容並續是一個由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起的跨領域永續論壇。我們想做的不是一場漂亮的活動，而是一部可以一直增補下去的圖譜，一個長期的 <i>platform</i>。
           </p>
         }
         aside={<TriplePoint />}
@@ -104,10 +104,10 @@ export default function AboutPage() {
           <div className="gutter" aria-hidden="true" />
           <div className="reveal prose">
             <p className="lead">
-              「兼容並蓄」說的是把各種不同的事物一起收納進來。我們把「蓄」換成「續」— 兼容不同的學科與身份，並且讓永續本身可以延續下去。
+              「兼容並蓄」說的是把各種不同的事物一起收納進來。我們把「蓄」換成「續」：兼容不同的學科與身份，並且讓永續本身可以延續下去。
             </p>
             <p className="muted">
-              英文名 <i>Ecotone</i> 是生態學名詞：兩個生態系交會的過渡帶，例如河岸、潮間帶、林緣。這裡的環境最不穩定，卻往往也是物種最豐富的地方 — 所謂的 <i>edge effect</i>。知識也是這樣：最有意思的想法，很少誕生在學科的正中央。
+              英文名 <i>Ecotone</i> 是生態學名詞：兩個生態系交會的過渡帶，例如河岸、潮間帶、林緣。這裡的環境最不穩定，卻往往也是物種最豐富的地方，也就是所謂的 <i>edge effect</i>。知識也是這樣：最有意思的想法，很少誕生在學科的正中央。
             </p>
           </div>
         </div>
@@ -132,7 +132,7 @@ export default function AboutPage() {
               氣候變遷是科學問題，也是語言問題；城市綠化是設計問題，也是生態問題；醫療院所的碳排，是管理問題，也是倫理問題。但大學的結構，往往讓這些人一輩子不會坐在同一張桌子前。
             </p>
             <p className="muted">
-              Ecotone 就是那張桌子。兩所大學提供學術的深度與廣度，SOS Foundation 提供跨界與行動的能量 — 我們一起定期邀請來自不同學科、甚至同時擁有多重身份的講者，讓永續的討論真正 <i>cross-pollinate</i>。
+              Ecotone 就是那張桌子。兩所大學提供學術的深度與廣度，SOS Foundation 提供跨界與行動的能量。我們一起定期邀請來自不同學科、甚至同時擁有多重身份的講者，讓永續的討論真正 <i>cross-pollinate</i>。
             </p>
           </div>
         </div>
@@ -154,7 +154,7 @@ export default function AboutPage() {
                   <h3>{o.name}</h3>
                   <i className="muted">{o.nameEn}</i>
                   <p>
-                    <b>{role}</b> — {detail}
+                    <b>{role}</b>：{detail}
                   </p>
                   <OrgLink org={key} className="txtlink">
                     {o.url ? "官方網站" : "網址待補"} <i>Visit</i> <span aria-hidden="true">↗</span>
@@ -219,7 +219,7 @@ export default function AboutPage() {
 
           <div className="legend reveal">
             <h3 className="mono colo-h">Legend · 學科線型圖例</h3>
-            <p className="muted small">圖譜裡的學科不用顏色區分，而用製圖線型 — 像地圖用不同的線分辨道路與河流。兩種線型相遇的地方，就是一個 ecotone。</p>
+            <p className="muted small">圖譜裡的學科不用顏色區分，而用製圖線型，就像地圖用不同的線分辨道路與河流。兩種線型相遇的地方，就是一個 ecotone。</p>
             <ul>
               {DISCIPLINES.map((d) => (
                 <li key={d.key}>

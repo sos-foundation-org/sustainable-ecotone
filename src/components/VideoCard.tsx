@@ -43,7 +43,7 @@ export default function VideoCard({ v, sheet }: { v: Voice; sheet: number }) {
     media = (
       <iframe
         src={`https://www.youtube-nocookie.com/embed/${v.youtubeId}?autoplay=1&rel=0`}
-        title={`${v.name} — ${v.prompt}`}
+        title={`${v.name}：「${v.prompt}」`}
         allow="autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
       />

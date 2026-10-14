@@ -43,7 +43,7 @@ export function Genet({ seed, count, names }: { seed: string; count: number; nam
         })}
       </svg>
       <figcaption className="mono">
-        Genet · 一個菌絲體，{count} 個子實體 <span className="k-zh">— 每一朵菇，是一種身份</span>
+        Genet · 一個菌絲體，{count} 個子實體 <span className="k-zh">· 每一朵菇，是一種身份</span>
       </figcaption>
     </figure>
   );

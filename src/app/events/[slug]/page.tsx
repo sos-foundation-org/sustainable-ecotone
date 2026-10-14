@@ -29,7 +29,7 @@ export const dynamicParams = false;
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const e = eventBySlug((await params).slug);
   if (!e) return {};
-  const desc = `Ecotone Vol. ${pad2(e.vol)} — ${e.title}「${e.titleZh}」${e.kind}，${e.dateLabel}，${e.venueNote}。`;
+  const desc = `Ecotone Vol. ${pad2(e.vol)}：${e.title}「${e.titleZh}」${e.kind}，${e.dateLabel}，${e.venueNote}。`;
   return {
     title: `${e.title} ${e.dateShort}`,
     description: desc,
@@ -185,7 +185,7 @@ export default async function EventPage({ params }: Props) {
         <div className="wrap">
           <PlateHead no="§" label="Speakers" id="lineup" title="本冊講者" en="Speakers with many identities" side={`${lineup.length} speakers · ${identityCount} identities`} />
           <p className="lead plate-intro reveal">
-            我們的講者，每一位都有好幾種身份 — 一個人，橫跨好幾個領域；地上的每一朵菇，都長在同一個菌絲體上。
+            我們的講者，每一位都有好幾種身份。一個人橫跨好幾個領域，就像地上的每一朵菇，都長在同一個菌絲體上。
           </p>
           <nav className="jump reveal" aria-label="本冊講者快速導覽">
             <ol>
@@ -239,14 +239,14 @@ export default async function EventPage({ params }: Props) {
         <div className="wrap split">
           <div className="reveal">
             <p className="catno mono">
-              <span>Atlas · Voices from Abroad</span>
+              <span>Atlas · Diverse Voices</span>
             </p>
             <h2 id="ev-voices" className="h-sec">
-              來自海外的聲音
+              多元聲音
             </h2>
           </div>
           <div className="reveal">
-            <p className="lead">永續從來不是一個國家的事。我們邀請海外的研究者、設計師與實踐者錄製短片回應本冊主題，在現場播放，也收錄在地圖集裡。</p>
+            <p className="lead">永續從來不只是某一群人的事。我們邀請不同年齡、性別、族群、學歷與職業的人，從臺灣各地到世界各處，錄製短片回應本冊主題，在現場播放，也收錄在地圖集裡。</p>
             <Link className="txtlink" href="/voices">
               打開地圖集 <i>Open the Atlas</i> <span aria-hidden="true">☞</span>
             </Link>

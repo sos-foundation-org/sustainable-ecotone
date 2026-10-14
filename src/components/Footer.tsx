@@ -17,7 +17,7 @@ export default function Footer() {
               </span>
             </p>
             <p className="muted">
-              {SITE.subtitle} — 由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起。{SITE.tagline}
+              {SITE.subtitle}，由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起。{SITE.tagline}
             </p>
             <FollowCard compact />
           </div>
@@ -54,7 +54,7 @@ export default function Footer() {
         </div>
         <div className="fine mono">
           <span>© {new Date().getFullYear()} Ecotone 兼容並續 · Interdisciplinary Sustainability Forum</span>
-          <span>Colophon — set in Noto Serif TC, Cormorant Garamond &amp; IBM Plex Mono</span>
+          <span>Colophon · set in Noto Serif TC, Cormorant Garamond &amp; IBM Plex Mono</span>
         </div>
       </div>
     </footer>

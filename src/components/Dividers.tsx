@@ -42,7 +42,7 @@ export function MareyDivider({ caption = true }: { caption?: boolean }) {
       </svg>
       {caption && (
         <p>
-          <i>Fig. — Saltation.</i>　跳躍：從一個學科，到另一個學科。
+          <i>Fig. Saltation.</i>　跳躍：從一個學科，到另一個學科。
         </p>
       )}
     </div>

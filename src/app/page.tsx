@@ -126,9 +126,9 @@ export default function Home() {
               </dd>
               <dd>
                 <ol>
-                  <li>改自成語「兼容並蓄」— 把各種不同的事物，一起收納進來。</li>
+                  <li>改自成語「兼容並蓄」：把各種不同的事物，一起收納進來。</li>
                   <li>
-                    以「續」代「蓄」：<b>兼容</b>不同的學科與身份，<b>並續</b> — 讓永續本身得以延續。
+                    以「續」代「蓄」：<b>兼容</b>不同的學科與身份，<b>並續</b>，讓永續本身得以延續。
                   </li>
                   <li>
                     英名 <i>Ecotone</i>：兩個生態系交會的過渡帶，如河岸、潮間帶、林緣。這裡往往是物種最豐富的地方，謂之 <i>edge effect</i>。
@@ -141,7 +141,7 @@ export default function Home() {
             <div>
               <EdgeEffectFigure />
               <div className="after-fig reveal">
-                <p className="big">把「森林」換成醫學，「草原」換成文學 — 曲線依然成立。</p>
+                <p className="big">把「森林」換成醫學、「草原」換成文學，曲線依然成立。</p>
                 <p className="muted">
                   最有意思的想法，很少誕生在學科的正中央。Ecotone 刻意製造這種邊界，並且定期、長期地讓它發生：一冊一冊，把不同學科、不同國家的人放進同一張圖版裡。
                 </p>
@@ -241,7 +241,7 @@ export default function Home() {
             <div className="reveal">
               <p className="call-big">你身上，是不是也貼著好幾張標籤？</p>
               <p className="lead">
-                我們在找跨領域、且與永續或自然有實質連結的講者：同時活在好幾個世界裡 — 在實驗室與田野之間、在診間與政策之間、在臺灣與另一個國家之間 — 而工作真正碰觸到土地、生態或永續轉型的人。如果你的工作本身就是一道邊界，我們想邀請你成為下一冊的講者。
+                我們在找跨領域、且與永續或自然有實質連結的講者：同時活在好幾個世界裡（在實驗室與田野之間、在診間與政策之間、在臺灣與另一個國家之間），而工作真正碰觸到土地、生態或永續轉型的人。如果你的工作本身就是一道邊界，我們想邀請你成為下一冊的講者。
               </p>
               <div className="actions">
                 <CallLink />
@@ -261,14 +261,14 @@ export default function Home() {
           <div className="split">
             <div className="reveal">
               <p className="catno mono">
-                <span>Atlas · 海外聲音</span>
+                <span>Atlas · 多元聲音</span>
               </p>
               <h2 id="voices-teaser" className="h-sec">
-                跨過國界的聲音，
+                越過每一種邊界的聲音，
                 <br />
                 也是一種授粉。
               </h2>
-              <p className="muted">海外的研究者、設計師與實踐者，各自錄一段短片，回應一個問題。不同國家的相遇，本身就是一種跨領域。</p>
+              <p className="muted">高中生與退休教師、漁民與法官、部落與城市：不同年齡、性別、族群、學歷、職業與地方的人，各自錄一段短片，回應一個問題。不同人生的相遇，本身就是一種跨領域。</p>
               <Link className="txtlink" href="/voices">
                 打開地圖集 <i>Open the Atlas</i> <span aria-hidden="true">☞</span>
               </Link>

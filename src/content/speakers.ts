@@ -47,7 +47,7 @@ export const SPEAKERS: Speaker[] = [
     short: "Climate Change · NTU",
     tags: ["國立臺灣大學", "氣候變遷"],
     identities: [
-      { title: "國立臺灣大學 · 氣候變遷研究", detail: "研究生物如何回應快速變動的氣候 — 從個體行為、族群到群落尺度。" },
+      { title: "國立臺灣大學 · 氣候變遷研究", detail: "研究生物如何回應快速變動的氣候，從個體行為、族群一路到群落尺度。" },
     ],
     disciplines: ["ecology"],
     places: [{ name: "Taipei", lat: 25.02, lng: 121.54, country: "TW" }],
@@ -64,7 +64,7 @@ export const SPEAKERS: Speaker[] = [
     short: "SOS · BioNarr · Harvard",
     tags: ["SOS Foundation", "BioNarr", "Harvard"],
     identities: [
-      { title: "SOS Foundation 創辦人", detail: "Sustainability Of Sustainability — 結合科學、藝術與數位創新，讓永續本身可以永續。" },
+      { title: "SOS Foundation 創辦人", detail: "Sustainability Of Sustainability：結合科學、藝術與數位創新，讓永續本身可以永續。" },
       { title: "BioNarr 創辦人暨執行長", detail: "打造可攜式、高通量的系統，從微觀到地景尺度記錄、數位化並感測自然。" },
       { title: "Harvard 研究者", detail: "哈佛大學有機體與演化生物學系（OEB）；曾於比較動物學博物館、Rowland Institute 從事標本 3D 數位化與夜間人工光對蛾類影響的研究。" },
     ],
@@ -74,7 +74,7 @@ export const SPEAKERS: Speaker[] = [
       { name: "Cambridge, MA", lat: 42.37, lng: -71.11, country: "US" },
     ],
     orgs: ["sos", "bionarr", "harvard"],
-    bio: `非營利、新創、學術 — 三個通常互相看不順眼的世界，他同時待在裡面。這場他想聊的是：當一個人必須在 <span class="en">mission</span>、<span class="en">market</span> 與 <span class="en">peer review</span> 之間切換，永續的定義會怎麼被重新協商。`,
+    bio: `非營利、新創、學術，三個通常互相看不順眼的世界，他同時待在裡面。這場他想聊的是：當一個人必須在 <span class="en">mission</span>、<span class="en">market</span> 與 <span class="en">peer review</span> 之間切換，永續的定義會怎麼被重新協商。`,
   },
   {
     id: "yen",
@@ -90,7 +90,7 @@ export const SPEAKERS: Speaker[] = [
     disciplines: ["literature"],
     places: [{ name: "Hualien", lat: 23.9, lng: 121.54, country: "TW" }],
     orgs: ["ndhu"],
-    bio: `如果說科學負責回答「發生了什麼」，文學負責的是「我們如何感受它」。在一個充滿數據與模型的論壇裡，顏訥會帶來另一種精準 — 語言的精準。<span class="en">Because a crisis we can't narrate is a crisis we can't feel.</span>`,
+    bio: `如果說科學負責回答「發生了什麼」，文學負責的是「我們如何感受它」。在一個充滿數據與模型的論壇裡，顏訥會帶來另一種精準：語言的精準。<span class="en">Because a crisis we can't narrate is a crisis we can't feel.</span>`,
     draftNote: "介紹為草稿，待講者確認。",
   },
   {
@@ -122,7 +122,7 @@ export const SPEAKERS: Speaker[] = [
     identities: [
       { title: "牙醫副院長", detail: "站在臨床第一線，管理一個高耗材、高能源的醫療場域。" },
       { title: "OMIC", detail: "跨領域研究與創新的推動者。" },
-      { title: "永續辦", detail: "把永續從口號變成制度 — 推動實際可執行的永續行動。" },
+      { title: "永續辦", detail: "把永續從口號變成制度，推動實際可執行的永續行動。" },
     ],
     disciplines: ["medicine"],
     places: [{ name: "Taiwan", lat: 24.2, lng: 120.9, approx: true, country: "TW" }],

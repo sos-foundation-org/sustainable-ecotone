@@ -128,7 +128,7 @@ export default function CrossingAtlas({
   disciplines: Discipline[];
   caption?: string;
   idPrefix?: string;
-  /** optional: also map Voices from Abroad as places across the sea */
+  /** optional: also map Diverse Voices (多元聲音) as places across the sea */
   voices?: Voice[];
 }) {
   const [hl, setHl] = useState<string | null>(null);
@@ -139,7 +139,7 @@ export default function CrossingAtlas({
     const out: AtlasPlace[] = [];
     for (const s of speakers) for (const p of s.places) if (!out.some((q) => q.key === p.name)) out.push({ key: p.name, name: p.name, sub: `${p.approx ? "≈ " : ""}${fmtCoord(p.lat, p.lng)}`, kind: "speaker" });
     const near = (lat: number, lng: number) => speakers.some((s) => s.places.some((p) => Math.abs(p.lat - lat) < 1.5 && Math.abs(p.lng - lng) < 1.5));
-    for (const v of voices ?? []) if (v.lat !== undefined && v.lng !== undefined && !near(v.lat, v.lng) && !out.some((q) => q.key === v.location)) out.push({ key: v.location, name: v.location, sub: "海外聲音 · voice", kind: "voice" });
+    for (const v of voices ?? []) if (v.lat !== undefined && v.lng !== undefined && !near(v.lat, v.lng) && !out.some((q) => q.key === v.location)) out.push({ key: v.location, name: v.location, sub: "多元聲音 · voice", kind: "voice" });
     return out;
   }, [speakers, voices]);
   const seed = seedFrom(idPrefix + speakers.map((s) => s.id).join());

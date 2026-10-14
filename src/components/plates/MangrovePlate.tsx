@@ -195,16 +195,16 @@ export default function MangrovePlate({ plateNo = "I" }: { plateNo?: string }) {
         </span>
         <ol className="plate-key">
           <li>
-            <b>1</b>蝗蟲 <i>Saltatoria</i> — 跳躍者
+            <b>1</b>蝗蟲 <i>Saltatoria</i> · 跳躍者
           </li>
           <li>
-            <b>2</b>彈塗魚 <i>Periophthalmus</i> — 會走路的魚
+            <b>2</b>彈塗魚 <i>Periophthalmus</i> · 會走路的魚
           </li>
           <li>
-            <b>3</b>胎生苗 — 「水中的筆」
+            <b>3</b>胎生苗 · 「水中的筆」
           </li>
           <li>
-            <b>4</b>招潮蟹 <i>Uca</i> — 潮間帶的住民
+            <b>4</b>招潮蟹 <i>Uca</i> · 潮間帶的住民
           </li>
         </ol>
       </figcaption>

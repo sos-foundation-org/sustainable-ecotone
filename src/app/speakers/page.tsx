@@ -13,7 +13,7 @@ import { pad2, roman } from "@/lib/engrave";
 
 export const metadata: Metadata = {
   title: "歷屆講者",
-  description: "Ecotone 兼容並續的歷屆講者 — 一份持續增補的講者名錄。每一冊論壇結束後，該冊的講者會自動收錄在這裡。",
+  description: "Ecotone 兼容並續的歷屆講者名錄，持續增補中。每一冊論壇結束後，該冊的講者會自動收錄在這裡。",
 };
 
 /** An empty, waiting herbarium mount: tape, an empty photo window, ghost fungi, a blank label. */
@@ -81,7 +81,7 @@ export default function PastSpeakersPage() {
         en="An herbarium of everyone who has spoken at Ecotone"
         lead={
           <p>
-            每一冊論壇結束後，那一冊的講者會被正式收錄進這份名錄 — 帶著他們所有的身份。這裡會隨著論壇一冊一冊長大，成為一份跨學科、跨國界的名錄。
+            每一冊論壇結束後，那一冊的講者會帶著他們所有的身份，被正式收錄進這份名錄。這裡會隨著論壇一冊一冊長大，成為一份跨學科、也跨越各種邊界的名錄。
           </p>
         }
       />
@@ -96,7 +96,7 @@ export default function PastSpeakersPage() {
               <p className="catno mono">
                 <span>Herbarium · status: awaiting first accession</span>
               </p>
-              <WaterlineHeading as="h2" id="empty-h" contained en="The collection begins after Vol. 01 — November 2026.">
+              <WaterlineHeading as="h2" id="empty-h" contained en="The collection begins after Vol. 01, November 2026.">
                 歷屆講者名錄，
                 <br />
                 還在等第一批講者。
@@ -107,7 +107,7 @@ export default function PastSpeakersPage() {
               {pending && pendingLineup.length > 0 && (
                 <div className="pending">
                   <p className="mono pending-h">
-                    Pending accession · 待收錄 — Vol. {pad2(pending.vol)}
+                    Pending accession · 待收錄 · Vol. {pad2(pending.vol)}
                   </p>
                   <ul>
                     {pendingLineup.map((s) => (

@@ -58,7 +58,7 @@ export default function WhaleSea({ children, note }: { children: ReactNode; note
       </svg>
 
       <h2 id="sea-h" className="sr-only">
-        海外聲音：影片
+        多元聲音：影片
       </h2>
 
       <div className="sea-sky" aria-hidden="true">

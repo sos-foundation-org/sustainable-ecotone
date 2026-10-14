@@ -375,7 +375,7 @@ export default function MycorrhizaHero({
               </p>
               <button className="myco-leap-btn" type="button" onClick={leap} disabled={leaping}>
                 <span>
-                  讓蚱蜢跳一下 <i>— grow a new link</i>
+                  讓蚱蜢跳一下 <i>· grow a new link</i>
                 </span>
                 <span className="arr" aria-hidden="true">
                   ↗

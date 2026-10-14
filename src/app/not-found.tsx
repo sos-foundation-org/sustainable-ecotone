@@ -20,7 +20,7 @@ export default function NotFound() {
           還不存在的邊界。
         </WaterlineHeading>
         <p className="lead centered">
-          這一頁還沒有被採集。就像彈塗魚 — 一隻會走上陸地的魚 — 有時候越界，才會發現新的地方。
+          這一頁還沒有被採集。就像會走上陸地的彈塗魚：有時候越界，才會發現新的地方。
         </p>
         <div className="actions centered">
           <Link className="btn btn--ink" href="/">

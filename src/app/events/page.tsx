@@ -29,7 +29,7 @@ export default function EventsPage() {
         }
         lead={
           <p>
-            Ecotone 會定期舉辦系列演講、工作坊與跨域對談。每一場都是圖譜裡的一張新圖版 <i>plate</i>：主題與講者組合各不相同，但都抱著同一個 <i>mindset</i> — 把不同學科放在一起，看會發生什麼。
+            Ecotone 會定期舉辦系列演講、工作坊與跨域對談。每一場都是圖譜裡的一張新圖版 <i>plate</i>：主題與講者組合各不相同，但都抱著同一個 <i>mindset</i>：把不同學科放在一起，看會發生什麼。
           </p>
         }
       />
@@ -79,7 +79,7 @@ export default function EventsPage() {
                 <span className="plate-row-main">
                   <span className="mono">Vol. {pad2(nextVol)} · 籌備中 In preparation</span>
                   <span className="plate-row-title">下一張圖版，還是空白的。</span>
-                  <span className="muted">我們正在徵集下一冊的講者 — 下一位講者，也許就是你。</span>
+                  <span className="muted">我們正在徵集下一冊的講者。下一位，也許就是你。</span>
                 </span>
                 <span className="plate-row-date">
                   <Link className="txtlink" href="/call-for-speakers">

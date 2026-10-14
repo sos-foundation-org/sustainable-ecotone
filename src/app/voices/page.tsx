@@ -7,27 +7,27 @@ import VideoCard, { TaipeiClock } from "@/components/VideoCard";
 import { VOICES } from "@/content/voices";
 
 export const metadata: Metadata = {
-  title: "海外聲音",
-  description: "Voices from Abroad — 海外研究者、設計師與實踐者以短片回應 Ecotone 論壇的主題。鯨的歌聲能穿越整個海盆，有些想法也是。",
+  title: "多元聲音",
+  description: "Diverse Voices：不同年齡、性別、族群、學歷、職業與生命經驗的人，以短片回應 Ecotone 論壇的主題。鯨的歌聲能穿越整個海盆，有些聲音也能越過每一種邊界。",
 };
 
 export default function VoicesPage() {
   return (
     <>
       <PageTitle
-        catalog={["Atlas · 海外聲音", "Voices from Abroad", `${VOICES.length} voices`]}
+        catalog={["Atlas · 多元聲音", "Diverse Voices", `${VOICES.length} voices`]}
         waterline
-        en="Whale song crosses whole ocean basins. So can ideas."
+        en="Whale song crosses whole ocean basins. Voices cross every other border."
         title={
           <>
-            永續沒有國界，
+            鯨歌越過海盆，
             <br />
-            花粉也是跨海傳的。
+            聲音越過身份。
           </>
         }
         lead={
           <p>
-            這張網不止於陸地。來自新加坡、波士頓、歐洲與拉丁美洲的聲音，沿著同一條歌聲線（<i>song line</i>）傳到臺北。每一則短片，都在回答一個別的學科丟給他們的問題 — 會在論壇現場播放，也長期收錄在這裡。
+            這張網不止於陸地，也不止於校園。高中生與退休教師、漁民與法官、原住民族部落與新住民家庭、沒拿過大學文憑的實踐者與博士：不同年齡、性別、族群、學歷、職業與生命經驗的聲音，從臺灣各地到海的另一端，沿著同一條歌聲線（<i>song line</i>）傳到臺北。每一則短片，都在回答一個別的學科丟給他們的問題，在論壇現場播放，也長期收錄在這裡。
           </p>
         }
       />
@@ -50,7 +50,7 @@ export default function VoicesPage() {
       <section className="cta-band" aria-labelledby="v-cta">
         <div className="wrap cta-row">
           <h2 id="v-cta">
-            你也在海外做永續？
+            你也有一段別人沒聽過的經驗？
             <br />
             <span className="muted">
               錄一段 <i>voice</i> 給臺灣的聽眾。

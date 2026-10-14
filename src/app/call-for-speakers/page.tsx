@@ -21,7 +21,7 @@ const WANTED = [
   { t: "好幾張標籤", en: "Plural identities", d: "你同時是研究者與創業者、醫師與行政者、設計師與田野工作者……一個人，好幾種身份。" },
   { t: "與永續或自然相連", en: "Rooted in sustainability or nature", d: "這是必要條件：你的研究、實踐、產品、政策、創作或教學，與永續或自然有實質的關係。" },
   { t: "一道邊界", en: "A border you live on", d: "你的工作本身就在兩個學科之間：你常常需要把一邊的語言，翻譯給另一邊聽。" },
-  { t: "一個跨海的視角", en: "Across countries", d: "你在臺灣以外的地方生活或工作過，或正把兩個國家的經驗接在一起。（不是必要條件，但我們很想聽。）" },
+  { t: "一段不一樣的人生", en: "A different life experience", d: "你帶著不同的國家、世代、族群、職業或成長背景而來，看見的永續也因此不一樣。（不是必要條件，但我們很想聽。）" },
 ];
 
 const STEPS = [
@@ -50,7 +50,7 @@ export default function CallForSpeakersPage() {
         en="We are looking for people who live on more than one edge."
         lead={
           <p>
-            Ecotone 兼容並續相信，最有意思的想法長在學科的交界處。所以我們找的講者，往往本身就是一個 <i>ecotone</i>：同時活在好幾個學科、好幾種身份、甚至好幾個國家之間，而且他們的工作都與<b>永續</b>或<b>自然</b>有實質的連結。如果你也是，歡迎告訴我們 — 你帶著哪幾張標籤，以及你想把什麼問題帶到交界處。
+            Ecotone 兼容並續相信，最有意思的想法長在學科的交界處。所以我們找的講者，往往本身就是一個 <i>ecotone</i>：同時活在好幾個學科、好幾種身份、甚至好幾個國家之間，而且他們的工作都與<b>永續</b>或<b>自然</b>有實質的連結。如果你也是，歡迎告訴我們：你帶著哪幾張標籤，以及你想把什麼問題帶到交界處。
           </p>
         }
       />
@@ -207,7 +207,7 @@ export default function CallForSpeakersPage() {
               <span>Correspondence · 一般聯絡</span>
             </header>
             <h2 id="contact-h">其他事情，也歡迎來信</h2>
-            <p className="muted">合作提案、海外聲音、媒體採訪，或只是想打個招呼。</p>
+            <p className="muted">合作提案、多元聲音短片、媒體採訪，或只是想打個招呼。</p>
             <dl className="fields">
               <div>
                 <dt>Email</dt>
@@ -230,7 +230,7 @@ export default function CallForSpeakersPage() {
               <div>
                 <dt>Voices</dt>
                 <dd>
-                  <Link href="/voices">海外聲音 · 錄一段短片給臺灣的聽眾</Link>
+                  <Link href="/voices">多元聲音 · 錄一段短片給臺灣的聽眾</Link>
                 </dd>
               </div>
             </dl>
