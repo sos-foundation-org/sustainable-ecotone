@@ -7,7 +7,7 @@ export const SITE = {
   subtitle: "跨領域永續論壇",
   tagline: "在學科的交界處，讓永續長出新的物種。",
   /** Production origin, no trailing slash. Set NEXT_PUBLIC_SITE_URL on Vercel once the domain is decided. */
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ecotone-forum.vercel.app").replace(/\/+$/, ""),
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://sustainable-ecotone.vercel.app").replace(/\/+$/, ""),
   /** 報名表單網址（Google Form / Accupass 等）。留空 = 按鈕顯示「報名即將開放」 */
   registrationUrl: "",
   /** 聯絡信箱。留空 = 顯示「待公布」 */
