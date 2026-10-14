@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { grass, mushroom, rng, tree, type MushroomKind } from "@/lib/mycelium";
+import { leap as leapArc, prefersReducedMotion } from "@/lib/leap";
+import LeapStage from "../LeapStage";
 import { createWeb, type Focus, type Web, type WebNode, type WebSpeaker } from "./engine";
 
 export type HeroSpeaker = WebSpeaker & { name: string; sub: string; kind: MushroomKind; linkNames: string[] };
@@ -17,7 +19,7 @@ type Flora = {
   tree: ReturnType<typeof tree>;
   ghost: ReturnType<typeof tree> | null;
   grass: string;
-  shrooms: { id: string; x: number; cx: number; top: number; paths: ReturnType<typeof mushroom>; delay: number; labelX: number }[];
+  shrooms: { id: string; x: number; cx: number; top: number; w: number; paths: ReturnType<typeof mushroom>; delay: number }[];
 };
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -49,8 +51,14 @@ export default function MycorrhizaHero({
   const belowRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const hopRef = useRef<HTMLDivElement>(null);
+  const hop2Ref = useRef<HTMLDivElement>(null);
+  const leapingRef = useRef(false);
   const webRef = useRef<Web | null>(null);
-  const hopX = useRef(0);
+  // two grasshoppers: [0] the large one (also the 下一跳 jumper), [1] a smaller one (~0.68×)
+  const hops = useRef([
+    { x: 0, busy: false, flip: false },
+    { x: 0, busy: false, flip: true },
+  ]);
   const [flora, setFlora] = useState<Flora | null>(null);
   const [focus, setFocusState] = useState<Focus>(null);
   const [pi, setPi] = useState(0);
@@ -80,12 +88,12 @@ export default function MycorrhizaHero({
       const fx = n <= 5 ? xs[i] : mobile ? 0.06 + (0.88 * i) / (n - 1) : 0.5 + (0.45 * i) / (n - 1);
       const x = W * fx;
       const paths = mushroom(x, H, hs[i % 5], cws[i % 5], s.kind, (R() - 0.5) * 8);
-      const half = mobile ? 28 : 34;
-      return { id: s.id, x, cx: paths.cx, top: paths.top, paths, delay: 0.6 + i * 0.15, labelX: Math.max(half + 4, Math.min(W - half - 4, paths.cx)) };
+      return { id: s.id, x, cx: paths.cx, top: paths.top, w: cws[i % 5], paths, delay: 0.6 + i * 0.15 };
     });
     let g = "";
     for (let i = 0; i < (mobile ? 10 : 18); i++) g += grass((mobile ? 0.02 : 0.48) * W + R() * W * (mobile ? 0.96 : 0.5), H, R, 3 + Math.floor(R() * 4));
-    hopX.current = W * (mobile ? 0.66 : 0.44);
+    hops.current[0].x = W * (mobile ? 0.66 : 0.44);
+    hops.current[1].x = W * (mobile ? 0.3 : 0.2);
     setFlora({ W, H, mobile, treeX, tree: tr, ghost, grass: g, shrooms });
   }, [speakers]);
 
@@ -111,17 +119,83 @@ export default function MycorrhizaHero({
     };
   }, [layout]);
 
-  // ── place the grasshopper ──
-  const placeHop = useCallback((x: number, y = 0, rot = 0, flip = false) => {
-    const el = hopRef.current;
+  // ── grasshoppers: place, and leap with crouch → launch → flight → landing ──
+  const hopEl = (i: number) => (i === 0 ? hopRef.current : hop2Ref.current);
+  const placeHop = useCallback((i: number, x: number, dy = 0, rot = 0, flip = false, squash = 1, kick = 0) => {
+    const el = i === 0 ? hopRef.current : hop2Ref.current;
     if (!el) return;
-    el.style.transform = `translate(${x - el.offsetWidth / 2}px, ${-y}px) rotate(${rot}deg)`;
+    el.style.transform = `translate3d(${x - el.offsetWidth / 2}px, ${dy}px, 0) rotate(${rot}deg)`;
     const svg = el.firstElementChild as SVGElement | null;
-    if (svg) svg.style.transform = flip ? "scaleX(-1)" : "";
+    if (svg) {
+      svg.style.transform = `scale(${flip ? -1 : 1}, ${squash})`;
+      svg.style.setProperty("--kick", `${kick}deg`);
+    }
   }, []);
   useEffect(() => {
-    if (flora) placeHop(hopX.current);
+    if (!flora) return;
+    hops.current.forEach((h, i) => placeHop(i, h.x, 0, 0, h.flip));
   }, [flora, placeHop]);
+
+  const jump = useCallback(
+    (i: number, x1: number, dur: number, onLand?: () => void) => {
+      const h = hops.current[i];
+      if (!hopEl(i) || !flora || h.busy) return false;
+      h.busy = true;
+      const peak = Math.min(flora.H * 0.3, 40 + Math.abs(x1 - h.x) * 0.42) * (i === 0 ? 1 : 0.72);
+      const flip = x1 < h.x;
+      leapArc({
+        x0: h.x,
+        y0: 0,
+        x1,
+        y1: 0,
+        peak,
+        dur,
+        onFrame: (f) => placeHop(i, f.x, f.y, f.rot, f.flip, f.squash, f.kick),
+        onDone: () => {
+          h.x = x1;
+          h.flip = flip;
+          h.busy = false;
+          onLand?.();
+        },
+      });
+      return true;
+    },
+    [flora, placeHop],
+  );
+
+  // ── ambient leaps: every 6–12 s one or two grasshoppers jump on their own ──
+  useEffect(() => {
+    const above = aboveRef.current;
+    if (!flora || !above || prefersReducedMotion()) return;
+    let onScreen = true;
+    const io = new IntersectionObserver(([en]) => (onScreen = en.isIntersecting));
+    io.observe(above);
+    const W = flora.W;
+    const target = (x: number) => {
+      const dist = W * (0.08 + Math.random() * 0.22);
+      let x1 = x + (Math.random() < 0.5 ? -dist : dist);
+      if (x1 < W * 0.04 || x1 > W * 0.96) x1 = x - (x1 - x);
+      return Math.max(W * 0.04, Math.min(W * 0.96, x1));
+    };
+    let timer = 0;
+    const tick = () => {
+      if (onScreen && !document.hidden && !leapingRef.current) {
+        const both = Math.random() < 0.4;
+        const first = both || Math.random() < 0.5 ? 0 : 1;
+        jump(first, target(hops.current[first].x), 760 + Math.random() * 260);
+        if (both) {
+          const other = 1 - first;
+          window.setTimeout(() => jump(other, target(hops.current[other].x), 560 + Math.random() * 220), 140 + Math.random() * 260);
+        }
+      }
+      timer = window.setTimeout(tick, 6000 + Math.random() * 6000);
+    };
+    timer = window.setTimeout(tick, 3500 + Math.random() * 3000);
+    return () => {
+      window.clearTimeout(timer);
+      io.disconnect();
+    };
+  }, [flora, jump]);
 
   // ── the underground web ──
   useEffect(() => {
@@ -172,39 +246,22 @@ export default function MycorrhizaHero({
     setPi(next);
     const p = pairs[next];
     const W = flora.W;
-    const x0 = hopX.current;
+    const x0 = hops.current[0].x;
     let x1 = x0;
     for (let k = 0; k < 20 && Math.abs(x1 - x0) < W * 0.18; k++) x1 = W * (0.06 + Math.random() * 0.86);
-    const flip = x1 < x0;
+    setLeaping(true);
+    leapingRef.current = true;
     const land = () => {
-      hopX.current = x1;
       webRef.current?.leap(p.a, p.b, next * 97 + 3);
       setFocus({ type: "pair", a: p.a, b: p.b });
       setLeaping(false);
+      leapingRef.current = false;
     };
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      placeHop(x1, 0, 0, flip);
-      land();
-      return;
-    }
-    setLeaping(true);
-    const svg = hopRef.current?.firstElementChild as SVGElement | null;
-    const H = Math.min(150, flora.H * 0.28);
-    const st = performance.now();
-    svg?.style.setProperty("--kick", "60deg");
-    const step = (now: number) => {
-      const t = Math.min(1, (now - st) / 900);
-      const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-      const dir = flip ? -1 : 1;
-      placeHop(x0 + (x1 - x0) * e, H * 4 * t * (1 - t), t < 0.95 ? dir * (-22 + 44 * t) : 0, flip);
-      if (t > 0.35) svg?.style.setProperty("--kick", "18deg");
-      if (t < 1) requestAnimationFrame(step);
-      else {
-        svg?.style.setProperty("--kick", "0deg");
-        land();
-      }
+    // if the big grasshopper is mid-air on an ambient leap, wait for it to land
+    const go = () => {
+      if (!jump(0, x1, 900, land)) window.setTimeout(go, 60);
     };
-    requestAnimationFrame(step);
+    go();
   };
 
   const fine = () => typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -212,31 +269,6 @@ export default function MycorrhizaHero({
 
   return (
     <section className="myco" aria-labelledby="hero-title">
-      <svg className="myco-defs" width="0" height="0" aria-hidden="true" focusable="false">
-        <defs>
-          {/* grasshopper, side view, facing right; feet at y≈54 */}
-          <symbol id="myco-hopper" viewBox="0 0 120 60" overflow="visible">
-            <g fill="#F4F1E8" stroke="#1C1A17" strokeWidth="1" strokeLinejoin="round" strokeLinecap="round">
-              <path fill="none" strokeWidth=".7" d="M101 26C106 16 112 9 119 5M98.5 26C101 15 105 8 110 2" />
-              <path fill="none" d="M84 41L82 49L76 53M94 41.5L98 49L103 52.5" />
-              <path d="M30 36C40 31 60 30 76 31L76 41C60 43 42 42 30 36Z" />
-              <path fill="none" strokeWidth=".5" d="M42 32.6L43 41.5M50 31.6L51 42.2M58 31L58.6 42.4M66 30.8L66.4 42" />
-              <path d="M92 31C74 27 46 27 19 33C24 35.6 30 36.2 36 35.8C56 34.3 76 34.3 92 35.4Z" />
-              <path fill="none" strokeWidth=".45" d="M88 32.5C66 30.2 44 30.6 24 33.7M80 33.6C62 32.2 46 32.4 32 34.6" />
-              <path d="M74 29C80 26 90 26 94 29L95 41C88 43 80 43 75 41Z" />
-              <path d="M93 28C99 25 106 28 107 35C107 41 102 44 96 42L94 40Z" />
-              <ellipse cx="100.5" cy="31.5" rx="2.4" ry="3" fill="#1C1A17" />
-              <g style={{ transformOrigin: "42px 22.5px", transform: "rotate(var(--kick, 0deg))", transition: "transform .18s ease-out" }}>
-                <path fill="none" d="M42 23L57 52L65 53.5" />
-                <path fill="none" strokeWidth=".6" d="M46 31l2.6-1.2M49.5 37.6l2.6-1.2M53 44.4l2.6-1.2" />
-              </g>
-              <path d="M78 40.5C74 33 60 25 44 21C41.6 20.4 40.6 22.6 42.2 23.8C54 29.5 66 36.5 73 42.5Z" />
-              <path fill="none" strokeWidth=".5" d="M70 36.5l-2-4.4M64.5 32.6l-2-4.2M59 29.4l-2-4M53.5 26.6l-2-3.6M48 24.2l-1.6-2.6" />
-            </g>
-          </symbol>
-        </defs>
-      </svg>
-
       {/* ───── above: what you can see ───── */}
       <div className="myco-above" ref={aboveRef}>
         {flora && (
@@ -273,24 +305,23 @@ export default function MycorrhizaHero({
 
         {flora && (
           <div className="myco-labels">
+            {/* each mushroom is itself the control: no visible name, but a full accessible name */}
             {speakers.map((s, i) => {
               const m = flora.shrooms[i];
               return (
                 <button
                   key={s.id}
                   type="button"
-                  className={`myco-fl${spkOn(s.id) ? " is-on" : ""}`}
-                  style={{ left: m.labelX, top: m.top - 2, animationDelay: `${1.4 + i * 0.12}s` }}
+                  className={`myco-hit${spkOn(s.id) ? " is-on" : ""}`}
+                  style={{ left: m.cx - m.w / 2 - 6, top: m.top - 6, width: m.w + 12, height: flora.H - m.top + 6 }}
                   aria-pressed={spkOn(s.id)}
-                  aria-label={`${s.name}：在地下網絡標出連結（${s.linkNames.join("、")}）`}
+                  aria-label={`${s.name}（${s.sub}）：在地下網絡標出連結（${s.linkNames.join("、")}）`}
                   onPointerEnter={() => fine() && setFocus({ type: "spk", id: s.id })}
                   onPointerLeave={() => fine() && setFocus(null)}
                   onFocus={() => setFocus({ type: "spk", id: s.id })}
+                  onBlur={() => setFocus(null)}
                   onClick={() => !fine() && setFocus(spkOn(s.id) ? null : { type: "spk", id: s.id })}
-                >
-                  <b>{s.name}</b>
-                  {!flora.mobile && <span>{s.sub}</span>}
-                </button>
+                />
               );
             })}
           </div>
@@ -309,8 +340,13 @@ export default function MycorrhizaHero({
         )}
 
         <div className="myco-hopper" ref={hopRef} aria-hidden="true">
-          <svg viewBox="0 0 120 60">
-            <use href="#myco-hopper" />
+          <svg viewBox="0 0 210 110">
+            <use href="#grasshopper" />
+          </svg>
+        </div>
+        <div className="myco-hopper myco-hopper--sm" ref={hop2Ref} aria-hidden="true">
+          <svg viewBox="0 0 210 110">
+            <use href="#grasshopper" />
           </svg>
         </div>
         <span className="myco-tag myco-tag--up mono" aria-hidden="true">
@@ -320,16 +356,7 @@ export default function MycorrhizaHero({
       </div>
 
       {/* ───── below: the hidden network ───── */}
-      <div
-        className="myco-below"
-        ref={belowRef}
-        onPointerMove={(e) => {
-          if (e.pointerType !== "mouse" || !canvasRef.current) return;
-          const r = canvasRef.current.getBoundingClientRect();
-          webRef.current?.setPointer({ x: e.clientX - r.left, y: e.clientY - r.top });
-        }}
-        onPointerLeave={() => webRef.current?.setPointer(null)}
-      >
+      <div className="myco-below" ref={belowRef}>
         <canvas ref={canvasRef} className="myco-web" aria-hidden="true" />
         <span className="myco-tag myco-tag--down mono" aria-hidden="true">
           ↓ 地下 · the wood wide web
@@ -358,6 +385,18 @@ export default function MycorrhizaHero({
                 <span>
                   {String((pi % pairs.length) + 1).padStart(2, "0")} / {String(pairs.length).padStart(2, "0")}
                 </span>
+              </div>
+              <div className="myco-leap-stage" aria-hidden="true">
+                <LeapStage trigger={pi} viewBox="0 0 320 84" perches={[{ x: 58, y: 52 }, { x: 262, y: 52 }]} scale={0.24} ink="#E9DFC6" fill="#15120E">
+                  <path d="M58 52C120 6 200 6 262 52" fill="none" stroke="#D8B25A" strokeOpacity=".55" strokeWidth="1" strokeDasharray="2 5" />
+                  <line x1="10" y1="52" x2="310" y2="52" stroke="#E9DFC6" strokeOpacity=".25" />
+                  <text x="58" y="74" textAnchor="middle" className="myco-stage-code">
+                    {pair.aLabel[0]}
+                  </text>
+                  <text x="262" y="74" textAnchor="middle" className="myco-stage-code">
+                    {pair.bLabel[0]}
+                  </text>
+                </LeapStage>
               </div>
               <p className="myco-pair" aria-live="polite">
                 <span>

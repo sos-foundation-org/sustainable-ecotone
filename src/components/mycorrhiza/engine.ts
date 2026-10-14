@@ -10,9 +10,9 @@ export type WebNode = { id: string; code: string; zh: string; type: "disc" | "ct
 export type WebSpeaker = { id: string; links: string[] };
 export type Focus = { type: "spk"; id: string } | { type: "pair"; a: string; b: string } | null;
 
-type Edge = { a: string; b: string; owner?: string; kind: "spk" | "web" | "leap"; pts: Pt[]; cum: number[]; delay: number; dur: number; born?: number };
+type Edge = { a: string; b: string; owner?: string; kind: "spk" | "web" | "leap"; pts: Pt[]; cum: number[]; delay: number; dur: number; born?: number; w?: number; al?: number };
 type Stroke = { pts: Pt[]; delay: number; dur: number; a?: number; w?: number };
-type Placed = WebNode & { x: number; y: number };
+type Placed = WebNode & { x: number; y: number; p: number };
 type Ant = { e: Edge; s: number; dir: 1 | -1; v: number; carry: boolean };
 type Pulse = { e: Edge; s: number; v: number; col: string };
 
@@ -74,9 +74,9 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
       if (!blocked(x, y) && placed.every((p) => Math.hypot(p[0] - x, (p[1] - y) * 1.3) > minD)) break;
     }
     placed.push([x, y]);
-    nodes.set(n.id, { ...n, x, y });
+    nodes.set(n.id, { ...n, x, y, p: 0 });
   }
-  for (const b of o.bases) nodes.set("s:" + b.id, { id: "s:" + b.id, code: "", zh: "", type: "disc", vacant: false, x: b.x, y: 2 });
+  for (const b of o.bases) nodes.set("s:" + b.id, { id: "s:" + b.id, code: "", zh: "", type: "disc", vacant: false, x: b.x, y: 2, p: 1 });
 
   // ── real edges: speaker → discipline / country ──
   const edges: Edge[] = [];
@@ -87,9 +87,27 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
       const b = nodes.get(id);
       if (!b) return;
       const pts = hyphaPath(a.x, a.y, b.x, b.y, R);
-      edges.push({ a: a.id, b: id, owner: s.id, kind: "spk", pts, cum: measure(pts), delay: 0.5 + si * 0.18 + j * 0.12, dur: 2.2 + R() });
+      const main = j === 0;
+      edges.push({
+        a: a.id,
+        b: id,
+        owner: s.id,
+        kind: "spk",
+        pts,
+        cum: measure(pts),
+        delay: 0.5 + si * 0.18 + j * 0.12,
+        dur: 2.2 + R(),
+        w: main ? 1.4 + R() * 0.9 : 0.45 + R() * 0.95,
+        al: main ? 0.55 + R() * 0.2 : 0.2 + R() * 0.42,
+      });
     });
   });
+  // ── label prominence: more speakers → clearer; a seeded jitter adds depth of field ──
+  for (const n of nodes.values()) {
+    if (!n.code) continue;
+    const deg = edges.filter((e) => e.b === n.id).length;
+    n.p = deg ? Math.min(1, 0.5 + 0.18 * deg + (R() - 0.5) * 0.3) : 0.08 + R() * 0.34;
+  }
   // ── potential links between neighbouring nodes (drawn dashed, never walked) ──
   const potential: Edge[] = [];
   const ids = o.nodes.map((n) => n.id);
@@ -107,7 +125,7 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
         seen.add(key);
         const t = nodes.get(m)!;
         const pts = hyphaPath(n.x, n.y, t.x, t.y, R, 7);
-        potential.push({ a: id, b: m, kind: "web", pts, cum: measure(pts), delay: 1.8 + R() * 1.2, dur: 1.8 + R() });
+        potential.push({ a: id, b: m, kind: "web", pts, cum: measure(pts), delay: 1.8 + R() * 1.2, dur: 1.8 + R(), w: 0.4 + R() * 0.6, al: 0.05 + R() * 0.15 });
       });
   }
   // ── texture: short hyphae branching off real edges, and loose ones in the soil ──
@@ -115,9 +133,13 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
   for (const e of edges) {
     for (let i = 0; i < Math.floor(e.pts.length / 8); i++) {
       const p = e.pts[Math.floor(R() * e.pts.length)];
-      decor.push({ pts: walker(p[0], p[1], R() * Math.PI * 2, 16 + R() * 50, R), delay: e.delay + 0.8 + R() * 1.4, dur: 1.2, a: 0.07 + R() * 0.08 });
+      decor.push({ pts: walker(p[0], p[1], R() * Math.PI * 2, 10 + R() * 60, R, 3 + R() * 3), delay: e.delay + 0.8 + R() * 1.4, dur: 1.2, a: 0.05 + R() * 0.16, w: 0.3 + R() * 0.5 });
     }
   }
+  for (const b of o.bases) {
+    for (let i = 0; i < 3; i++) decor.push({ pts: walker(b.x, 2, Math.PI / 2 + (R() - 0.5) * 1.4, 40 + R() * 120, R, 5), delay: 0.4 + R(), dur: 1.6, a: 0.14 + R() * 0.2, w: 0.8 + R() * 0.9 });
+  }
+  for (let i = 0; i < (mobile ? 14 : 30); i++) decor.push({ pts: walker(R() * W, 10 + R() * (H - 20), R() * Math.PI * 2, 120 + R() * 260, R, 7), delay: 1.5 + R() * 3, dur: 2.4, a: 0.025 + R() * 0.05, w: 0.35 + R() * 0.8 });
   for (let i = 0; i < (mobile ? 40 : 90); i++) decor.push({ pts: walker(R() * W, 10 + R() * (H - 20), R() * Math.PI * 2, 30 + R() * 110, R, 6), delay: 1 + R() * 3, dur: 2, a: 0.04 + R() * 0.06 });
   // ── the volume tree's root system, mirroring its crown ──
   const roots: Stroke[] = [];
@@ -154,7 +176,6 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
   const leaps: Edge[] = [];
 
   let focus: Focus = null;
-  let ptr: { x: number; y: number } | null = null;
   const t0 = performance.now() - (reduced ? (growEnd + 1) * 1000 : 0);
   let baked: HTMLCanvasElement | null = null;
   let raf = 0;
@@ -187,7 +208,7 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
       c.moveTo(d.pts[0][0], d.pts[0][1]);
       for (let i = 1; i <= k; i++) c.lineTo(d.pts[i][0], d.pts[i][1]);
       c.strokeStyle = `rgba(${HY},${d.a})`;
-      c.lineWidth = 0.7;
+      c.lineWidth = d.w ?? 0.7;
       c.stroke();
     }
     for (const r of roots) {
@@ -266,11 +287,6 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
     const t = (now - t0) / 1000;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
-    if (ptr && !reduced) {
-      ctx.globalAlpha = 0.2;
-      ctx.drawImage(glowS, ptr.x - 170, ptr.y - 170, 340, 340);
-      ctx.globalAlpha = 1;
-    }
     if (t > growEnd) {
       if (!baked) {
         baked = document.createElement("canvas");
@@ -290,8 +306,8 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
       if (!p) continue;
       ctx.beginPath();
       partial(e.pts, ease(p));
-      ctx.strokeStyle = `rgba(${HY},${focus ? 0.06 : 0.16})`;
-      ctx.lineWidth = 0.7;
+      ctx.strokeStyle = `rgba(${HY},${focus ? (e.al ?? 0.16) * 0.4 : e.al ?? 0.16})`;
+      ctx.lineWidth = e.w ?? 0.7;
       ctx.stroke();
     }
     ctx.setLineDash([]);
@@ -300,8 +316,8 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
       if (!p) continue;
       const on = related(e);
       let col = HY;
-      let a = 0.46;
-      let w = 0.9;
+      let a = e.al ?? 0.46;
+      let w = e.w ?? 0.9;
       if (e.kind === "leap") {
         col = "216,178,90";
         a = on ? 0.95 : 0.5;
@@ -309,13 +325,8 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
       } else if (on) {
         col = "216,178,90";
         a = 0.95;
-        w = 1.3;
+        w = Math.max(1.3, w);
       } else if (focus) a *= 0.3;
-      if (ptr && !on) {
-        const mid = e.pts[Math.floor(e.pts.length / 2)];
-        const d = Math.hypot(mid[0] - ptr.x, mid[1] - ptr.y);
-        if (d < 170) a = Math.min(0.85, a + 0.3 * (1 - d / 170));
-      }
       ctx.beginPath();
       partial(e.pts, ease(p));
       ctx.strokeStyle = `rgba(${col},${a})`;
@@ -328,8 +339,9 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
       for (const n of nodes.values()) {
         if (!n.code) continue;
         const on = nodeOn(n.id);
-        const near = ptr ? Math.max(0, 1 - Math.hypot(n.x - ptr.x, n.y - ptr.y) / 180) : 0;
-        const base = appear * (focus && !on ? 0.5 : 1);
+        // depth of field: clear nodes ≥13px and bright, faint ones small and ghostly (all are in the sr-only list)
+        const pr = on ? 1 : n.p;
+        const base = appear * (focus && !on ? 0.5 : 1) * (0.3 + 0.7 * pr);
         ctx.globalAlpha = base;
         if (on) ctx.drawImage(sporeS, n.x - 22, n.y - 22, 44, 44);
         ctx.fillStyle = "#15120E";
@@ -354,15 +366,16 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
           ctx.beginPath();
           ctx.arc(n.x, n.y, 3.2, 0, 7);
           ctx.fill();
-          ctx.strokeStyle = on ? SPORE : `rgba(${HY},${0.55 + near * 0.4})`;
+          ctx.strokeStyle = on ? SPORE : `rgba(${HY},.8)`;
           ctx.stroke();
         }
-        ctx.font = '500 11px "IBM Plex Mono", monospace';
+        const zs = (mobile ? 9.5 : 10) + 6 * pr;
+        ctx.font = `500 ${(8.5 + 2.5 * pr).toFixed(1)}px "IBM Plex Mono", monospace`;
         ctx.fillStyle = on ? SPORE : n.type === "ctry" ? GLOW : "#B3AA94";
         ctx.fillText(n.code, n.x + 13, n.y - 3);
-        ctx.font = `${on ? 600 : 400} ${mobile ? 13 : 14}px "Noto Serif TC", serif`;
-        ctx.fillStyle = on ? "#F3E6C0" : `rgba(${HY},${n.vacant ? 0.68 + near * 0.3 : 0.92})`;
-        ctx.fillText(n.zh, n.x + 13, n.y + 13);
+        ctx.font = `${pr > 0.75 ? 600 : pr < 0.3 ? 300 : 400} ${zs.toFixed(1)}px "Noto Serif TC", serif`;
+        ctx.fillStyle = on ? "#F3E6C0" : `rgb(${HY})`;
+        ctx.fillText(n.zh, n.x + 13, n.y + 3 + zs * 0.75);
         ctx.globalAlpha = 1;
       }
     }
@@ -436,9 +449,6 @@ export function createWeb(canvas: HTMLCanvasElement, o: WebOptions) {
     setFocus(f: Focus) {
       focus = f;
       kick();
-    },
-    setPointer(p: { x: number; y: number } | null) {
-      ptr = p;
     },
     leap(a: string, b: string, seed: number) {
       const A = nodes.get(a);

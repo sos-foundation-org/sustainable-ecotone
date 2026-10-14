@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { leap, prefersReducedMotion } from "@/lib/leap";
 
 type Perch = { x: number; y: number; f: 1 | -1 };
 
@@ -14,48 +15,42 @@ export default function Saltator({ perches, scale = 0.36, autoLeapMs = 1900 }: {
   const at = useRef(0);
   const busy = useRef(false);
 
-  const place = (x: number, y: number, f: number, rot = 0, sq = 1) => {
-    ref.current?.setAttribute(
-      "transform",
-      `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(scale * f).toFixed(3)} ${(scale * sq).toFixed(3)})`,
-    );
+  const place = (x: number, y: number, f: number, rot = 0, sq = 1, kick = 0) => {
+    const g = ref.current;
+    if (!g) return;
+    g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${(scale * f).toFixed(3)} ${(scale * sq).toFixed(3)})`);
+    g.style.setProperty("--kick", `${kick}deg`);
   };
 
+  // the site's one leap (lib/leap): crouch → launch → arc → landing
   const jump = () => {
     if (busy.current) return;
     busy.current = true;
     const A = perches[at.current];
     const B = perches[1 - at.current];
     at.current = 1 - at.current;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce || document.hidden) {
+    if (document.hidden) {
       place(B.x, B.y, B.f);
       busy.current = false;
       return;
     }
-    const dur = 760;
-    const H = 120;
-    const t0 = performance.now();
-    const dir = Math.sign(B.x - A.x) || 1;
-    const step = (now: number) => {
-      const t = Math.min(1, (now - t0) / dur);
-      const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-      const x = A.x + (B.x - A.x) * e;
-      const y = A.y + (B.y - A.y) * e - H * 4 * e * (1 - e);
-      const rot = (1 - 2 * e) * -16 * dir;
-      const sq = t < 0.08 ? 1 - t * 2 : t > 0.92 ? 1 - (1 - t) * 1.6 : 1;
-      place(x, y, t < 0.5 ? A.f : B.f, rot, sq);
-      if (t < 1) requestAnimationFrame(step);
-      else {
+    leap({
+      x0: A.x,
+      y0: A.y,
+      x1: B.x,
+      y1: B.y,
+      peak: 120,
+      dur: 760,
+      onFrame: (fr) => place(fr.x, fr.y, fr.flip ? -1 : 1, fr.rot, fr.squash, fr.kick),
+      onDone: () => {
         place(B.x, B.y, B.f);
         busy.current = false;
-      }
-    };
-    requestAnimationFrame(step);
+      },
+    });
   };
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     const svg = ref.current?.ownerSVGElement;
     if (!svg) return;
     // a single "hello" the first time the plate is seen: leap across and back
@@ -94,7 +89,7 @@ export default function Saltator({ perches, scale = 0.36, autoLeapMs = 1900 }: {
     >
       <circle className="hop-ring" cx="0" cy="-50" r="130" />
       <rect x="-120" y="-110" width="240" height="120" fill="transparent" />
-      <use href="#grasshopper" x="-110" y="-99" width="210" height="110" color="#1C1A17" />
+      <use href="#grasshopper" x="-105" y="-99" width="210" height="110" color="#1C1A17" />
     </g>
   );
 }

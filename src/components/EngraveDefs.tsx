@@ -99,30 +99,25 @@ export default function EngraveDefs() {
           <path className="lv" d="M0 0C16-.6 34-.4 50 0M10-.4C14-4 17-6 21-7.4M20-.4C24-4.5 28-7 32-8.2M30-.3C34-4 37-6 41-6.6" />
         </g>
 
-        {/* ── grasshopper, facing right; feet at y≈99 ── */}
+        {/* ── grasshopper, facing right; feet at y≈99. The one drawing for every
+              grasshopper on the site; the hind tibia follows --kick (see lib/leap) ── */}
         <symbol id="grasshopper" viewBox="0 0 210 110" overflow="visible">
-          <g fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M166 40C176 26 188 14 207 5" strokeWidth=".9" />
-            <path d="M162 38C169 22 178 11 191 1" strokeWidth=".9" />
-            <path d="M136 62C132 72 126 80 120 84L124 98L134 100" />
-            <path d="M60 36C74 52 92 72 108 92" />
-            <path d="M70 48l-4 3M78 58l-4 3M86 67l-4 3M94 76l-4 3M101 84l-4 3" strokeWidth=".8" />
-            <path d="M108 92L120 95L128 94M128 94l4-2M128 94l3 3" />
-            <path className="pf" d="M128 42C104 38 70 42 34 54C30 58 32 62 38 64C70 70 104 66 128 60Z" />
-            <path d="M112 42C110 50 110 58 112 65M97 42C95 51 95 59 97 67M82 45C80 53 80 60 82 67M67 48C65 55 65 61 67 67M52 51C51 56 51 61 52 65" strokeWidth=".55" />
-            <path className="pf" d="M126 40C100 32 64 36 26 50C23 54 27 56 34 55C70 48 100 46 128 48Z" />
-            <path d="M120 41C96 37 66 41 32 51M112 45C90 43 66 45 42 51" strokeWidth=".5" />
-            <path d="M34 55L22 58M34 60L24 64" />
-            <path className="pf" d="M126 58C112 44 84 28 62 26C56 26 54 32 58 36C78 42 104 58 118 70C124 72 128 64 126 58Z" />
-            <path d="M60 31C80 36 104 50 122 64" strokeWidth=".5" />
-            <path d="M72 28L68 36M82 31L78 40M92 36L88 45M102 42L98 51M112 49L108 58" strokeWidth=".55" />
-            <path d="M152 60C156 70 160 78 158 86L164 98L174 99" />
-            <path className="pf" d="M128 36C138 30 150 32 154 40L156 58C150 64 136 66 126 62Z" />
-            <path d="M134 37L132 62M144 35L143 63" strokeWidth=".55" />
-            <path className="pf" d="M150 40C156 32 168 32 172 42C175 52 170 62 160 64C152 64 148 54 150 40Z" />
-            <ellipse cx="163" cy="44" rx="4.2" ry="5.2" />
-            <circle cx="164" cy="44" r="1.6" fill="currentColor" stroke="none" />
-            <path d="M165 63l2 6M158 64l-1 6" strokeWidth=".9" />
+          <g transform="translate(0 4.5) scale(1.75)" stroke="currentColor" strokeWidth=".75" strokeLinejoin="round" strokeLinecap="round">
+            <path fill="none" strokeWidth=".55" d="M101 26C106 16 112 9 119 5M98.5 26C101 15 105 8 110 2" />
+            <path fill="none" d="M84 41L82 49L76 53M94 41.5L98 49L103 52.5" />
+            <path className="pf" d="M30 36C40 31 60 30 76 31L76 41C60 43 42 42 30 36Z" />
+            <path fill="none" strokeWidth=".4" d="M42 32.6L43 41.5M50 31.6L51 42.2M58 31L58.6 42.4M66 30.8L66.4 42" />
+            <path className="pf" d="M92 31C74 27 46 27 19 33C24 35.6 30 36.2 36 35.8C56 34.3 76 34.3 92 35.4Z" />
+            <path fill="none" strokeWidth=".35" d="M88 32.5C66 30.2 44 30.6 24 33.7M80 33.6C62 32.2 46 32.4 32 34.6" />
+            <path className="pf" d="M74 29C80 26 90 26 94 29L95 41C88 43 80 43 75 41Z" />
+            <path className="pf" d="M93 28C99 25 106 28 107 35C107 41 102 44 96 42L94 40Z" />
+            <ellipse cx="100.5" cy="31.5" rx="2.4" ry="3" fill="currentColor" />
+            <g style={{ transformOrigin: "42px 22.5px", transform: "rotate(var(--kick, 0deg))", transition: "transform .18s ease-out" }}>
+              <path fill="none" d="M42 23L57 52L65 53.5" />
+              <path fill="none" strokeWidth=".5" d="M46 31l2.6-1.2M49.5 37.6l2.6-1.2M53 44.4l2.6-1.2" />
+            </g>
+            <path className="pf" d="M78 40.5C74 33 60 25 44 21C41.6 20.4 40.6 22.6 42.2 23.8C54 29.5 66 36.5 73 42.5Z" />
+            <path fill="none" strokeWidth=".4" d="M70 36.5l-2-4.4M64.5 32.6l-2-4.2M59 29.4l-2-4M53.5 26.6l-2-3.6M48 24.2l-1.6-2.6" />
           </g>
         </symbol>
 

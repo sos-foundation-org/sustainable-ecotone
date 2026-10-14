@@ -28,9 +28,9 @@ export function MareyDivider({ caption = true }: { caption?: boolean }) {
             key={g.i}
             className="ghost"
             transform={`translate(${g.x} ${g.y}) rotate(${g.ang}) scale(.42)`}
-            style={{ ["--o" as string]: g.o, transitionDelay: `${g.i * 0.11}s` }}
+            style={{ ["--o" as string]: g.o, ["--kick" as string]: g.i === 0 || g.i === N - 1 ? "0deg" : g.i < 3 ? "60deg" : "18deg", transitionDelay: `${g.i * 0.11}s` }}
           >
-            <use href="#grasshopper" x="-110" y="-99" width="210" height="110" />
+            <use href="#grasshopper" x="-105" y="-99" width="210" height="110" />
           </g>
         ))}
         <text x="90" y="149" className="svg-mono" fill="var(--cinnabar)">
