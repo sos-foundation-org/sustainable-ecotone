@@ -58,7 +58,7 @@ export function Barcode({ code }: { code: string }) {
 }
 
 /**
- * Mounted portrait. With `photo` it shows the image in an ink/sepia duotone;
+ * Mounted portrait. With `photo` it shows the image in full colour (never greyscale);
  * without, an engraved placeholder card clearly marked for the client.
  */
 export function Portrait({ s, size = "md", lang = "zh" }: { s: Speaker; size?: "sm" | "md"; lang?: Lang }) {

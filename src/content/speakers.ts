@@ -147,6 +147,7 @@ export const SPEAKERS: Speaker[] = [
     id: "yuhan",
     name: { zh: "Yuhan", en: "Goh Yu Han" },
     nameEn: "Goh Yu Han · SALAD Dressing",
+    photo: "/speakers/yuhan-4x5.jpg",
     initial: { zh: "Y", en: "G" },
     eyebrow: "Landscape Architecture · Singapore",
     short: "SALAD Dressing · Singapore",

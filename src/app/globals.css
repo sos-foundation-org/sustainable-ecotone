@@ -558,12 +558,13 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 .sheet--full .sheet-body { grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); }
 @media (max-width: 620px) { .sheet-body, .sheet--full .sheet-body { grid-template-columns: 1fr; } .sheet .mounted--md { max-width: 280px; } }
 .mounted { position: relative; aspect-ratio: 4 / 5; border: 1px solid var(--ink); background: repeating-linear-gradient(-38deg, transparent 0 5px, rgba(28, 26, 23, .08) 5px 6px), #EFE8D8; display: grid; place-items: center; text-align: center; color: var(--sepia); }
-.mounted img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) sepia(.35) contrast(1.05); mix-blend-mode: multiply; }
+/* Portraits stay in full colour: black-and-white portraits of living people read as memorial photos. */
+.mounted img { position: relative; z-index: 0; width: 100%; height: 100%; object-fit: cover; }
 .mounted .ph { display: grid; justify-items: center; gap: 10px; padding: 10px; }
 .mounted .initial { font-weight: 600; font-size: clamp(3rem, 8vw, 5.4rem); color: var(--ink); opacity: .85; line-height: 1; }
 .mounted--sm .initial { font-size: 2.6rem; }
 .mounted .ph-flag { font-family: var(--f-mono); font-size: var(--t-xs); letter-spacing: .14em; line-height: 1.8; padding: 6px 10px; background: var(--sheet); border: .5px dashed var(--cinnabar); color: var(--cinnabar); }
-.tape { position: absolute; width: 52px; height: 15px; background: rgba(232, 223, 203, .92); border: .5px solid rgba(94, 81, 65, .35); }
+.tape { position: absolute; z-index: 1; width: 52px; height: 15px; background: rgba(232, 223, 203, .92); border: .5px solid rgba(94, 81, 65, .35); }
 .mounted--sm .tape { width: 34px; height: 10px; }
 .tape.a { top: -7px; left: 12px; transform: rotate(-8deg); }
 .tape.b { top: -7px; right: 12px; transform: rotate(7deg); }
