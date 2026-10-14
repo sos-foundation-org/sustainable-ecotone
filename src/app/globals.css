@@ -314,10 +314,9 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 .myco-br { fill: none; stroke: var(--ink); stroke-linecap: round; }
 .myco-br--ghost { stroke-dasharray: 2 3; stroke-opacity: .45; }
 .myco-leaf { fill: #6F8A5B; fill-opacity: .42; stroke: var(--ink); stroke-width: .5; stroke-opacity: .5; }
-.myco-mush path { stroke: var(--ink); stroke-width: 1; stroke-linejoin: round; }
-.myco-mush .stem, .myco-mush .cap { fill: var(--card); transition: fill .5s; }
-.myco-mush .gill { fill: none; stroke-width: .6; opacity: .7; }
-.myco-mush.is-on .cap { fill: #E9D6A2; }
+.myco-mush { color: var(--ink); }
+.myco-mush .fungus-cap { transition: fill .5s; }
+.myco-mush.is-on .fungus-cap { fill: #E9D6A2; }
 .myco-grass { fill: none; stroke: var(--ink); stroke-width: .7; opacity: .55; stroke-linecap: round; }
 @media (prefers-reduced-motion: no-preference) {
   .myco-br:not(.myco-br--ghost) { stroke-dasharray: 1; stroke-dashoffset: 1; animation: ink 1.1s var(--ease) forwards; }
@@ -398,6 +397,7 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 .frogleap svg { overflow: hidden; --fillp: var(--paper); }
 .frog-trail { fill: none; stroke: var(--ink); stroke-width: .7; stroke-dasharray: 2 5; opacity: .55; }
 .frog-ghost { opacity: .16; }
+.frog-tongue { position: fixed; inset: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 40; overflow: visible; }
 .marey p { text-align: center; color: var(--sepia); font-size: .82rem; margin-top: 6px; }
 
 /* ── edge bands ──────────────────────────────────────────── */
@@ -886,6 +886,16 @@ a.plate-row:hover { background: var(--card); }
 .colophon a:hover { color: var(--cinnabar); }
 .colophon a i { color: var(--sepia); font-size: .95em; }
 .fine { margin-top: 40px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--sepia); border-top: .5px solid var(--rule); padding-top: 14px; }
+
+/* ── lab: fungi library gallery (internal) ───────────────── */
+.fungi-lab { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 28px 24px; margin-top: 40px; }
+.fungi-lab li { display: grid; gap: 2px; align-content: start; background: var(--card); border: 1px solid var(--ink); padding: 14px 16px 16px; --fillp: var(--card); }
+.fungi-lab svg { width: 100%; height: 150px; display: block; color: var(--ink); margin-bottom: 8px; }
+.fungi-lab b { font-size: 1.1rem; letter-spacing: .06em; }
+.fungi-lab i { color: var(--sepia); }
+.fungi-lab .mono { color: var(--cinnabar); }
+.fungi-en { font-size: .9rem; }
+.fungi-form { font-size: .82rem; color: var(--sepia); line-height: 1.6; }
 
 /* ── reveal on scroll ────────────────────────────────────── */
 @media (prefers-reduced-motion: no-preference) {

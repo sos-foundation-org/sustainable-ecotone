@@ -1,4 +1,5 @@
-import { FUNGUS_SPECIES, hypha, hyphaLink, mulberry32, r2, roman, seedFrom } from "@/lib/engrave";
+import { hypha, hyphaLink, mulberry32, r2, roman, seedFrom } from "@/lib/engrave";
+import { drawing, Fungus, fungusWidth, speciesRow } from "./fungi/library";
 import type { Lang } from "@/lib/i18n";
 
 const T = {
@@ -26,6 +27,8 @@ export function Genet({ seed, count, names, lang = "zh" }: { seed: string; count
   const soil = 78;
   const xs = Array.from({ length: count }, (_, i) => r2((W * (i + 1)) / (count + 1)));
   const sizes = xs.map(() => 0.62 + rnd() * 0.22);
+  // a different species for each identity, never the same twice in a row (stable per speaker)
+  const species = speciesRow(count, seedFrom(seed + "fungi"));
   const threads: string[] = [];
   xs.forEach((x) => {
     for (let k = 0; k < 4; k++) threads.push(hypha(rnd, x, soil + 1, 40 + rnd() * 100, 6 + Math.floor(rnd() * 6), 5, { x0: 4, x1: W - 4, y0: soil + 1, y1: 118 }));
@@ -44,13 +47,13 @@ export function Genet({ seed, count, names, lang = "zh" }: { seed: string; count
         </g>
         <path d={`M0 ${soil}C60 ${soil - 2} 120 ${soil + 2} 180 ${soil}S260 ${soil - 2} ${W} ${soil}`} fill="none" stroke="#1C1A17" strokeWidth=".8" />
         {xs.map((x, i) => {
-          const s = sizes[i];
-          const w = 60 * s;
-          const h = 80 * s;
+          const sp = species[i];
+          const h = 72 * sizes[i] * (drawing(sp).h / 100);
+          const w = fungusWidth(sp, h);
           return (
             <g key={i}>
-              <use href={`#${FUNGUS_SPECIES[i % 3]}`} x={r2(x - w / 2)} y={r2(soil - h)} width={r2(w)} height={r2(h)} color="#1C1A17" />
-              <text x={r2(x + w / 2 - 4)} y={soil - 4} className="svg-mono svg-mono--xs" fill="#A8321F">
+              <Fungus species={sp} height={h} x={x} y={soil} color="#1C1A17" />
+              <text x={r2(x + w / 2 + 2)} y={soil - 4} className="svg-mono svg-mono--xs" fill="#A8321F">
                 {roman(i + 1)}
               </text>
             </g>

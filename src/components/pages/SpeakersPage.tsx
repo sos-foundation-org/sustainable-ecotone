@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Fungus } from "@/components/fungi/library";
 import { PageTitle, PlateHead } from "@/components/Typography";
 import WaterlineHeading from "@/components/WaterlineHeading";
 import { PlateEdge } from "@/components/Dividers";
@@ -54,9 +55,9 @@ function EmptyMount({ lang }: { lang: Lang }) {
       </text>
       <path d="M290 230C330 226 380 234 430 230S500 226 520 230" fill="none" stroke="#1C1A17" strokeWidth=".8" />
       <g opacity=".28" color="#1C1A17">
-        <use href="#fungus-bell" x="310" y="170" width="45" height="60" />
-        <use href="#fungus-parasol" x="372" y="158" width="54" height="72" />
-        <use href="#fungus-bolete" x="444" y="176" width="40" height="54" />
+        <Fungus species="coprinus" height={62} x={332} y={230} />
+        <Fungus species="amanita" height={64} x={398} y={230} />
+        <Fungus species="morchella" height={52} x={462} y={230} />
       </g>
       <path d="M332 232C340 256 372 262 398 248S452 262 466 240M398 248C400 262 392 276 380 284" fill="none" stroke="#1C1A17" strokeWidth=".6" strokeDasharray="2 3" />
       <g transform="translate(300 286)">

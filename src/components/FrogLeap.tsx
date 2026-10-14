@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { Lang } from "@/lib/i18n";
+import { getPrey, type Prey } from "@/lib/prey";
 
 const CAPTION = {
   zh: { fig: "Fig. Saltatio ranae.", text: "蛙跳：從一個學科，到另一個學科。" },
@@ -78,9 +79,9 @@ type Pose = "sit" | "fly" | "land";
 type Plan = { xs: number[]; peaks: number[]; air: number[]; pause: number[]; scale: number; tilt: number };
 
 /** A run: enter from the left edge, land once or twice, exit past the right edge. Always differs from the last run. */
-function plan(prev: Plan | null): Plan {
+function plan(prev: Plan | null, forceTwo = false): Plan {
   for (let tries = 0; tries < 12; tries++) {
-    const n = Math.random() < 0.5 ? 1 : 2;
+    const n = forceTwo || Math.random() < 0.5 ? 2 : 1;
     const xs = [-80];
     if (n === 1) xs.push(440 + Math.random() * 320);
     else xs.push(250 + Math.random() * 220, 640 + Math.random() * 260);
@@ -94,12 +95,90 @@ function plan(prev: Plan | null): Plan {
       air.push(460 + d * (0.42 + Math.random() * 0.28));
     }
     const p: Plan = { xs, peaks, air, pause: Array.from({ length: hops }, () => 180 + Math.random() * 380), scale: 1.0 + Math.random() * 0.26, tilt: (Math.random() - 0.5) * 7 };
-    if (!prev) return p;
+    if (!prev || forceTwo) return p;
     const sameCount = prev.xs.length === p.xs.length;
     const shift = Math.abs(prev.xs[1] - p.xs[1]);
     if (!sameCount || shift > 90) return p;
   }
-  return plan(null);
+  return plan(null, forceTwo);
+}
+
+const NS = "http://www.w3.org/2000/svg";
+const TONGUE_MS = { out: 90, hold: 40, back: 130 };
+const GULP_MS = 200;
+
+/**
+ * The tongue: a page-level overlay (fixed, pointer-events none) from the frog's
+ * mouth to the card's grasshopper, out fast with an ease-out, a tiny hold, then
+ * a snappy return carrying the grasshopper into the mouth. Removed afterwards.
+ */
+function snapTongue(frog: SVGGElement, prey: Prey) {
+  const el = <K extends keyof SVGElementTagNameMap>(tag: K, attrs: Record<string, string>) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  };
+  const overlay = el("svg", { class: "frog-tongue", "aria-hidden": "true" });
+  const body = el("path", { fill: "#1C1A17" });
+  const core = el("path", { fill: "none", stroke: "#A8321F", "stroke-width": ".8", "stroke-linecap": "round" });
+  const tip = el("circle", { r: "3.4", fill: "#A8321F", stroke: "#1C1A17", "stroke-width": ".8" });
+  const carried = el("g", { color: "#1C1A17", style: "--fillp:#FAF6EC", visibility: "hidden" });
+  carried.appendChild(el("use", { href: "#grasshopper", x: "-105", y: "-55", width: "210", height: "110" }));
+  overlay.append(body, core, carried, tip);
+  document.body.appendChild(overlay);
+
+  const r0 = prey.rect();
+  const preyScale = r0 ? r0.width / 210 : 0.2;
+  let caught = false;
+  const st = performance.now();
+  const total = TONGUE_MS.out + TONGUE_MS.hold + TONGUE_MS.back;
+  const step = (now: number) => {
+    const e = now - st;
+    const ctm = frog.getScreenCTM();
+    const r = prey.rect();
+    if (!ctm || !r) {
+      overlay.remove();
+      return;
+    }
+    const m = new DOMPoint(40, -19).matrixTransform(ctm);
+    const P = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    let ext: number;
+    if (e < TONGUE_MS.out) ext = 1 - Math.pow(1 - e / TONGUE_MS.out, 3);
+    else if (e < TONGUE_MS.out + TONGUE_MS.hold) ext = 1;
+    else ext = Math.max(0, 1 - Math.pow((e - TONGUE_MS.out - TONGUE_MS.hold) / TONGUE_MS.back, 2));
+    if (!caught && e >= TONGUE_MS.out) {
+      caught = true;
+      prey.snatch();
+      carried.setAttribute("visibility", "visible");
+    }
+    // a slightly bowed, tapered strand: quadratic from the mouth to the sticky tip
+    const tx = m.x + (P.x - m.x) * ext;
+    const ty = m.y + (P.y - m.y) * ext;
+    const cx = (m.x + tx) / 2 + (ty - m.y) * 0.08;
+    const cy = (m.y + ty) / 2 - (tx - m.x) * 0.08;
+    const left: string[] = [];
+    const right: string[] = [];
+    const N = 14;
+    for (let i = 0; i <= N; i++) {
+      const t = i / N;
+      const x = (1 - t) * (1 - t) * m.x + 2 * (1 - t) * t * cx + t * t * tx;
+      const y = (1 - t) * (1 - t) * m.y + 2 * (1 - t) * t * cy + t * t * ty;
+      const dx = 2 * (1 - t) * (cx - m.x) + 2 * t * (tx - cx);
+      const dy = 2 * (1 - t) * (cy - m.y) + 2 * t * (ty - cy);
+      const len = Math.hypot(dx, dy) || 1;
+      const w = 1.7 - t;
+      left.push(`${(x - (dy / len) * w).toFixed(1)} ${(y + (dx / len) * w).toFixed(1)}`);
+      right.unshift(`${(x + (dy / len) * w).toFixed(1)} ${(y - (dx / len) * w).toFixed(1)}`);
+    }
+    body.setAttribute("d", `M${left.join("L")}L${right.join("L")}Z`);
+    core.setAttribute("d", `M${m.x.toFixed(1)} ${m.y.toFixed(1)}Q${cx.toFixed(1)} ${cy.toFixed(1)} ${tx.toFixed(1)} ${ty.toFixed(1)}`);
+    tip.setAttribute("cx", tx.toFixed(1));
+    tip.setAttribute("cy", ty.toFixed(1));
+    if (caught) carried.setAttribute("transform", `translate(${tx.toFixed(1)} ${ty.toFixed(1)}) rotate(${(-30 * (1 - ext)).toFixed(1)}) scale(${(preyScale * (0.4 + 0.6 * ext)).toFixed(3)})`);
+    if (e < total) requestAnimationFrame(step);
+    else overlay.remove();
+  };
+  requestAnimationFrame(step);
 }
 
 /**
@@ -127,6 +206,10 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
     const trail = trailRef.current!;
     const ghosts = ghostsRef.current!;
     let last: Plan | null = null;
+    // once per page view, on the 2nd or 3rd run, the frog may catch the Next-leap card's grasshopper
+    const snatchOn = 2 + Math.floor(Math.random() * 2);
+    let runs = 0;
+    let fed = false;
     let running = false;
     let armed = true;
     let raf = 0;
@@ -151,8 +234,13 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
     const run = () => {
       running = true;
       armed = false;
-      const P = plan(last);
+      runs++;
+      const hunt = !fed && runs >= snatchOn && !!getPrey();
+      const P = plan(last, hunt);
       last = P;
+      let paused = 0;
+      let tongueAt = 0;
+      let tongueTried = false;
       // on narrow screens the 1200-wide figure is scaled far down: draw the frog larger, the arcs lower
       const boost = Math.min(1.6, Math.max(1, (VW / svg.clientWidth) * 0.45));
       P.scale *= boost;
@@ -174,7 +262,21 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
       const st = performance.now();
       let lastGhost = 0;
       const step = (now: number) => {
-        let e = Math.min(now - st, total - 0.01);
+        // the tongue: the clock stops while the frog, just landed, snaps at the grasshopper and gulps
+        if (tongueAt) {
+          const k = now - tongueAt;
+          const T = TONGUE_MS.out + TONGUE_MS.hold + TONGUE_MS.back;
+          const gulp = k > T ? Math.sin(((k - T) / GULP_MS) * Math.PI) : 0;
+          pose("sit");
+          place(P.xs[2], GROUND, P.tilt - (k < T ? 6 : 0), P.scale, 1 - 0.14 * gulp);
+          if (k < T + GULP_MS) {
+            raf = requestAnimationFrame(step);
+            return;
+          }
+          paused += k;
+          tongueAt = 0;
+        }
+        let e = Math.min(now - st - paused, total - 0.01);
         let seg = segs[segs.length - 1];
         for (const s of segs) {
           if (e < s.dur) {
@@ -210,8 +312,20 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
         } else {
           pose("sit");
           place(x1, GROUND, P.tilt, s, 1 - 0.18 * Math.sin(t * Math.PI));
+          // second landing of a hunting run: if the grasshopper is there and still, snap
+          if (hunt && seg.i === 1 && !tongueTried && t > 0.6) {
+            tongueTried = true;
+            const prey = getPrey();
+            if (prey?.available()) {
+              fed = true;
+              tongueAt = now;
+              snapTongue(frog, prey);
+              raf = requestAnimationFrame(step);
+              return;
+            }
+          }
         }
-        if (now - st < total) raf = requestAnimationFrame(step);
+        if (now - st - paused < total) raf = requestAnimationFrame(step);
         else {
           frog.setAttribute("visibility", "hidden");
           running = false;

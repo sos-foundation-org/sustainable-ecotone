@@ -246,4 +246,3 @@ export function hyphaLink(rnd: () => number, x1: number, y1: number, x2: number,
   return d;
 }
 
-export const FUNGUS_SPECIES = ["fungus-bell", "fungus-parasol", "fungus-bolete"] as const;

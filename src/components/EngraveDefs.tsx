@@ -3,15 +3,10 @@
  * engraved creature symbols. Rendered once in the root layout (hidden) and
  * referenced everywhere with url(#…) and <use href="#…">.
  */
-import { mushroom } from "@/lib/mycelium";
+import { FungusSymbols } from "./fungi/library";
 
 const INK = "#1C1A17";
 
-const FUNGI = [
-  { id: "fungus-bell", m: mushroom(30, 80, 46, 24, "bell") },
-  { id: "fungus-parasol", m: mushroom(30, 80, 50, 52, "parasol") },
-  { id: "fungus-bolete", m: mushroom(30, 80, 34, 40, "bolete") },
-];
 
 export default function EngraveDefs() {
   return (
@@ -181,17 +176,8 @@ export default function EngraveDefs() {
           </g>
         </symbol>
 
-        {/* ── fungi: three line-drawn fruiting bodies (Mycena bell, Macrolepiota parasol,
-              Boletus), base at (30, 80) — the same hand as the home hero ── */}
-        {FUNGI.map(({ id, m }) => (
-          <symbol key={id} id={id} viewBox="0 0 60 80" overflow="visible">
-            <g stroke="currentColor" strokeWidth=".9" strokeLinejoin="round" strokeLinecap="round">
-              <path className="pf" d={m.stem} />
-              <path className="pf" d={m.cap} />
-              <path d={m.gill} fill="none" strokeWidth=".5" opacity=".75" />
-            </g>
-          </symbol>
-        ))}
+        {/* ── fungi: the species library (components/fungi/library) as <symbol id="fungus-<species>"> ── */}
+        <FungusSymbols />
 
         {/* ── brand mark: a lens with a tide line and a propagule ── */}
         <symbol id="mark" viewBox="0 0 40 40">

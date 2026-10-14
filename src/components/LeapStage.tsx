@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import { leap, prefersReducedMotion } from "@/lib/leap";
+import { announce, registerPrey, RESPAWN, SNATCHED } from "@/lib/prey";
 
 type Perch = { x: number; y: number };
 
@@ -22,6 +23,7 @@ export default function LeapStage({
   ink = "#1C1A17",
   fill = "#FAF6EC",
   ambient = true,
+  prey = false,
   children,
 }: {
   trigger: number;
@@ -31,6 +33,8 @@ export default function LeapStage({
   ink?: string;
   fill?: string;
   ambient?: boolean;
+  /** offer this grasshopper to the frog figure (lib/prey) */
+  prey?: boolean;
   children?: ReactNode;
 }) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -38,6 +42,8 @@ export default function LeapStage({
   const at = useRef(0);
   const busy = useRef(false);
   const first = useRef(true);
+  const gone = useRef(false);
+  const respawnTimer = useRef(0);
 
   const place = (x: number, y: number, rot = 0, flip = false, squash = 1, kick = 0) => {
     const g = hopRef.current;
@@ -46,7 +52,37 @@ export default function LeapStage({
     g.style.setProperty("--kick", `${kick}deg`);
   };
 
+  // a new grasshopper after the frog took the last one: a slow fade-in with a slight settle,
+  // or at once when the button is pressed meanwhile
+  const respawn = (immediate: boolean) => {
+    const g = hopRef.current;
+    window.clearTimeout(respawnTimer.current);
+    if (!g || !gone.current) return;
+    gone.current = false;
+    const P = perches[at.current];
+    g.style.visibility = "visible";
+    if (immediate || prefersReducedMotion()) {
+      g.style.transition = "none";
+      g.style.opacity = "1";
+      place(P.x, P.y);
+    } else {
+      g.style.transition = "none";
+      g.style.opacity = "0";
+      place(P.x, P.y - 5);
+      const st = performance.now();
+      const settle = (now: number) => {
+        const t = Math.min(1, (now - st) / 1700);
+        g.style.opacity = String(t * t * (3 - 2 * t));
+        place(P.x, P.y - 5 * (1 - t) * (1 - t));
+        if (t < 1 && !gone.current) requestAnimationFrame(settle);
+      };
+      requestAnimationFrame(settle);
+    }
+    announce(RESPAWN);
+  };
+
   const hop = () => {
+    if (gone.current) respawn(true);
     if (busy.current) return;
     busy.current = true;
     const A = perches[at.current];
@@ -95,6 +131,36 @@ export default function LeapStage({
       io.disconnect();
     };
   }, [ambient]);
+
+  // offer the grasshopper to the frog (only while it sits still, on screen, in a visible tab)
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!prey || !svg || prefersReducedMotion()) return;
+    let onScreen = false;
+    const io = new IntersectionObserver(([e]) => (onScreen = e.intersectionRatio > 0.6), { threshold: [0, 0.6, 1] });
+    io.observe(svg);
+    const off = registerPrey({
+      available: () => onScreen && !document.hidden && !busy.current && !gone.current,
+      rect: () => hopRef.current?.getBoundingClientRect() ?? null,
+      ink,
+      fill,
+      snatch: () => {
+        const g = hopRef.current;
+        if (!g) return;
+        gone.current = true;
+        g.style.visibility = "hidden";
+        announce(SNATCHED);
+        respawnTimer.current = window.setTimeout(() => respawn(false), 1000);
+      },
+    });
+    return () => {
+      off();
+      io.disconnect();
+      window.clearTimeout(respawnTimer.current);
+    };
+    // respawn reads refs only
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prey, ink, fill]);
 
   const p = perches[0];
   return (

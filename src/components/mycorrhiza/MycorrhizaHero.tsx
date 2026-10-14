@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { grass, mushroom, rng, tree, type MushroomKind } from "@/lib/mycelium";
+import { grass, rng, tree } from "@/lib/mycelium";
+import { drawing, Fungus, fungusWidth } from "@/components/fungi/library";
+import type { FungusId } from "@/content/fungi";
 import { leap as leapArc, prefersReducedMotion } from "@/lib/leap";
 import LeapStage from "../LeapStage";
 import { createWeb, type Focus, type Web, type WebNode, type WebSpeaker } from "./engine";
@@ -37,7 +39,7 @@ const T = {
   },
 } satisfies Record<Lang, unknown>;
 
-export type HeroSpeaker = WebSpeaker & { name: string; sub: string; kind: MushroomKind; linkNames: string[] };
+export type HeroSpeaker = WebSpeaker & { name: string; sub: string; species: FungusId; linkNames: string[] };
 export type HeroPair = { a: string; b: string; aLabel: [string, string]; bLabel: [string, string]; question: string };
 export type HeroVolume = { title: string; meta: string; href: string; next: string };
 
@@ -49,7 +51,7 @@ type Flora = {
   tree: ReturnType<typeof tree>;
   ghost: ReturnType<typeof tree> | null;
   grass: string;
-  shrooms: { id: string; x: number; cx: number; top: number; w: number; paths: ReturnType<typeof mushroom>; delay: number }[];
+  shrooms: { id: string; species: FungusId; x: number; cx: number; top: number; w: number; height: number; delay: number }[];
 };
 
 const useIsoLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
@@ -113,15 +115,16 @@ export default function MycorrhizaHero({
     const tr = tree(treeX, H, TH, 11, mobile ? 6 : 7);
     const ghost = mobile ? null : tree(W * 0.955, H, 120, 5, 4, 2);
     const xs = mobile ? [0.1, 0.27, 0.43, 0.59, 0.92] : [0.53, 0.6, 0.665, 0.825, 0.9];
-    const hs = mobile ? [44, 64, 40, 54, 38] : [62, 88, 54, 76, 50];
-    const cws = mobile ? [26, 36, 26, 34, 24] : [34, 46, 32, 44, 30];
+    // drawn height for a species of natural height 100; shorter species stay proportionally shorter
+    const hs = mobile ? [64, 82, 58, 74, 56] : [96, 124, 88, 112, 84];
     const n = speakers.length;
     const shrooms = speakers.map((s, i) => {
       // up to five speakers use the composed positions; more spread evenly across the flora zone
       const fx = n <= 5 ? xs[i] : mobile ? 0.06 + (0.88 * i) / (n - 1) : 0.5 + (0.45 * i) / (n - 1);
       const x = W * fx;
-      const paths = mushroom(x, H, hs[i % 5], cws[i % 5], s.kind, (R() - 0.5) * 8);
-      return { id: s.id, x, cx: paths.cx, top: paths.top, w: cws[i % 5], paths, delay: 0.6 + i * 0.15 };
+      R(); // keep the seeded sequence (grass) stable
+      const height = (hs[i % 5] * drawing(s.species).h) / 100;
+      return { id: s.id, species: s.species, x, cx: x, top: H - height, w: fungusWidth(s.species, height), height, delay: 0.6 + i * 0.15 };
     });
     let g = "";
     for (let i = 0; i < (mobile ? 10 : 18); i++) g += grass((mobile ? 0.02 : 0.48) * W + R() * W * (mobile ? 0.96 : 0.5), H, R, 3 + Math.floor(R() * 4));
@@ -326,9 +329,7 @@ export default function MycorrhizaHero({
             <path className="myco-grass" d={flora.grass} />
             {flora.shrooms.map((s) => (
               <g key={s.id} className={`myco-mush${spkOn(s.id) ? " is-on" : ""}`} style={{ animationDelay: `${s.delay}s` }}>
-                <path className="stem" d={s.paths.stem} />
-                <path className="cap" d={s.paths.cap} />
-                <path className="gill" d={s.paths.gill} />
+                <Fungus species={s.species} height={s.height} x={s.x} y={flora.H} />
               </g>
             ))}
           </svg>
@@ -422,7 +423,7 @@ export default function MycorrhizaHero({
                 </span>
               </div>
               <div className="myco-leap-stage" aria-hidden="true">
-                <LeapStage trigger={pi} viewBox="0 0 320 84" perches={[{ x: 58, y: 52 }, { x: 262, y: 52 }]} scale={0.24} ink="#E9DFC6" fill="#15120E">
+                <LeapStage prey trigger={pi} viewBox="0 0 320 84" perches={[{ x: 58, y: 52 }, { x: 262, y: 52 }]} scale={0.24} ink="#E9DFC6" fill="#15120E">
                   <path d="M58 52C120 6 200 6 262 52" fill="none" stroke="#D8B25A" strokeOpacity=".55" strokeWidth="1" strokeDasharray="2 5" />
                   <line x1="10" y1="52" x2="310" y2="52" stroke="#E9DFC6" strokeOpacity=".25" />
                   <text x="58" y="74" textAnchor="middle" className="myco-stage-code">

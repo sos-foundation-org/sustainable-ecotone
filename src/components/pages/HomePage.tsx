@@ -14,7 +14,7 @@ import FollowCard from "@/components/Follow";
 import Rich from "@/components/Rich";
 import { EVENTS, upcomingEvents } from "@/content/events";
 import { COUNTRIES, SPEAKERS, catalogNo, speakerById, type CountryCode } from "@/content/speakers";
-import type { MushroomKind } from "@/lib/mycelium";
+import type { FungusId } from "@/content/fungi";
 import { DISCIPLINES, disciplineByKey } from "@/content/disciplines";
 import { DESIDERATA } from "@/content/crossings";
 import { VOICES } from "@/content/voices";
@@ -57,7 +57,8 @@ export default function HomePage({ lang }: { lang: Lang }) {
 
   // ── the hero's above & below: this volume's speakers fruit above the soil;
   //    below, their hyphae reach the disciplines and countries they touch.
-  const KINDS: MushroomKind[] = ["bell", "parasol", "bell", "parasol", "bolete"];
+  // each speaker fruits as a different species (stable by lineup order, so server and client match)
+  const HERO_SPECIES: FungusId[] = ["mycena", "amanita", "morchella", "macrolepiota", "coprinus", "cantharellus", "boletus", "clathrus", "geastrum"];
   const countriesOf = (s: (typeof SPEAKERS)[number]) => [...new Set(s.places.map((p) => p.country))];
   const usedCountries = new Set(folio.flatMap(countriesOf));
   const nodes: WebNode[] = [
@@ -68,7 +69,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
     id: s.id,
     name: s.name[lang],
     sub: s.short,
-    kind: KINDS[i % KINDS.length],
+    species: HERO_SPECIES[i % HERO_SPECIES.length],
     links: [...s.disciplines.map((k) => `d:${k}`), ...countriesOf(s).map((c) => `c:${c}`)],
     linkNames: [...s.disciplines.map((k) => disciplineByKey(k).name[lang]), ...countriesOf(s).map((c) => COUNTRIES[c][lang])],
   }));
