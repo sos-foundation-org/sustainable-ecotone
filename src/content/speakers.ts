@@ -100,7 +100,7 @@ export const SPEAKERS: Speaker[] = [
         },
       },
       {
-        title: { zh: "哈佛大學研究者", en: "Researcher, Harvard" },
+        title: { zh: "Harvard 研究專員", en: "Harvard OEB Associate" },
         detail: {
           zh: "哈佛大學有機體與演化生物學系（OEB）；曾於比較動物學博物館、Rowland Institute 從事標本 3D 數位化與夜間人工光對蛾類影響的研究。",
           en: "Department of Organismic and Evolutionary Biology (OEB), Harvard University. Previously researched the 3D digitization of natural history collections and the effects of artificial light at night on moths, at the Museum of Comparative Zoology and the Rowland Institute.",
