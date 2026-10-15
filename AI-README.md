@@ -760,7 +760,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 | BioNarr 網址與 logo | `ORGS.bionarr`：`url: ""`、無 logo、`placeholder: true` | 待補 |
 | Harvard logo | `ORGS.harvard` 無 logo（印章顯示文字） | 視需要 |
 | 校徽授權 | NTU / NYCU / NDHU（Wikipedia 合理使用）、Tohoku | 需各校許可 |
-| 講者介紹草稿 | `draftNote`：孫烜駿、顏訥（`DRAFT`）、Goh Yu Han（含 SALAD logo / 網址暫代）、王鼎涵（所屬單位與職稱待確認） | 待講者確認；確認後刪 `draftNote` |
+| 講者介紹草稿 | `draftNote`：孫烜駿、顏訥（`DRAFT`）、吳煜涵 Goh Yu Han（含 SALAD logo 暫代）、王鼎涵（所屬單位與職稱待確認） | 待講者確認；確認後刪 `draftNote` |
 | Hank Wang（王鼎涵） | 英文名「Hank Wang」、職稱（如「牙醫副院長 / Dentist and deputy superintendent」）待確認 | 待確認 |
 | 學科標註 | 所有講者 `disciplines`；首頁「† 學科標註…待講者確認」、活動頁圖說 | 待講者確認 |
 | 多元聲音 | `voices.ts` 六筆全是佔位（無影片、名字為「多元聲音 0N」、部分 `approx`）；`VoicesPage` 暫定註記 | 待補 |

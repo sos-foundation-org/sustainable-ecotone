@@ -199,7 +199,7 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     id: "yuhan",
-    name: { zh: "Goh Yu Han", en: "Goh Yu Han" },
+    name: { zh: "吳煜涵", en: "Goh Yu Han" },
     nameEn: "Goh Yu Han",
     talk: { zh: "再野化：和平地把人類的領域還給自然", en: "Rewilding: peacefully giving human territory back to nature" },
     highlights: [
@@ -213,7 +213,7 @@ export const SPEAKERS: Speaker[] = [
     ],
     photo: "/speakers/yuhan-4x5.jpg",
     linkedOrgs: ["salad"],
-    initial: { zh: "Y", en: "G" },
+    initial: { zh: "吳", en: "G" },
     eyebrow: "Landscape Architecture · Singapore",
     short: "SALAD Dressing · Singapore",
     tags: { zh: ["景觀建築師", "新加坡"], en: ["Landscape architect", "Singapore"] },
@@ -237,7 +237,7 @@ export const SPEAKERS: Speaker[] = [
     places: [{ name: "Singapore", lat: 1.29, lng: 103.85, country: "SG" }],
     orgs: ["salad"],
     bio: {
-      zh: `Salad Dressing 曾參展 2021 威尼斯建築雙年展新加坡館、擔任杜拜世博新加坡館的景觀建築師，並在墨爾本設計週展出 <span class="en">Rewilding the Sky</span>。Yu Han 將從新加坡帶來一個問題：如果城市本身就是一個生態交會帶呢？（<span class="en">what if the city itself is the ecotone?</span>）`,
+      zh: `Salad Dressing 曾參展 2021 威尼斯建築雙年展新加坡館、擔任杜拜世博新加坡館的景觀建築師，並在墨爾本設計週展出 <span class="en">Rewilding the Sky</span>。吳煜涵將從新加坡帶來一個問題：如果城市本身就是一個生態交會帶呢？（<span class="en">what if the city itself is the ecotone?</span>）`,
       en: `Salad Dressing exhibited in the Singapore Pavilion at the 2021 Venice Architecture Biennale, was landscape architect for the Singapore Pavilion at Expo 2020 Dubai, and showed <em>Rewilding the Sky</em> at Melbourne Design Week. From Singapore, Yu Han brings a question: <em>what if the city itself is the ecotone?</em>`,
     },
     draftNote: {
