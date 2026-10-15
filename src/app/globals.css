@@ -991,3 +991,14 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 /* Language tag above a volume's speakers */
 .lang-tag { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 5px 12px 5px 6px; border: 1px solid var(--ink); border-radius: 999px; font-size: .9rem; color: var(--ink); background: var(--paper); }
 .lang-tag .mono { font-size: var(--t-xs, .75rem); letter-spacing: .14em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--ink); color: var(--paper); }
+
+/* Speaker sheet: small uncaptioned fruiting bodies in the bottom-right corner */
+.genet--corner { width: min(50%, 260px); margin: 14px 0 -6px auto; padding: 0; border-top: 0; }
+.sheet .genet--corner svg { max-width: none; }
+/* Speaker sheet: highlights */
+.highlights h4 { margin: 0 0 6px; font-size: var(--t-xs, .75rem); letter-spacing: .14em; text-transform: uppercase; color: var(--cinnabar); font-weight: 500; }
+.highlights ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; max-width: 40em; }
+.highlights li { position: relative; padding-left: 18px; color: var(--ink-2); line-height: 1.6; }
+.highlights li::before { content: ""; position: absolute; left: 2px; top: .7em; width: 7px; height: 7px; border: 1px solid var(--cinnabar); transform: rotate(45deg); }
+.highlights--pubs li::before { border-radius: 50%; transform: none; }
+.highlights--pubs li i { font-style: italic; }

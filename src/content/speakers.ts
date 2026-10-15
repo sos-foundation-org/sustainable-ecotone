@@ -38,6 +38,10 @@ export type Speaker = {
   orgs: OrgKey[];
   bio: L10n; // 中文可含 <span class="en">…</span>；英文用 <em>…</em>
   talk?: L10n;
+  /** 亮點：公開可查的成就、著作、報導等；source 為出處網址（不顯示，供查核） */
+  highlights?: { zh: string; en: string; source?: string }[];
+  /** 重要著作／發表：論文、書籍、報告、展覽；zh/en 可含 <i>…</i> 標題 */
+  publications?: { zh: string; en: string; source?: string }[];
   photo?: string;
   /** 照片裁切焦點（CSS object-position），例如 "72% 30%"；預設置中 */
   photoPos?: string;
@@ -52,6 +56,17 @@ export const SPEAKERS: Speaker[] = [
     name: { zh: "孫烜駿", en: "Syuan-Jyun Sun" },
     nameEn: "Syuan-Jyun Sun",
     talk: { zh: "都市化及其對自然的影響", en: "Urbanization and its impacts on nature" },
+    highlights: [
+      { zh: "臺大氣候變遷與永續發展國際學位學程助理教授，主持孫烜駿實驗室", en: "Assistant Professor, International Degree Program in Climate Change and Sustainable Development, National Taiwan University; leads the Sun Lab", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
+      { zh: "英國劍橋大學博士，以埋葬蟲為模式物種研究物種交互作用與適應", en: "PhD, University of Cambridge; uses burying beetles as a model system to study species interactions and adaptation", source: "https://labspotlight.ntu.edu.tw/focus/166" },
+      { zh: "實驗發現升溫 2°C 會削弱埋葬蟲親代照顧對幼蟲的保護", en: "Showed experimentally that a 2°C rise in temperature erodes the protection burying-beetle parental care gives offspring", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
+      { zh: "調查臺灣北部 180 多個樣點，揭示都市化與熱島效應使埋葬蟲族群減少", en: "Surveyed 180+ sites across northern Taiwan, showing that urbanisation and urban heat reduce burying-beetle populations", source: "https://labspotlight.ntu.edu.tw/focus/166" },
+    ],
+    publications: [
+      { zh: "<i>Climate-mediated cooperation promotes niche expansion in burying beetles</i>，eLife（2014，第一作者）", en: "<i>Climate-mediated cooperation promotes niche expansion in burying beetles</i>. eLife (2014), first author", source: "https://elifesciences.org/articles/02440" },
+      { zh: "<i>Temperature stress induces mites to help their carrion beetle hosts by eliminating rival blowflies</i>，eLife（2020）", en: "<i>Temperature stress induces mites to help their carrion beetle hosts by eliminating rival blowflies</i>. eLife (2020)", source: "https://elifesciences.org/articles/55649" },
+      { zh: "<i>Heat stress effects on offspring compound across parental care</i>，Proceedings of the Royal Society B（2025）", en: "<i>Heat stress effects on offspring compound across parental care</i>. Proceedings of the Royal Society B (2025), senior author", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
+    ],
     photo: "/speakers/sun-4x5.jpg",
     initial: { zh: "孫", en: "S" },
     eyebrow: "Climate Change · NTU",
@@ -80,6 +95,18 @@ export const SPEAKERS: Speaker[] = [
     name: { zh: "詹偉平", en: "Wei-Ping Chan" },
     nameEn: "Wei-Ping Chan",
     talk: { zh: "夜間人工光（ALAN），以及橫跨城鄉地景的研究", en: "Artificial light at night (ALAN) and conducting research across urban-rural landscapes" },
+    highlights: [
+      { zh: "打造 11 波段高通量多光譜影像系統，已數位化逾 18,000 件博物館館藏", en: "Built an 11-band high-throughput multispectral imaging system that has digitized more than 18,000 museum specimens", source: "wpc_website" },
+      { zh: "運用橫跨 130 多年的歷史資料，解析蛾類趨光性下降的成因", en: "Used more than 130 years of historical behavioural data to disentangle why moths are becoming less attracted to light", source: "wpc_website" },
+      { zh: "研究登上 Nature 與 Science，主題涵蓋全球山區氣候變遷速度與物種海拔分布", en: "First-author papers in Nature and Science on climate velocities in the world’s mountains and species’ elevational ranges", source: "wpc_website" },
+      { zh: "哈佛大學有機體與演化生物學博士", en: "PhD in Organismic and Evolutionary Biology, Harvard University", source: "wpc_website" },
+    ],
+    publications: [
+      { zh: "<i>Climate velocities and species tracking in global mountain regions</i>，Nature（2024，第一作者）", en: "<i>Climate velocities and species tracking in global mountain regions</i>. Nature (2024), first author", source: "wpc_website" },
+      { zh: "<i>Seasonal and daily climate variation have opposite effects on species elevational range size</i>，Science（2016，第一作者）", en: "<i>Seasonal and daily climate variation have opposite effects on species elevational range size</i>. Science (2016), first author", source: "wpc_website" },
+      { zh: "<i>Historical behavioural data disentangle evolutionary and environmental drivers of recent declines in insect attraction to light</i>，Proc. R. Soc. B（2025）", en: "<i>Historical behavioural data disentangle evolutionary and environmental drivers of recent declines in insect attraction to light</i>. Proc. R. Soc. B (2025)", source: "wpc_website" },
+      { zh: "<i>A high throughput multispectral imaging system for museum specimens</i>，Communications Biology（2022）", en: "<i>A high throughput multispectral imaging system for museum specimens</i>. Communications Biology (2022)", source: "wpc_website" },
+    ],
     photo: "/speakers/chan-4x5.jpg",
     initial: { zh: "詹", en: "C" },
     eyebrow: "Founder · Founder · Researcher",
@@ -124,11 +151,21 @@ export const SPEAKERS: Speaker[] = [
     name: { zh: "顏訥", en: "Na Yen" },
     nameEn: "Na Yen",
     talk: { zh: "人類如何觀看、對待並記錄自然", en: "How humans have viewed, interacted with, and documented nature" },
+    highlights: [
+      { zh: "國立東華大學華文文學系助理教授（2026 年起），東華華文系學士、碩士", en: "Assistant Professor, Department of Sinophone Literatures, National Dong Hwa University (since 2026); BA and MA from the same department", source: "https://sili.ndhu.edu.tw/p/412-1055-22760.php?Lang=zh-tw" },
+      { zh: "國立清華大學中國文學博士，研究筆記小說、散文創作與性別文化", en: "PhD in Chinese Literature, National Tsing Hua University; research covers biji fiction, essay writing and gender culture", source: "https://sili.ndhu.edu.tw/p/412-1055-22760.php?Lang=zh-tw" },
+      { zh: "曾任中央研究院中國文哲研究所博士後研究員、哈佛大學東亞系訪問學人", en: "Former postdoctoral researcher at the Institute of Chinese Literature and Philosophy, Academia Sinica, and visiting scholar in East Asian Languages and Civilizations at Harvard", source: "https://zh.wikipedia.org/wiki/顏訥" },
+      { zh: "文學直播節目「作家事」共同主持人，曾任聯合報「鳴人堂」專欄作者", en: "Co-host of the literary live-stream show 作家事 (Zuojia shi); former columnist for the United Daily News opinion platform 鳴人堂", source: "https://zh.wikipedia.org/wiki/顏訥" },
+    ],
+    publications: [
+      { zh: "散文集《幽魂訥訥》，印刻，2017", en: "<i>You hun ne ne</i> (幽魂訥訥), essays, INK Publishing, 2017", source: "https://www.books.com.tw/products/0010769079" },
+      { zh: "散文集《假仙女》，2024", en: "<i>Faux-cul</i> (假仙女), essays, 2024", source: "https://vocus.cc/article/67068a52fd8978000138c49f" },
+    ],
     photo: "/speakers/yen-4x5.jpg",
     initial: { zh: "顏", en: "Y" },
     eyebrow: "Literature · NDHU",
     short: "Literature · NDHU",
-    tags: { zh: ["國立東華大學", "華文文學"], en: ["National Dong Hwa University", "Sinophone literature"] },
+    tags: { zh: ["國立東華大學", "華文文學", "作家"], en: ["National Dong Hwa University", "Sinophone literature", "Writer"] },
     identities: [
       {
         title: { zh: "國立東華大學 · 華文文學", en: "National Dong Hwa University · Sinophone literature" },
@@ -136,6 +173,10 @@ export const SPEAKERS: Speaker[] = [
           zh: "以文學與書寫，處理人、土地與時代之間的關係。",
           en: "Works through literature and writing on the relationships between people, the land and their times.",
         },
+      },
+      {
+        title: { zh: "作家", en: "Writer" },
+        detail: { zh: "散文作家，著有《幽魂訥訥》（2017）與《假仙女》（2024）。", en: "Essayist, author of You hun ne ne (2017) and Faux-cul (2024)." },
       },
     ],
     disciplines: ["literature"],
@@ -152,6 +193,16 @@ export const SPEAKERS: Speaker[] = [
     name: { zh: "Goh Yu Han", en: "Goh Yu Han" },
     nameEn: "Goh Yu Han",
     talk: { zh: "再野化：和平地把人類的領域還給自然", en: "Rewilding: peacefully giving human territory back to nature" },
+    highlights: [
+      { zh: "新加坡景觀建築事務所 Salad Dressing 設計總監，2010 年正式加入", en: "Director of Design at Salad Dressing, a Singapore landscape architecture studio, which Goh Yu Han formally joined in 2010", source: "https://www.saladlandscape.com/about" },
+      { zh: "帶領 Salad Dressing 團隊參展 2021 威尼斯建築雙年展新加坡館", en: "Led the Salad Dressing team exhibiting in the Singapore Pavilion at the 2021 Venice Architecture Biennale", source: "https://www.labiennale.org/en/architecture/2021/singapore/" },
+      { zh: "獲選文化景觀基金會（TCLF）Oberlander Prize 論壇新銳實踐者講者（2026）", en: "Selected as an emerging-practitioner speaker for The Cultural Landscape Foundation’s Virtual Oberlander Prize Forum (2026)", source: "https://www.tclf.org/virtual-oberlander-prize-forum-where-do-we-go-here" },
+    ],
+    publications: [
+      { zh: "2020 杜拜世博新加坡館（Salad Dressing 擔任景觀建築師），獲 2023 新加坡總統設計獎年度設計", en: "Singapore Pavilion, Expo 2020 Dubai (Salad Dressing as landscape architect); President’s Design Award, Design of the Year 2023", source: "https://pda.designsingapore.org/presidents-design-award/award-recipients/2023/singapore-pavilion-expo-2020-dubai" },
+      { zh: "2021 威尼斯建築雙年展新加坡館「<i>to gather: The Architecture of Relationships</i>」參展作品", en: "Exhibit in <i>to gather: The Architecture of Relationships</i>, Singapore Pavilion, 17th Venice Architecture Biennale (2021)", source: "https://www.labiennale.org/en/architecture/2021/singapore/" },
+      { zh: "墨爾本設計週展覽 <i>Rewilding the Sky</i>", en: "<i>Rewilding the Sky</i>, exhibition at Melbourne Design Week", source: "https://msd.unimelb.edu.au/events/rewilding-the-sky-with-salad-dressing-landscape-architects" },
+    ],
     photo: "/speakers/yuhan-4x5.jpg",
     initial: { zh: "Y", en: "G" },
     eyebrow: "Landscape Architecture · Singapore",
@@ -159,7 +210,7 @@ export const SPEAKERS: Speaker[] = [
     tags: { zh: ["景觀建築師", "新加坡"], en: ["Landscape architect", "Singapore"] },
     identities: [
       {
-        title: { zh: "SALAD Dressing 景觀建築師", en: "Landscape architect, SALAD Dressing" },
+        title: { zh: "Salad Dressing 設計總監", en: "Director of Design, Salad Dressing" },
         detail: {
           zh: "新加坡地景建築事務所，關注再野化（rewilding）、經驗策展與數位環境感知（Digital Umwelt）。",
           en: "A Singapore landscape architecture practice concerned with rewilding, experience curation and digital environmental sensing (Digital Umwelt).",
@@ -177,8 +228,8 @@ export const SPEAKERS: Speaker[] = [
     places: [{ name: "Singapore", lat: 1.29, lng: 103.85, country: "SG" }],
     orgs: ["salad"],
     bio: {
-      zh: `SALAD Dressing 的作品包括威尼斯建築雙年展新加坡館（2021）、杜拜世博新加坡館，以及墨爾本設計週的 <span class="en">Rewilding the Sky</span>。Yu Han 將從新加坡帶來一個問題：如果城市本身就是一個生態交會帶呢？（<span class="en">what if the city itself is the ecotone?</span>）`,
-      en: `SALAD Dressing’s work includes the Singapore Pavilion at the Venice Architecture Biennale (2021), the Singapore Pavilion at the Dubai World Expo, and <em>Rewilding the Sky</em> at Melbourne Design Week. From Singapore, Yu Han brings a question: <em>what if the city itself is the ecotone?</em>`,
+      zh: `Salad Dressing 曾參展 2021 威尼斯建築雙年展新加坡館、擔任杜拜世博新加坡館的景觀建築師，並在墨爾本設計週展出 <span class="en">Rewilding the Sky</span>。Yu Han 將從新加坡帶來一個問題：如果城市本身就是一個生態交會帶呢？（<span class="en">what if the city itself is the ecotone?</span>）`,
+      en: `Salad Dressing exhibited in the Singapore Pavilion at the 2021 Venice Architecture Biennale, was landscape architect for the Singapore Pavilion at Expo 2020 Dubai, and showed <em>Rewilding the Sky</em> at Melbourne Design Week. From Singapore, Yu Han brings a question: <em>what if the city itself is the ecotone?</em>`,
     },
     draftNote: {
       zh: "介紹為草稿，待講者確認；SALAD Dressing 的標誌與官網連結為暫代。",
@@ -190,12 +241,26 @@ export const SPEAKERS: Speaker[] = [
     name: { zh: "王鼎涵", en: "Hank Wang" },
     nameEn: "Hank Wang",
     talk: { zh: "科技、自然與永續：新興新創", en: "Technology, nature, and sustainability: emerging startups" },
+    highlights: [
+      { zh: "主持 AI 口腔健康計畫，獲 2025 台灣永續行動獎金獎、亞太永續行動獎銀獎", en: "Led an AI oral-health project that won Gold at the 2025 Taiwan Sustainability Action Awards and Silver at the Asia-Pacific Sustainability Action Awards", source: "https://sdgs.nycu.edu.tw/archives/27392?lang=en" },
+      { zh: "日本東北大學齒學研究科客座副教授（2022 年起）", en: "Visiting Associate Professor, Graduate School of Dentistry, Tohoku University, Japan (since 2022)", source: "https://ihp.nycu.edu.tw/Faculty/Faculty/350" },
+    ],
+    publications: [
+      { zh: "<i>SegmentAnyTooth: An open-source deep learning framework for tooth enumeration and segmentation in intraoral photos</i>，Journal of Dental Sciences（2025，共同通訊作者）", en: "<i>SegmentAnyTooth: an open-source deep learning framework for tooth enumeration and segmentation in intraoral photos</i>. Journal of Dental Sciences (2025), co-corresponding author", source: "https://scholar.nycu.edu.tw/en/publications/segmentanytooth-an-open-source-deep-learning-framework-for-tooth--2/" },
+    ],
     photo: "/speakers/wang-4x5.jpg",
     initial: { zh: "王", en: "W" },
     eyebrow: "Clinician · OMIC · Sustainability Office",
     short: "Dentistry · OMIC · Sustainability",
     tags: { zh: ["牙醫副院長", "OMIC", "永續辦"], en: ["Dental deputy superintendent", "OMIC", "Sustainability Office"] },
     identities: [
+      {
+        title: { zh: "陽明交大牙醫學院副教授", en: "Associate Professor, College of Dentistry, NYCU" },
+        detail: {
+          zh: "研究顳顎關節組織工程、口腔微生物，以及人工智慧與延展實境（XR）在牙醫教育與臨床的應用。",
+          en: "Research spans tissue engineering for TMJ arthritis, the oral microbiota, and AI and extended reality (XR) in dental education and clinical care.",
+        },
+      },
       {
         title: { zh: "牙醫副院長", en: "Dentist and deputy superintendent" },
         detail: {
@@ -205,13 +270,13 @@ export const SPEAKERS: Speaker[] = [
       },
       {
         title: { zh: "OMIC", en: "OMIC" },
-        detail: { zh: "跨領域研究與創新的推動者。", en: "A driving force for interdisciplinary research and innovation." },
+        detail: { zh: "陽明交大口腔醫學創新中心（OMIC）副主任（2022 年起），推動跨領域研究與創新。", en: "Deputy Director of NYCU’s Oral Medicine Innovation Center (OMIC) since 2022, driving interdisciplinary research and innovation." },
       },
       {
         title: { zh: "永續辦", en: "Sustainability Office" },
         detail: {
-          zh: "把永續從口號變成制度，推動實際可執行的永續行動。",
-          en: "Turning sustainability from a slogan into policy, and pushing for sustainability measures that can actually be carried out.",
+          zh: "陽明交大永續發展暨大學社會責任辦公室副執行長（2024 年起），把永續從口號變成制度。",
+          en: "Associate Executive Director of NYCU’s Office of Sustainable Development and University Social Responsibility since 2024, turning sustainability from a slogan into policy.",
         },
       },
     ],
@@ -220,7 +285,7 @@ export const SPEAKERS: Speaker[] = [
       { name: "Taiwan", lat: 24.2, lng: 120.9, approx: true, country: "TW" },
       { name: "Sendai", lat: 38.25, lng: 140.87, country: "JP" },
     ],
-    orgs: ["tohoku"],
+    orgs: ["nycu", "tohoku"],
     bio: {
       zh: `醫療是最少被放進永續討論的產業之一，卻是碳排與廢棄物的大戶。當一位牙醫同時要管診間、做研究、還要推永續政策，永續就不再是抽象概念，而是每天早上都要做的營運決策（<span class="en">operational decision</span>）。`,
       en: `Healthcare is one of the industries least often included in conversations about sustainability, yet it is a major source of carbon emissions and waste. When one dentist has to run a clinic, do research and drive sustainability policy all at once, sustainability stops being an abstraction and becomes an <em>operational decision</em> made every morning.`,

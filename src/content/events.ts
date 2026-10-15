@@ -65,8 +65,8 @@ export const EVENTS: ForumEvent[] = [
     status: "upcoming",
     statusLabel: { zh: "Vol. 01 · 籌備中", en: "Vol. 01 · In preparation" },
     summary: {
-      zh: `五位講者、十種身份。從氣候變遷、生物數位化、華文文學、地景建築到牙醫診間，看永續如何在學科之間 <span class="en">cross-pollinate</span>。`,
-      en: `Five speakers, ten identities. From climate change, the digitization of nature, Sinophone literature and landscape architecture to the dentist’s chair: a look at how sustainability cross-pollinates between disciplines.`,
+      zh: `五位講者、十二種身份。從氣候變遷、生物數位化、華文文學、地景建築到牙醫診間，看永續如何在學科之間 <span class="en">cross-pollinate</span>。`,
+      en: `Five speakers, twelve identities. From climate change, the digitization of nature, Sinophone literature and landscape architecture to the dentist’s chair: a look at how sustainability cross-pollinates between disciplines.`,
     },
     intro: {
       zh: [

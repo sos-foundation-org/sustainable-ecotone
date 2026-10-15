@@ -20,6 +20,8 @@ const T = {
     talk: "Talk · 講題",
     talkTbc: "講題確認中",
     affils: "所屬機構",
+    highlights: "亮點",
+    pubs: "重要著作",
     flag: "暫代",
   },
   en: {
@@ -31,6 +33,8 @@ const T = {
     talk: "Talk",
     talkTbc: "Title to be confirmed",
     affils: "Affiliations",
+    highlights: "Highlights",
+    pubs: "Selected works",
     flag: "Placeholder",
   },
 } satisfies Record<Lang, unknown>;
@@ -129,8 +133,6 @@ export default function SpecimenSheet({
   const t = T[lang];
   const no = catalogNo(s);
   const H = headingLevel === 2 ? "h2" : "h3";
-  // a single-identity sheet flows its bio and linetypes into the label column
-  const solo = s.identities.length === 1;
   const disc = (
     <div className="sheet-disc" aria-label={t.disc}>
       {s.disciplines.map((k) => (
@@ -149,17 +151,7 @@ export default function SpecimenSheet({
       </div>
       <div className="sheet-body">
         <Portrait s={s} lang={lang} />
-        {solo ? (
-          <div>
-            <LabelStack s={s} lang={lang} />
-            <div className="sheet-solo">
-              {full && <Rich as="p" className="bio" html={s.bio[lang]} />}
-              {disc}
-            </div>
-          </div>
-        ) : (
-          <LabelStack s={s} lang={lang} />
-        )}
+        <LabelStack s={s} lang={lang} />
       </div>
       <div className="sheet-name">
         <H id={`sheet-${s.id}`}>{s.name[lang]}</H>
@@ -169,11 +161,31 @@ export default function SpecimenSheet({
           {no} · Loc. {s.places.map((p) => `${p.name}${p.approx ? "" : ` ${fmtCoord(p.lat, p.lng)}`}`).join(" ⇄ ")}
         </span>
       </div>
-      <Genet seed={s.id} count={s.identities.length} names={s.identities.map((i) => i.title[lang])} lang={lang} />
-      {!solo && disc}
+      {/* order: photo + identity cards, then the bio, then highlights, then the rest */}
       {full && (
         <div className="sheet-more">
-          {!solo && <Rich as="p" className="bio" html={s.bio[lang]} />}
+          <Rich as="p" className="bio" html={s.bio[lang]} />
+          {s.highlights && s.highlights.length > 0 && (
+            <section className="highlights" aria-label={t.highlights}>
+              <h4 className="mono">{t.highlights}</h4>
+              <ul>
+                {s.highlights.map((h) => (
+                  <li key={h.zh}>{h[lang]}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {s.publications && s.publications.length > 0 && (
+            <section className="highlights highlights--pubs" aria-label={t.pubs}>
+              <h4 className="mono">{t.pubs}</h4>
+              <ul>
+                {s.publications.map((p) => (
+                  <Rich as="li" key={p.zh} html={p[lang]} />
+                ))}
+              </ul>
+            </section>
+          )}
+          {disc}
           <dl className="talk">
             <dt className="mono">{t.talk}</dt>
             <dd>{s.talk?.[lang] ?? t.talkTbc}</dd>
@@ -194,6 +206,8 @@ export default function SpecimenSheet({
           {s.draftNote && <p className="draft-note">† {s.draftNote[lang]}</p>}
         </div>
       )}
+      {!full && disc}
+      <Genet seed={s.id} count={s.identities.length} names={s.identities.map((i) => i.title[lang])} lang={lang} corner />
     </article>
   );
 }

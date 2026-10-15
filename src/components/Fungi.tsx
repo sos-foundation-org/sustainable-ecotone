@@ -20,7 +20,8 @@ const T = {
  * fruit as many mushrooms; here every fruiting body is one of the speaker's
  * identities, all joined by the same mycelium under the soil line.
  */
-export function Genet({ seed, count, names, lang = "zh" }: { seed: string; count: number; names: string[]; lang?: Lang }) {
+/** `corner`: a small, uncaptioned strip tucked into the bottom-right of a speaker sheet. */
+export function Genet({ seed, count, names, lang = "zh", corner = false }: { seed: string; count: number; names: string[]; lang?: Lang; corner?: boolean }) {
   const t = T[lang];
   const rnd = mulberry32(seedFrom(seed));
   const W = 300;
@@ -37,7 +38,7 @@ export function Genet({ seed, count, names, lang = "zh" }: { seed: string; count
   if (xs.length === 1) threads.push(hyphaLink(rnd, xs[0], soil + 1, W - 20, soil + 14, 10), hyphaLink(rnd, xs[0], soil + 1, 20, soil + 16, 10));
 
   return (
-    <figure className="genet">
+    <figure className={corner ? "genet genet--corner" : "genet"}>
       <svg viewBox={`0 0 ${W} 120`} role="img" aria-label={t.aria(count, names)}>
         <rect x="0" y={soil} width={W} height={120 - soil} fill="url(#stip)" opacity=".18" />
         <g fill="none" stroke="#1C1A17" strokeWidth=".55" opacity=".75" strokeLinecap="round" strokeLinejoin="round">
@@ -53,16 +54,20 @@ export function Genet({ seed, count, names, lang = "zh" }: { seed: string; count
           return (
             <g key={i}>
               <Fungus species={sp} height={h} x={x} y={soil} color="#1C1A17" />
-              <text x={r2(x + w / 2 + 2)} y={soil - 4} className="svg-mono svg-mono--xs" fill="#A8321F">
-                {roman(i + 1)}
-              </text>
+              {!corner && (
+                <text x={r2(x + w / 2 + 2)} y={soil - 4} className="svg-mono svg-mono--xs" fill="#A8321F">
+                  {roman(i + 1)}
+                </text>
+              )}
             </g>
           );
         })}
       </svg>
-      <figcaption className="mono">
-        {t.cap(count)} <span className="k-zh">{t.each}</span>
-      </figcaption>
+      {!corner && (
+        <figcaption className="mono">
+          {t.cap(count)} <span className="k-zh">{t.each}</span>
+        </figcaption>
+      )}
     </figure>
   );
 }
