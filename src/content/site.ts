@@ -23,7 +23,7 @@ export const SITE = {
 /** 「暫代」等草稿標記只在預覽環境顯示：設定 NEXT_PUBLIC_SHOW_DRAFTS=1 */
 export const SHOW_DRAFTS = process.env.NEXT_PUBLIC_SHOW_DRAFTS === "1";
 
-export type OrgKey = "ntu" | "nycu" | "ndhu" | "sos" | "salad" | "harvard" | "bionarr";
+export type OrgKey = "ntu" | "nycu" | "ndhu" | "sos" | "salad" | "harvard" | "bionarr" | "tohoku";
 
 export type Org = {
   /** display name in each language */
@@ -43,6 +43,7 @@ export const ORGS: Record<OrgKey, Org> = {
   // PLACEHOLDER: 找不到 SALAD Dressing 官網與 logo，暫用 ArchDaily 頁面與自製佔位圖
   salad: { name: { zh: "SALAD Dressing", en: "SALAD Dressing" }, nameEn: "Landscape Architects, Singapore", url: "https://www.archdaily.com/professional/salad-dressing", logo: "/logos/salad-placeholder.svg", placeholder: true },
   harvard: { name: { zh: "Harvard University", en: "Harvard University" }, nameEn: "Harvard University", url: "https://www.harvard.edu/" },
+  tohoku: { name: { zh: "日本東北大學", en: "Tohoku University" }, nameEn: "Tohoku University", url: "https://www.tohoku.ac.jp/" },
   // PLACEHOLDER: BioNarr 官網待補
   bionarr: { name: { zh: "BioNarr", en: "BioNarr" }, nameEn: "BioNarr", url: "", placeholder: true },
 };

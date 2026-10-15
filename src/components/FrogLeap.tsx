@@ -218,19 +218,6 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
     const pose = (p: Pose) => use.setAttribute("href", `#frog-${p}`);
     const place = (x: number, y: number, rot: number, s: number, squash = 1) =>
       frog.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${s.toFixed(3)} ${(s * squash).toFixed(3)})`);
-    const ghost = (p: Pose, x: number, y: number, rot: number, s: number) => {
-      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-      g.setAttribute("class", "frog-ghost");
-      g.setAttribute("transform", `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(1)}) scale(${s.toFixed(3)})`);
-      const u = document.createElementNS("http://www.w3.org/2000/svg", "use");
-      u.setAttribute("href", `#frog-${p}`);
-      u.setAttribute("x", "-120");
-      u.setAttribute("y", "-64");
-      u.setAttribute("width", "180");
-      u.setAttribute("height", "70");
-      g.appendChild(u);
-      ghosts.appendChild(g);
-    };
 
     const run = () => {
       running = true;
@@ -247,7 +234,6 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
       P.scale *= boost;
       if (boost > 1.2) P.peaks = P.peaks.map((h) => Math.min(h, 84));
       ghosts.replaceChildren();
-      let d = "";
       trail.setAttribute("d", "");
       frog.setAttribute("visibility", "visible");
       // timeline: for each hop → crouch (or the pause after a landing), flight, landing squash
@@ -261,7 +247,6 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
       const total = segs.reduce((n, s) => n + s.dur, 0);
       if (clockRef.current) clockRef.current.textContent = `t = ${(total / 1000).toFixed(1)} s`;
       const st = performance.now();
-      let lastGhost = 0;
       const step = (now: number) => {
         // the tongue: the clock stops while the frog, just landed, snaps at the grasshopper and gulps
         if (tongueAt) {
@@ -304,12 +289,6 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
           const pz: Pose = t < 0.12 ? "sit" : t < 0.8 || lastHop ? "fly" : "land";
           pose(pz);
           place(x, y, rot, s, t < 0.1 ? 1.1 : 1);
-          d += `${d ? "L" : "M"}${x.toFixed(1)} ${(y - 4).toFixed(1)}`;
-          trail.setAttribute("d", d);
-          if (now - lastGhost > 120 && x > 0 && x < VW) {
-            lastGhost = now;
-            ghost(pz, x, y, rot, s);
-          }
         } else {
           pose("sit");
           place(x1, GROUND, P.tilt, s, 1 - 0.18 * Math.sin(t * Math.PI));
@@ -357,9 +336,8 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
       <svg ref={svgRef} viewBox={`0 ${-HEADROOM} ${VW} ${160 + HEADROOM}`} aria-hidden="true">
         <FrogDefs />
         <line x1="0" y1={GROUND + 1} x2={VW} y2={GROUND + 1} stroke="var(--ink)" strokeWidth=".5" />
-        {/* static figure (no JS / reduced motion): one resting frog and a dotted arc */}
+        {/* static figure (no JS / reduced motion): one resting frog; leaps leave no trail */}
         <g ref={staticRef}>
-          <path d={`M90 ${GROUND - 4}Q600 -60 1110 ${GROUND - 4}`} fill="none" stroke="var(--ink)" strokeWidth=".6" strokeDasharray="2 5" />
           <g transform={`translate(600 ${GROUND}) scale(1.1)`}>
             <use href="#frog-sit" x="-120" y="-64" width="180" height="70" />
           </g>

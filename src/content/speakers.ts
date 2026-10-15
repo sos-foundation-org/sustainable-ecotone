@@ -13,11 +13,12 @@ export type Identity = { title: L10n; detail: L10n };
 export type Place = { name: string; lat: number; lng: number; approx?: boolean; country: CountryCode };
 
 // 國家節點（首頁地下菌絲網絡）：新講者來自新國家時，在這裡加一筆。
-export type CountryCode = "TW" | "SG" | "US";
+export type CountryCode = "TW" | "SG" | "US" | "JP";
 export const COUNTRIES: Record<CountryCode, L10n> = {
   TW: { zh: "臺灣", en: "Taiwan" },
   SG: { zh: "新加坡", en: "Singapore" },
   US: { zh: "美國", en: "USA" },
+  JP: { zh: "日本", en: "Japan" },
 };
 
 export type Speaker = {
@@ -215,8 +216,11 @@ export const SPEAKERS: Speaker[] = [
       },
     ],
     disciplines: ["medicine", "hightech"],
-    places: [{ name: "Taiwan", lat: 24.2, lng: 120.9, approx: true, country: "TW" }],
-    orgs: [],
+    places: [
+      { name: "Taiwan", lat: 24.2, lng: 120.9, approx: true, country: "TW" },
+      { name: "Sendai", lat: 38.25, lng: 140.87, country: "JP" },
+    ],
+    orgs: ["tohoku"],
     bio: {
       zh: `醫療是最少被放進永續討論的產業之一，卻是碳排與廢棄物的大戶。當一位牙醫同時要管診間、做研究、還要推永續政策，永續就不再是抽象概念，而是每天早上都要做的營運決策（<span class="en">operational decision</span>）。`,
       en: `Healthcare is one of the industries least often included in conversations about sustainability, yet it is a major source of carbon emissions and waste. When one dentist has to run a clinic, do research and drive sustainability policy all at once, sustainability stops being an abstraction and becomes an <em>operational decision</em> made every morning.`,
