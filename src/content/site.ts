@@ -41,9 +41,9 @@ export const ORGS: Record<OrgKey, Org> = {
   ndhu: { name: { zh: "國立東華大學", en: "National Dong Hwa University" }, nameEn: "National Dong Hwa University", url: "https://www.ndhu.edu.tw/", logo: "/logos/ndhu.svg" },
   sos: { name: { zh: "SOS Foundation", en: "SOS Foundation" }, nameEn: "Sustainability Of Sustainability", url: "https://sos-commons.vercel.app/", logo: "/logos/sos.svg" },
   // PLACEHOLDER: 找不到 SALAD Dressing 官網與 logo，暫用 ArchDaily 頁面與自製佔位圖
-  salad: { name: { zh: "SALAD Dressing", en: "SALAD Dressing" }, nameEn: "Landscape Architects, Singapore", url: "https://www.archdaily.com/professional/salad-dressing", logo: "/logos/salad-placeholder.svg", placeholder: true },
+  salad: { name: { zh: "SALAD Dressing", en: "SALAD Dressing" }, nameEn: "Landscape Architects, Singapore", url: "https://www.saladlandscape.com/", logo: "/logos/salad-placeholder.svg", placeholder: true },
   harvard: { name: { zh: "Harvard University", en: "Harvard University" }, nameEn: "Harvard University", url: "https://www.harvard.edu/" },
-  tohoku: { name: { zh: "日本東北大學", en: "Tohoku University" }, nameEn: "Tohoku University", url: "https://www.tohoku.ac.jp/" },
+  tohoku: { name: { zh: "日本東北大學", en: "Tohoku University" }, nameEn: "Tohoku University", url: "https://www.tohoku.ac.jp/", logo: "/logos/tohoku.svg" },
   // PLACEHOLDER: BioNarr 官網待補
   bionarr: { name: { zh: "BioNarr", en: "BioNarr" }, nameEn: "BioNarr", url: "", placeholder: true },
 };

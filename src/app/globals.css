@@ -1008,3 +1008,26 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 .atlas-key button > b, .atlas-key button > span:not(.atlas-avatar) { grid-column: 2; }
 .atlas-avatar { grid-column: 1; grid-row: 1 / span 2; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid var(--cyan-mute); display: block; }
 .atlas-avatar--initial { display: grid; place-items: center; font-size: .85rem; color: var(--cyan-mute); }
+
+/* Names never break mid-name */
+.sheet-name h2, .sheet-name h3, .jump a, .atlas-key b, .mini-sheet b { white-space: nowrap; }
+/* Speaker sheet: bio sits under the identity cards, above the rule */
+.sheet-right { display: grid; gap: 16px; align-content: start; }
+.sheet-right .bio { color: var(--ink-2); margin: 0; max-width: 36em; }
+/* Affiliations without links, and icon links to lab / personal pages */
+.affil--plain { cursor: default; }
+.affil--plain:hover { border-color: var(--rule); }
+.affil--icon { position: relative; padding: 4px; width: 32px; height: 32px; justify-content: center; color: var(--ink); }
+.affil--icon img { width: 22px; height: 22px; object-fit: contain; filter: none; }
+.affil--icon svg { width: 18px; height: 18px; }
+/* Tooltips: discipline swatches and link icons */
+.swatch--tip, .affil--icon { position: relative; }
+.swatch--tip { cursor: help; border-radius: 2px; }
+.swatch--tip:focus-visible { outline: 2px solid var(--cinnabar); outline-offset: 2px; }
+.swatch--tip::after, .affil--icon::after {
+  content: attr(data-tip); position: absolute; left: 50%; bottom: calc(100% + 8px); transform: translate(-50%, 4px);
+  white-space: nowrap; font-size: .78rem; line-height: 1.4; padding: 4px 8px; background: var(--ink); color: var(--paper);
+  opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; z-index: 5;
+}
+.swatch--tip:hover::after, .swatch--tip:focus::after, .affil--icon:hover::after, .affil--icon:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+@media (hover: none) { .sheet-disc { gap: 10px 14px; } .swatch--tip svg { width: 44px; height: 22px; } }

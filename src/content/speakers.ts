@@ -43,6 +43,10 @@ export type Speaker = {
   /** 重要著作／發表：論文、書籍、報告、展覽；zh/en 可含 <i>…</i> 標題 */
   publications?: { zh: string; en: string; source?: string }[];
   photo?: string;
+  /** 卡片上的外部連結圖示（實驗室或個人網頁） */
+  links?: { kind: "lab" | "personal"; url: string; icon?: string }[];
+  /** 這些所屬機構在卡片上保留超連結；其餘只顯示名稱 */
+  linkedOrgs?: OrgKey[];
   /** 照片裁切焦點（CSS object-position），例如 "72% 30%"；預設置中 */
   photoPos?: string;
   draftNote?: L10n;
@@ -63,11 +67,12 @@ export const SPEAKERS: Speaker[] = [
       { zh: "調查臺灣北部 180 多個樣點，揭示都市化與熱島效應使埋葬蟲族群減少", en: "Surveyed 180+ sites across northern Taiwan, showing that urbanisation and urban heat reduce burying-beetle populations", source: "https://labspotlight.ntu.edu.tw/focus/166" },
     ],
     publications: [
-      { zh: "<i>Climate-mediated cooperation promotes niche expansion in burying beetles</i>，eLife（2014，第一作者）", en: "<i>Climate-mediated cooperation promotes niche expansion in burying beetles</i>. eLife (2014), first author", source: "https://elifesciences.org/articles/02440" },
+      { zh: "<i>Climate-mediated cooperation promotes niche expansion in burying beetles</i>，eLife（2014）", en: "<i>Climate-mediated cooperation promotes niche expansion in burying beetles</i>. eLife (2014)", source: "https://elifesciences.org/articles/02440" },
       { zh: "<i>Temperature stress induces mites to help their carrion beetle hosts by eliminating rival blowflies</i>，eLife（2020）", en: "<i>Temperature stress induces mites to help their carrion beetle hosts by eliminating rival blowflies</i>. eLife (2020)", source: "https://elifesciences.org/articles/55649" },
       { zh: "<i>Heat stress effects on offspring compound across parental care</i>，Proceedings of the Royal Society B（2025）", en: "<i>Heat stress effects on offspring compound across parental care</i>. Proceedings of the Royal Society B (2025), senior author", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
     ],
     photo: "/speakers/sun-4x5.jpg",
+    links: [{ kind: "lab", url: "https://sites.google.com/view/sjsun/home", icon: "/icons/sunlab.jpg" }],
     initial: { zh: "孫", en: "S" },
     eyebrow: "Climate Change · NTU",
     short: "Climate Change · NTU",
@@ -102,12 +107,14 @@ export const SPEAKERS: Speaker[] = [
       { zh: "哈佛大學有機體與演化生物學博士", en: "PhD in Organismic and Evolutionary Biology, Harvard University", source: "wpc_website" },
     ],
     publications: [
-      { zh: "<i>Climate velocities and species tracking in global mountain regions</i>，Nature（2024，第一作者）", en: "<i>Climate velocities and species tracking in global mountain regions</i>. Nature (2024), first author", source: "wpc_website" },
-      { zh: "<i>Seasonal and daily climate variation have opposite effects on species elevational range size</i>，Science（2016，第一作者）", en: "<i>Seasonal and daily climate variation have opposite effects on species elevational range size</i>. Science (2016), first author", source: "wpc_website" },
+      { zh: "<i>Climate velocities and species tracking in global mountain regions</i>，Nature（2024）", en: "<i>Climate velocities and species tracking in global mountain regions</i>. Nature (2024)", source: "wpc_website" },
+      { zh: "<i>Seasonal and daily climate variation have opposite effects on species elevational range size</i>，Science（2016）", en: "<i>Seasonal and daily climate variation have opposite effects on species elevational range size</i>. Science (2016)", source: "wpc_website" },
       { zh: "<i>Historical behavioural data disentangle evolutionary and environmental drivers of recent declines in insect attraction to light</i>，Proc. R. Soc. B（2025）", en: "<i>Historical behavioural data disentangle evolutionary and environmental drivers of recent declines in insect attraction to light</i>. Proc. R. Soc. B (2025)", source: "wpc_website" },
       { zh: "<i>A high throughput multispectral imaging system for museum specimens</i>，Communications Biology（2022）", en: "<i>A high throughput multispectral imaging system for museum specimens</i>. Communications Biology (2022)", source: "wpc_website" },
     ],
     photo: "/speakers/chan-4x5.jpg",
+    links: [{ kind: "personal", url: "https://wpchanwork.github.io/wei-ping_chan/zh/index.html" }],
+    linkedOrgs: ["sos"],
     initial: { zh: "詹", en: "C" },
     eyebrow: "Founder · Founder · Researcher",
     short: "SOS · BioNarr · Harvard",
@@ -162,6 +169,7 @@ export const SPEAKERS: Speaker[] = [
       { zh: "散文集《假仙女》，2024", en: "<i>Faux-cul</i> (假仙女), essays, 2024", source: "https://vocus.cc/article/67068a52fd8978000138c49f" },
     ],
     photo: "/speakers/yen-4x5.jpg",
+    links: [{ kind: "personal", url: "https://sili.ndhu.edu.tw/p/412-1055-22760.php?Lang=zh-tw" }],
     initial: { zh: "顏", en: "Y" },
     eyebrow: "Literature · NDHU",
     short: "Literature · NDHU",
@@ -204,6 +212,7 @@ export const SPEAKERS: Speaker[] = [
       { zh: "墨爾本設計週展覽 <i>Rewilding the Sky</i>", en: "<i>Rewilding the Sky</i>, exhibition at Melbourne Design Week", source: "https://msd.unimelb.edu.au/events/rewilding-the-sky-with-salad-dressing-landscape-architects" },
     ],
     photo: "/speakers/yuhan-4x5.jpg",
+    linkedOrgs: ["salad"],
     initial: { zh: "Y", en: "G" },
     eyebrow: "Landscape Architecture · Singapore",
     short: "SALAD Dressing · Singapore",
@@ -249,6 +258,7 @@ export const SPEAKERS: Speaker[] = [
       { zh: "<i>SegmentAnyTooth: An open-source deep learning framework for tooth enumeration and segmentation in intraoral photos</i>，Journal of Dental Sciences（2025，共同通訊作者）", en: "<i>SegmentAnyTooth: an open-source deep learning framework for tooth enumeration and segmentation in intraoral photos</i>. Journal of Dental Sciences (2025), co-corresponding author", source: "https://scholar.nycu.edu.tw/en/publications/segmentanytooth-an-open-source-deep-learning-framework-for-tooth--2/" },
     ],
     photo: "/speakers/wang-4x5.jpg",
+    links: [{ kind: "lab", url: "https://www.nycu.edu.tw/cod/ch/app/artwebsite/view?module=artwebsite&id=38864&serno=ba5b7a81-845a-4b15-9a3d-d724ce886532" }],
     initial: { zh: "王", en: "W" },
     eyebrow: "Clinician · OMIC · Sustainability Office",
     short: "Dentistry · OMIC · Sustainability",
