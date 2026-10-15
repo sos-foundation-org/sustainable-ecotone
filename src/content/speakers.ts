@@ -70,7 +70,7 @@ export const SPEAKERS: Speaker[] = [
       { zh: "<i>Insect adaptation to urban environments: A synthesis of morphological, behavioural, and physiological responses</i>，Current Opinion in Insect Science（2026）", en: "<i>Insect adaptation to urban environments: A synthesis of morphological, behavioural, and physiological responses</i>. Current Opinion in Insect Science (2026)", source: "https://doi.org/10.1016/j.cois.2026.101620" },
       { zh: "<i>Climate-mediated cooperation promotes niche expansion in burying beetles</i>，eLife（2014）", en: "<i>Climate-mediated cooperation promotes niche expansion in burying beetles</i>. eLife (2014)", source: "https://elifesciences.org/articles/02440" },
       { zh: "<i>Temperature stress induces mites to help their carrion beetle hosts by eliminating rival blowflies</i>，eLife（2020）", en: "<i>Temperature stress induces mites to help their carrion beetle hosts by eliminating rival blowflies</i>. eLife (2020)", source: "https://elifesciences.org/articles/55649" },
-      { zh: "<i>Heat stress effects on offspring compound across parental care</i>，Proceedings of the Royal Society B（2025）", en: "<i>Heat stress effects on offspring compound across parental care</i>. Proceedings of the Royal Society B (2025), senior author", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
+      { zh: "<i>Heat stress effects on offspring compound across parental care</i>，Proceedings of the Royal Society B（2025）", en: "<i>Heat stress effects on offspring compound across parental care</i>. Proceedings of the Royal Society B (2025)", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
     ],
     photo: "/speakers/sun-4x5.jpg",
     links: [{ kind: "lab", url: "https://sites.google.com/view/sjsun/home" }],
@@ -256,7 +256,7 @@ export const SPEAKERS: Speaker[] = [
       { zh: "日本東北大學齒學研究科客座副教授（2022 年起）", en: "Visiting Associate Professor, Graduate School of Dentistry, Tohoku University, Japan (since 2022)", source: "https://ihp.nycu.edu.tw/Faculty/Faculty/350" },
     ],
     publications: [
-      { zh: "<i>SegmentAnyTooth: An open-source deep learning framework for tooth enumeration and segmentation in intraoral photos</i>，Journal of Dental Sciences（2025，共同通訊作者）", en: "<i>SegmentAnyTooth: an open-source deep learning framework for tooth enumeration and segmentation in intraoral photos</i>. Journal of Dental Sciences (2025), co-corresponding author", source: "https://scholar.nycu.edu.tw/en/publications/segmentanytooth-an-open-source-deep-learning-framework-for-tooth--2/" },
+      { zh: "<i>SegmentAnyTooth: An open-source deep learning framework for tooth enumeration and segmentation in intraoral photos</i>，Journal of Dental Sciences（2025）", en: "<i>SegmentAnyTooth: an open-source deep learning framework for tooth enumeration and segmentation in intraoral photos</i>. Journal of Dental Sciences (2025)", source: "https://scholar.nycu.edu.tw/en/publications/segmentanytooth-an-open-source-deep-learning-framework-for-tooth--2/" },
     ],
     photo: "/speakers/wang-4x5.jpg",
     links: [{ kind: "lab", url: "https://www.nycu.edu.tw/cod/ch/app/artwebsite/view?module=artwebsite&id=38864&serno=ba5b7a81-845a-4b15-9a3d-d724ce886532" }],
