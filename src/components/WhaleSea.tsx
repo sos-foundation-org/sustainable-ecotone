@@ -4,8 +4,8 @@ import { r2 } from "@/lib/engrave";
 import type { Lang } from "@/lib/i18n";
 
 const T = {
-  zh: { heading: "多元聲音：影片", tag: "Waterline · 水線" },
-  en: { heading: "Diverse Voices: the films", tag: "Waterline" },
+  zh: { heading: "多元聲音：對跨領域永續的期待", tag: "Waterline · 水線" },
+  en: { heading: "Diverse Voices: hopes for interdisciplinary sustainability", tag: "Waterline" },
 } satisfies Record<Lang, unknown>;
 
 /**

@@ -12,7 +12,7 @@ export type Voice = {
   name: L10n; // 人名或「待邀請」
   role: L10n;
   location: string;
-  prompt: L10n; // 回應的題目
+  prompt: L10n; // 邀請對方說出對跨領域永續期待的提問
   youtubeId?: string;
   src?: string;
   poster?: string;
@@ -31,7 +31,7 @@ export const VOICES: Voice[] = [
     lat: 42.37,
     lng: -71.11,
     tz: "America/New_York",
-    prompt: { zh: "如果可以替 2050 年的自己問大人一個問題，你會問什麼？", en: "If you could ask the adults one question on behalf of your 2050 self, what would it be?" },
+    prompt: { zh: "到了 2050 年，你希望跨領域永續已經為你的世界改變了什麼？", en: "By 2050, what do you hope interdisciplinary sustainability will have changed in your world?" },
   },
   {
     id: "v2",
@@ -41,7 +41,7 @@ export const VOICES: Voice[] = [
     lat: 1.29,
     lng: 103.85,
     tz: "Asia/Singapore",
-    prompt: { zh: "照顧一個人與照顧一片土地，有什麼相似的地方？", en: "What does caring for a person have in common with caring for the land?" },
+    prompt: { zh: "你希望跨領域永續，能為人的健康與照顧帶來什麼改變？", en: "What do you hope interdisciplinary sustainability can change about health and care?" },
   },
   {
     id: "v3",
@@ -51,7 +51,7 @@ export const VOICES: Voice[] = [
     lat: 50,
     lng: 10,
     approx: true,
-    prompt: { zh: "當一條河或一片森林需要有人替它說話，法律能做什麼？", en: "When a river or a forest needs someone to speak for it, what can the law do?" },
+    prompt: { zh: "當法律與生態、科學坐上同一張桌子，你希望它們一起做到什麼？", en: "When law sits at the same table as ecology and science, what do you hope they can do together?" },
   },
   {
     id: "v4",
@@ -61,7 +61,7 @@ export const VOICES: Voice[] = [
     lat: -12,
     lng: -62,
     approx: true,
-    prompt: { zh: "一件你從長輩那裡學到、課本沒教的事。", en: "One thing you learned from your elders that no textbook taught." },
+    prompt: { zh: "你希望跨領域永續，如何讓部落的知識被聽見、被傳下去？", en: "How do you hope interdisciplinary sustainability can help your community’s knowledge be heard and passed on?" },
   },
   {
     id: "v5",
@@ -71,7 +71,7 @@ export const VOICES: Voice[] = [
     lat: -20,
     lng: 148,
     approx: true,
-    prompt: { zh: "教了一輩子書，關於自然，你最想重新教一次的是什麼？", en: "After a lifetime of teaching, what about nature would you most like to teach again?" },
+    prompt: { zh: "教了一輩子書，你希望下一代的課堂裡，跨領域永續是什麼模樣？", en: "After a lifetime of teaching, what do you hope interdisciplinary sustainability will look like in the next generation’s classrooms?" },
   },
   {
     id: "v6",
@@ -80,6 +80,6 @@ export const VOICES: Voice[] = [
     location: "Lanyu · Taiwan",
     lat: 22.05,
     lng: 121.55,
-    prompt: { zh: "這些年，海變了嗎？你是從哪裡看出來的？", en: "Has the sea changed over the years? How can you tell?" },
+    prompt: { zh: "你希望跨領域永續，能為海，也為靠海生活的人帶來什麼改變？", en: "What do you hope interdisciplinary sustainability can change for the sea, and for those who live by it?" },
   },
 ];

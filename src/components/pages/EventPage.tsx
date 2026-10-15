@@ -236,8 +236,8 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
           <div className="reveal">
             <p className="lead">
               {zh
-                ? "永續從來不只是某一群人的事。我們邀請不同年齡、性別、族群、學歷與職業的人，從臺灣各地到世界各處，錄製短片回應本冊主題，在現場播放，也收錄在地圖集裡。"
-                : "Sustainability has never belonged to one group of people alone. We invite people of different ages, genders, ethnicities, schooling and occupations, from all over Taiwan and around the world, to record short films responding to this volume’s theme. They are screened at the forum and collected in the Atlas."}
+                ? "永續從來不只是某一群人的事。我們邀請不同年齡、性別、族群、學歷與職業的人，從臺灣各地到世界各處，各錄一段短片，說出自己對跨領域永續的期待：希望它成為什麼、做到什麼、改變什麼。這些短片在論壇現場播放，也收錄在地圖集裡。"
+                : "Sustainability has never belonged to one group of people alone. We invite people of different ages, genders, ethnicities, schooling and occupations, from all over Taiwan and around the world, to each record a short film about what they hope interdisciplinary sustainability can become, do or change. The films are screened at the forum and collected in the Atlas."}
             </p>
             <Link className="txtlink" href={href("/voices")}>
               {zh ? (

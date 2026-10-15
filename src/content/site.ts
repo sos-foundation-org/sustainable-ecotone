@@ -153,8 +153,8 @@ export const FAQ: { q: L10n; a: L10n }[] = [
   {
     q: { zh: "人不在臺灣，也可以申請嗎？", en: "Can I apply from outside Taiwan?" },
     a: {
-      zh: "可以。論壇以實體為主，但我們也透過「多元聲音」收錄短片；表單裡可以註明你偏好的參與方式。",
-      en: "Yes. The forum is mainly held in person, but we also collect short films through Diverse Voices. You can tell us in the form how you would prefer to take part.",
+      zh: "可以。論壇以實體為主，但我們也透過「多元聲音」收錄各地的短片，請每個人說出對跨領域永續的期待；表單裡可以註明你偏好的參與方式。",
+      en: "Yes. The forum is mainly held in person, but through Diverse Voices we also collect short films from people everywhere about what they hope interdisciplinary sustainability can become. You can tell us in the form how you would prefer to take part.",
     },
   },
   {

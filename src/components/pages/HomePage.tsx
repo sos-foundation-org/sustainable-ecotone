@@ -423,13 +423,13 @@ export default function HomePage({ lang }: { lang: Lang }) {
               <h2 id="voices-teaser" className="h-sec">
                 {zh ? (
                   <>
-                    越過每一種邊界的聲音，
+                    越過每一種邊界的願望，
                     <br />
                     也是一種授粉。
                   </>
                 ) : (
                   <>
-                    Voices that cross every kind of border
+                    Hopes that cross every kind of border
                     <br />
                     are a kind of pollination, too.
                   </>
@@ -437,8 +437,8 @@ export default function HomePage({ lang }: { lang: Lang }) {
               </h2>
               <p className="muted">
                 {zh
-                  ? "高中生與退休教師、漁民與法官、部落與城市：不同年齡、性別、族群、學歷、職業與地方的人，各自錄一段短片，回應一個問題。不同人生的相遇，本身就是一種跨領域。"
-                  : "High school students and retired teachers, fishers and judges, Indigenous villages and cities: people of different ages, genders, ethnicities, schooling, occupations and places each record a short film answering a single question. When different lives meet, that in itself is interdisciplinary."}
+                  ? "高中生與退休教師、漁民與律師、部落與城市：我們請不同年齡、性別、族群、學歷、職業與地方的人，各錄一段短片，說出自己希望跨領域永續成為什麼、做到什麼、改變什麼。不同人生的期待放在一起，本身就是一種跨領域。"
+                  : "High school students and retired teachers, fishers and lawyers, Indigenous villages and cities: we ask people of different ages, genders, ethnicities, schooling, occupations and places to each record a short film about what they hope interdisciplinary sustainability can become, do or change. Put side by side, the hopes of different lives are interdisciplinary in themselves."}
               </p>
               <Link className="txtlink" href={href("/voices")}>
                 {zh ? (

@@ -332,7 +332,9 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 
 ### 4.9 多元聲音（Diverse Voices）
 
-- 是**年齡、性別、族群、學歷、職業與生命經驗**的多元，不只是地理位置。
+- **目的：收集各行各業的人對「跨領域永續」的期待與願望**：希望跨領域永續成為什麼、做到什麼、改變什麼。每一則短片回答一個邀請對方說出期待的提問（例如「你希望跨領域永續，能為你的日常帶來什麼改變？」），不是回應講者或某個學科的題目。
+- 「多元」說的是**誰**在說：**年齡、性別、族群、學歷、職業與生命經驗**的多元，不只是地理位置。「期待」說的是**說什麼**。
+- 鯨歌意象保留：聲音越過每一種邊界，說出各自的願望。`/voices` 水線標題為「鯨歌越過海盆，願望越過邊界。」
 - **絕不**稱為「海外聲音」（舊名，已在 commit `2154c13` 改掉；`README.md` 仍有舊字，見第 10 章）。
 
 ### 4.10 水線標題（簽名元素，每頁最多一個）
@@ -343,7 +345,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 |---|---|---|
 | 首頁 | hero 的「兼容並續」 | `HomePage.tsx` 直接寫 `<span className="zh wl wl--hero">`（`.wl-above` / `.wl-below` / `.wl-line`），**不是**用 `WaterlineHeading` 元件；位於 `h1#hero-title` 內 |
 | 活動頁 | 活動英文主標 | `EventPage.tsx` 的 `WaterlineHeading`（h1）；有圖版時 `contained` + `align="start"`，無圖版時置中 |
-| 多元聲音 | 頁面標題「鯨歌越過海盆，聲音越過身份。」 | `VoicesPage.tsx` 的 `PageTitle waterline` |
+| 多元聲音 | 頁面標題「鯨歌越過海盆，願望越過邊界。」 | `VoicesPage.tsx` 的 `PageTitle waterline` |
 | 歷屆講者 | **只在空狀態**（還沒有任何 past 活動）的「歷屆講者名錄，還在等第一批講者。」 | `SpeakersPage.tsx` 的 `WaterlineHeading as="h2" contained` |
 | 404 | 「你越過了一條還不存在的邊界。」 | `NotFoundPage.tsx` 的 `WaterlineHeading`（h1） |
 
@@ -483,7 +485,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 | `src/content/events.ts` | `summary`「五位講者、十二種身份」、`intro`「五位」、對談「五位講者」 | 屬該冊內容，新冊自己寫；人數變動要同步 |
 | `src/components/EdgeEffectFigure.tsx` | `PAIRS` 含「臺北 / 新加坡」 | 視需要調整 |
 | `src/content/site.ts` `FAQ` | 「詳細的時程與安排，將於表單開放時一併說明」 | 表單已開放，文字可能需更新（問使用者） |
-| `src/components/pages/VoicesPage.tsx` | 「† 影片陸續上線中；名單、地點與題目為暫定。」 | 見第 7 章 |
+| `src/components/pages/VoicesPage.tsx` | 「† 影片陸續上線中；名單、地點與提問為暫定。」 | 見第 7 章 |
 
 另外人工檢查：
 - [ ] 圖版選擇：沿用 `urbanpark` / `mangrove` 或畫新的（第 8.1 節）。圖版上的 `PL. {plateNo}` 自動等於該冊羅馬數字。
@@ -539,6 +541,8 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 
 ## 7. 新增多元聲音影片
 
+多元聲音收集的是**不同的人對跨領域永續的期待與願望**（見 4.9）。每位受邀者依自己的身份，回答一個「你希望跨領域永續……」形式的提問。
+
 ### 7.1 `voices.ts` 的 `Voice` 欄位
 
 | 欄位 | 說明 |
@@ -547,7 +551,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 | `name` | `L10n`：人名，或目前的佔位「多元聲音 01 / Voice 01」 |
 | `role` | `L10n`：身份（高中生、護理師…）。用來呈現年齡、職業、生命經驗的多元，不只寫國家 |
 | `location` | `string`：兩語共用的英文地名（`"Lanyu · Taiwan"`） |
-| `prompt` | `L10n`：他回應的問題 |
+| `prompt` | `L10n`：邀請對方說出期待的提問，依身份量身寫，例如漁民「你希望跨領域永續，能為海，也為靠海生活的人帶來什麼改變？」。一律以「希望 / hope」為核心，問的是願望，不是知識或經驗 |
 | `youtubeId?` | YouTube 影片 id |
 | `src?` | 自架 mp4，放 `public/voices/`（資料夾目前不存在，需建立） |
 | `poster?` | 封面（16:9，建議 ≥1920×1080，放 `public/voices/`）。沒填而有 `youtubeId` 時用 `https://i.ytimg.com/vi/<id>/hqdefault.jpg` |
@@ -575,9 +579,10 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 ### 7.5 佔位變成真實聲音時要改的文案
 
 - [ ] `voices.ts` 每筆的 `name`（從「多元聲音 0N」改成真名或對方同意的稱呼）、`role`、`location`、`prompt`、座標、`approx` 移除。
-- [ ] `VoicesPage.tsx`：海中註記「† 影片陸續上線中；名單、地點與題目為暫定。」/ 英文版，全部到齊後刪除或改寫。
-- [ ] `VoicesPage.tsx` 的 lead、`HomePage.tsx` 預告文字、`voicesMetadata` description 中列舉的身份（「高中生與退休教師、漁民與法官、原住民族部落與新住民家庭…」）是否與實際收錄相符。
-- [ ] 文案永遠強調多元（年齡、性別、族群、學歷、職業、生命經驗），不寫「海外聲音」。
+- [ ] `VoicesPage.tsx`：海中註記「† 影片陸續上線中；名單、地點與提問為暫定。」/ 英文版，全部到齊後刪除或改寫。
+- [ ] `VoicesPage.tsx` 的 lead、`HomePage.tsx` 預告文字中列舉的身份（「高中生與退休教師、漁民與律師、護理師與原住民族部落工作者…」）是否與實際收錄相符。
+- [ ] 文案永遠強調兩件事：**誰**是多元的（年齡、性別、族群、學歷、職業、生命經驗），**說的**是對跨領域永續的期待。不寫「海外聲音」。
+- [ ] 多元聲音文案出現在：`VoicesPage.tsx`（metadata、水線標題、lead、海中註記、結尾 CTA）、`WhaleSea.tsx`（隱藏 h2）、`HomePage.tsx` 預告、`EventPage.tsx` 預告、`CallPage.tsx` 聯絡區、`site.ts` 的 FAQ「人不在臺灣」。改方向時一起改。
 
 ---
 

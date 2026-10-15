@@ -355,7 +355,7 @@ export default function CallPage({ lang }: { lang: Lang }) {
               <span>{zh ? "Correspondence · 一般聯絡" : "Correspondence · General enquiries"}</span>
             </header>
             <h2 id="contact-h">{zh ? "其他事情，也歡迎來信" : "For anything else, write to us"}</h2>
-            <p className="muted">{zh ? "合作提案、多元聲音短片、媒體採訪，或只是想打個招呼。" : "Partnership proposals, films for Diverse Voices, press enquiries, or simply to say hello."}</p>
+            <p className="muted">{zh ? "合作提案、為多元聲音錄一段你對跨領域永續的期待、媒體採訪，或只是想打個招呼。" : "Partnership proposals, a film for Diverse Voices about your hopes for interdisciplinary sustainability, press enquiries, or simply to say hello."}</p>
             <dl className="fields">
               <div>
                 <dt>Email</dt>
@@ -378,7 +378,7 @@ export default function CallPage({ lang }: { lang: Lang }) {
               <div>
                 <dt>Voices</dt>
                 <dd>
-                  <Link href={localePath(lang, "/voices")}>{zh ? "多元聲音 · 錄一段短片給臺灣的聽眾" : "Diverse Voices · record a short film for audiences in Taiwan"}</Link>
+                  <Link href={localePath(lang, "/voices")}>{zh ? "多元聲音 · 錄一段短片，說出你對跨領域永續的期待" : "Diverse Voices · record a short film about your hopes for interdisciplinary sustainability"}</Link>
                 </dd>
               </div>
             </dl>
