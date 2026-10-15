@@ -118,7 +118,7 @@ export const EVENTS: ForumEvent[] = [
       {
         time: "Talk 4",
         title: { zh: "再野化：和平地把人類的領域還給自然", en: "Rewilding: peacefully giving human territory back to nature" },
-        detail: { zh: "Yuhan", en: "Yuhan" },
+        detail: { zh: "Goh Yu Han", en: "Goh Yu Han" },
       },
       {
         time: "Talk 5",

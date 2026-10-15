@@ -149,8 +149,8 @@ export const SPEAKERS: Speaker[] = [
   },
   {
     id: "yuhan",
-    name: { zh: "Yuhan", en: "Goh Yu Han" },
-    nameEn: "Goh Yu Han · SALAD Dressing",
+    name: { zh: "Goh Yu Han", en: "Goh Yu Han" },
+    nameEn: "Goh Yu Han",
     talk: { zh: "再野化：和平地把人類的領域還給自然", en: "Rewilding: peacefully giving human territory back to nature" },
     photo: "/speakers/yuhan-4x5.jpg",
     initial: { zh: "Y", en: "G" },
@@ -177,8 +177,8 @@ export const SPEAKERS: Speaker[] = [
     places: [{ name: "Singapore", lat: 1.29, lng: 103.85, country: "SG" }],
     orgs: ["salad"],
     bio: {
-      zh: `SALAD Dressing 的作品包括威尼斯建築雙年展新加坡館（2021）、杜拜世博新加坡館，以及墨爾本設計週的 <span class="en">Rewilding the Sky</span>。Yuhan 將從新加坡帶來一個問題：如果城市本身就是一個生態交會帶呢？（<span class="en">what if the city itself is the ecotone?</span>）`,
-      en: `SALAD Dressing’s work includes the Singapore Pavilion at the Venice Architecture Biennale (2021), the Singapore Pavilion at the Dubai World Expo, and <em>Rewilding the Sky</em> at Melbourne Design Week. From Singapore, Yuhan brings a question: <em>what if the city itself is the ecotone?</em>`,
+      zh: `SALAD Dressing 的作品包括威尼斯建築雙年展新加坡館（2021）、杜拜世博新加坡館，以及墨爾本設計週的 <span class="en">Rewilding the Sky</span>。Yu Han 將從新加坡帶來一個問題：如果城市本身就是一個生態交會帶呢？（<span class="en">what if the city itself is the ecotone?</span>）`,
+      en: `SALAD Dressing’s work includes the Singapore Pavilion at the Venice Architecture Biennale (2021), the Singapore Pavilion at the Dubai World Expo, and <em>Rewilding the Sky</em> at Melbourne Design Week. From Singapore, Yu Han brings a question: <em>what if the city itself is the ecotone?</em>`,
     },
     draftNote: {
       zh: "介紹為草稿，待講者確認；SALAD Dressing 的標誌與官網連結為暫代。",

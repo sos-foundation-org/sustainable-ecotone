@@ -163,7 +163,8 @@ export default function SpecimenSheet({
       </div>
       <div className="sheet-name">
         <H id={`sheet-${s.id}`}>{s.name[lang]}</H>
-        <i>{lang === "zh" ? s.nameEn : s.short}</i>
+        {/* the italic line repeats the name in English on Chinese pages, unless it already is English */}
+        {lang === "zh" ? s.nameEn !== s.name.zh && <i>{s.nameEn}</i> : <i>{s.short}</i>}
         <span className="mono sheet-loc">
           {no} · Loc. {s.places.map((p) => `${p.name}${p.approx ? "" : ` ${fmtCoord(p.lat, p.lng)}`}`).join(" ⇄ ")}
         </span>
