@@ -205,7 +205,6 @@ export const SPEAKERS: Speaker[] = [
     nameEn: "Goh Yu Han",
     talk: { zh: "再野化：和平地把人類的領域還給自然", en: "Rewilding: peacefully giving human territory back to nature" },
     highlights: [
-      { zh: "新加坡景觀建築事務所 Salad Dressing 設計總監，2010 年正式加入", en: "Director of Design at Salad Dressing, a Singapore landscape architecture studio, which Goh Yu Han formally joined in 2010", source: "https://www.saladlandscape.com/about" },
       { zh: "帶領 Salad Dressing 團隊參展 2021 威尼斯建築雙年展新加坡館", en: "Led the Salad Dressing team exhibiting in the Singapore Pavilion at the 2021 Venice Architecture Biennale", source: "https://www.labiennale.org/en/architecture/2021/singapore/" },
       { zh: "獲選文化景觀基金會（TCLF）Oberlander Prize 論壇新銳實踐者講者（2026）", en: "Selected as an emerging-practitioner speaker for The Cultural Landscape Foundation’s Virtual Oberlander Prize Forum (2026)", source: "https://www.tclf.org/virtual-oberlander-prize-forum-where-do-we-go-here" },
     ],
