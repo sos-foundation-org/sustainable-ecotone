@@ -205,11 +205,6 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
                 <li key={s.id}>
                   <a href={`#${s.id}`}>
                     <span className="mono">{catalogNo(s)}</span> <span className="jump-name">{s.name[lang]}</span>
-                    <span className="lbls" aria-label={zh ? `${s.identities.length} 種身份` : `${s.identities.length} identit${s.identities.length === 1 ? "y" : "ies"}`}>
-                      {s.identities.map((id) => (
-                        <span key={id.title.zh} />
-                      ))}
-                    </span>
                   </a>
                 </li>
               ))}

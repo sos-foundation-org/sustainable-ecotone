@@ -554,8 +554,6 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 .mini-sheet b { font-size: 1.15rem; letter-spacing: .08em; }
 .mini-sheet i { font-size: .9rem; color: var(--sepia); line-height: 1.4; }
 .mini-swatches { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
-.lbls { display: inline-flex; gap: 3px; }
-.lbls span { width: 9px; height: 13px; border: 1px solid var(--ink); background: var(--ink); display: block; }
 
 /* ── herbarium sheet ─────────────────────────────────────── */
 .sheets { display: grid; gap: clamp(36px, 5vw, 64px); }
@@ -1059,3 +1057,6 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 .myco-h1 .wl--hero { position: relative; display: inline-block; --wl: calc(100% - .44lh); }
 .myco-h1 .wl--hero .wl-line { left: -14px; right: -14px; }
 html:lang(en) .myco-h1 .wl--hero { font-size: clamp(3.6rem, 9vw, 8.25rem); line-height: 1.04; --wl: calc(100% - .44lh); }
+
+/* the catalogue number in the speaker jump list never breaks (ECO-S-04) */
+.jump a .mono { white-space: nowrap; }
