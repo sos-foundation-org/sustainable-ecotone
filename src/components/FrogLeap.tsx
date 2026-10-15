@@ -206,10 +206,11 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
     const trail = trailRef.current!;
     const ghosts = ghostsRef.current!;
     let last: Plan | null = null;
-    // once per page view, on the 2nd or 3rd run, the frog may catch the Next-leap card's grasshopper
-    const snatchOn = 2 + Math.floor(Math.random() * 2);
+    // every 2–3 runs the frog tries to catch the Next-leap card's grasshopper (if a hunt
+    // fails because the grasshopper is away, it simply tries again on the next run)
+    const gap = () => 2 + Math.floor(Math.random() * 2);
     let runs = 0;
-    let fed = false;
+    let nextHunt = gap();
     let running = false;
     let armed = true;
     let raf = 0;
@@ -235,7 +236,7 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
       running = true;
       armed = false;
       runs++;
-      const hunt = !fed && runs >= snatchOn && !!getPrey();
+      const hunt = runs >= nextHunt && !!getPrey();
       const P = plan(last, hunt);
       last = P;
       let paused = 0;
@@ -317,7 +318,7 @@ export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; l
             tongueTried = true;
             const prey = getPrey();
             if (prey?.available()) {
-              fed = true;
+              nextHunt = runs + gap();
               tongueAt = now;
               snapTongue(frog, prey);
               raf = requestAnimationFrame(step);

@@ -10,7 +10,8 @@ export type EventStatus = "upcoming" | "past" | "planning";
 /** 可重複使用的活動圖版（見 src/components/plates/index.tsx） */
 export type EventPlate = "mangrove";
 
-export type ProgramItem = { time: string; title: L10n; detail: L10n };
+/** time：時間或編號（例如 "19:00"、"Talk 1"）；可省略 */
+export type ProgramItem = { time?: string; title: L10n; detail: L10n };
 
 export type ForumEvent = {
   slug: string;
@@ -93,39 +94,40 @@ export const EVENTS: ForumEvent[] = [
     },
     program: [
       {
-        time: "00:00",
-        title: { zh: "開場 · Why Ecotone?", en: "Opening · Why Ecotone?" },
-        detail: { zh: "三方主辦單位致詞，介紹論壇與本場規則。", en: "A welcome from the three co-organizers, introducing the forum and the evening’s ground rules." },
+        title: { zh: "開場", en: "Opening" },
+        detail: { zh: "三方主辦單位致詞，介紹論壇。", en: "A welcome from the three co-organizers and an introduction to the forum." },
       },
       {
-        time: "00:15",
-        title: { zh: "Talks I · 自然與氣候", en: "Talks I · Nature and climate" },
-        detail: { zh: "孫烜駿 · 詹偉平。每場約 20 分鐘。", en: "Syuan-Jyun Sun · Wei-Ping Chan. About 20 minutes each." },
+        time: "Talk 1",
+        title: { zh: "都市化及其對自然的影響", en: "Urbanization and its impacts on nature" },
+        detail: { zh: "孫烜駿（Sun, Syuan-Jyun）", en: "Sun, Syuan-Jyun (孫烜駿)" },
       },
       {
-        time: "01:00",
-        title: { zh: "Talks II · 語言與地景", en: "Talks II · Language and landscape" },
-        detail: { zh: "顏訥 · Yuhan（新加坡）。", en: "Yen Ne · Yuhan (Singapore)." },
+        time: "Talk 2",
+        title: { zh: "夜間人工光（ALAN），以及橫跨城鄉地景的研究", en: "Artificial light at night (ALAN) and conducting research across urban-rural landscapes" },
+        detail: { zh: "詹偉平（Chan, Wei-Ping）", en: "Chan, Wei-Ping (詹偉平)" },
       },
       {
-        time: "01:45",
-        title: { zh: "Talk III · 診間裡的永續", en: "Talk III · Sustainability in the clinic" },
-        detail: { zh: "王鼎涵。", en: "Ting-Han Wang." },
+        time: "Talk 3",
+        title: { zh: "人類如何觀看、對待並記錄自然", en: "How humans have viewed, interacted with, and documented nature" },
+        detail: { zh: "顏訥（Yen, Na）", en: "Yen, Na (顏訥)" },
       },
       {
-        time: "02:10",
-        title: { zh: "多元聲音 · Diverse Voices", en: "Diverse Voices" },
-        detail: { zh: "播放來自不同世代、背景與地方的短片回應。", en: "Short films in response, from people of different generations, backgrounds and places." },
+        time: "Talk 4",
+        title: { zh: "再野化：和平地把人類的領域還給自然", en: "Rewilding: peacefully giving human territory back to nature" },
+        detail: { zh: "Yuhan", en: "Yuhan" },
       },
       {
-        time: "02:25",
+        time: "Talk 5",
+        title: { zh: "科技、自然與永續：新興新創", en: "Technology, nature, and sustainability: emerging startups" },
+        detail: {
+          zh: "王鼎涵（Hank Wang）。分享循環材料與永續校園行動的經驗。",
+          en: "Hank Wang (王鼎涵). Sharing experiences with circular materials and sustainable campus initiatives.",
+        },
+      },
+      {
         title: { zh: "Cross-Pollination 對談", en: "Cross-Pollination conversation" },
         detail: { zh: "五位講者互相回應彼此的講題，開放現場提問。", en: "The five speakers respond to one another’s talks, then open the floor to questions." },
-      },
-      {
-        time: "03:00",
-        title: { zh: "交流 · Mingle", en: "Mingle" },
-        detail: { zh: "花粉需要時間落地，留下來聊聊。", en: "Pollen needs time to settle. Stay and talk." },
       },
     ],
   },

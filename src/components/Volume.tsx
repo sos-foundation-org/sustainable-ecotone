@@ -30,11 +30,11 @@ export function ProgrammeToc({ e, lang = "zh" }: { e: ForumEvent; lang?: Lang })
   return (
     <ol className="toc">
       {e.program.map((p) => (
-        <li key={p.time + p.title.zh}>
+        <li key={p.title.zh}>
           <div className="toc-row">
             <span className="toc-title">{p.title[lang]}</span>
             <span className="toc-leader" aria-hidden="true" />
-            <time className="toc-time mono">{p.time}</time>
+            {p.time && <span className="toc-time mono">{p.time}</span>}
           </div>
           <p>{p.detail[lang]}</p>
         </li>
