@@ -65,7 +65,8 @@ function tufts() {
     const x = 20 + rnd() * 560;
     if (x < edgeX(y) + 6 || x > 574) continue;
     if (((x - POND.cx) / (POND.rx + 8)) ** 2 + ((y - POND.cy) / (POND.ry + 6)) ** 2 < 1) continue;
-    if (x > 410 && x < 492 && y < 572) continue; // trunk
+    if (x > 408 && x < 498 && y < 594) continue; // trunk
+    if (x > 372 && x < 544 && y > 560 && y < 594) continue; // buttress roots
     if (x > 318 && x < 364 && y < 506) continue; // sensor station
     if (x > 344 && x < 414 && y > 672) continue; // beetle
     const h = 4 + ((y - 440) / 270) * 12 * (0.6 + rnd() * 0.6);
@@ -81,36 +82,129 @@ function tufts() {
   return out.join("");
 }
 
-/* banyan canopy: leaf-cluster tips scattered through an ellipse */
-function canopyTips() {
-  const rnd = mulberry32(17);
-  const tips: [number, number, number][] = [];
-  for (let i = 0; i < 100; i++) {
-    const th = rnd() * Math.PI * 2;
-    const rho = Math.sqrt(0.04 + rnd() * 0.96);
-    const x = Math.min(548, 450 + Math.cos(th) * 124 * rho);
-    const y = 238 + Math.sin(th) * (Math.sin(th) > 0 ? 84 : 112) * rho;
-    tips.push([r2(x), r2(y), r2((th * 180) / Math.PI + (rnd() - 0.5) * 60)]);
+/* The plate sheet is 600×760; the viewBox leaves room above and to the right
+   so the banyan's crown can break out of the frame without being clipped. */
+const VIEWBOX = "0 -46 654 806";
+
+type Pt = [number, number];
+
+/**
+ * A limb as a filled, tapered engraving: a Catmull-Rom centreline offset to
+ * either side, with a shade half (hatched) on side `shade` (1 = right of travel,
+ * -1 = left), the two outlines (stroked, no base cap, so joints merge) and a
+ * fine bark line on the lit side.
+ */
+function limb(pts: Pt[], w0: number, w1: number, shade: 1 | -1 = 1, seg = 8) {
+  const c: Pt[] = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i - 1] ?? pts[i];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[i + 2] ?? p2;
+    for (let s = 0; s < seg; s++) {
+      const t = s / seg;
+      const t2 = t * t;
+      const t3 = t2 * t;
+      const f = (a: number, b: number, cc: number, d: number) => 0.5 * (2 * b + (-a + cc) * t + (2 * a - 5 * b + 4 * cc - d) * t2 + (-a + 3 * b - 3 * cc + d) * t3);
+      c.push([f(p0[0], p1[0], p2[0], p3[0]), f(p0[1], p1[1], p2[1], p3[1])]);
+    }
   }
-  return tips;
+  c.push(pts[pts.length - 1]);
+  const N = c.length;
+  const L: Pt[] = [];
+  const R: Pt[] = [];
+  const B: Pt[] = [];
+  c.forEach((p, j) => {
+    const a = c[Math.max(0, j - 1)];
+    const b = c[Math.min(N - 1, j + 1)];
+    const len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+    const nx = -(b[1] - a[1]) / len;
+    const ny = (b[0] - a[0]) / len;
+    const u = j / (N - 1);
+    const w = (w0 + (w1 - w0) * Math.pow(u, 0.8)) * (1 + 0.07 * Math.sin(j * 1.3 + w0)) * 0.5;
+    L.push([p[0] - nx * w, p[1] - ny * w]);
+    R.push([p[0] + nx * w, p[1] + ny * w]);
+    B.push([p[0] - shade * nx * w * 0.45, p[1] - shade * ny * w * 0.45]);
+  });
+  const line = (q: Pt[]) => q.map((p, i) => `${i ? "L" : "M"}${r2(p[0])} ${r2(p[1])}`).join("");
+  const side = shade === 1 ? R : L;
+  return {
+    fill: `${line(L)}${line([...R].reverse()).replace(/^M/, "L")}Z`,
+    shade: `${line(c)}${line([...side].reverse()).replace(/^M/, "L")}Z`,
+    sides: `${line(L)}L${r2(R[N - 1][0])} ${r2(R[N - 1][1])}${line([...R].reverse()).replace(/^M/, "L")}`,
+    open: `${line(L)}${line(R)}`,
+    bark: line(B.slice(Math.floor(N * 0.1), Math.floor(N * 0.8))),
+  };
 }
 
-const BRANCHES: [string, number][] = [
-  ["M440 400C420 384 396 376 380 350C370 334 356 318 346 302", 2.6],
-  ["M444 396C430 360 420 330 404 306C392 288 384 268 378 248", 2.2],
-  ["M452 394C456 350 444 310 450 270C454 230 446 200 444 160", 2.4],
-  ["M458 396C472 360 492 330 500 296C506 270 520 240 530 214", 2.2],
-  ["M464 400C486 388 510 380 524 358C536 340 550 318 560 298", 2.6],
-  ["M392 354C376 330 364 300 360 270M410 300C394 270 390 240 396 210M448 250C430 226 420 200 418 178M500 290C520 266 540 250 560 244M480 334C500 320 520 290 528 262", 1.2],
+/* back to front: secondary limbs, main limbs, then the trunk and its buttresses */
+const LIMBS: { p: Pt[]; w: [number, number]; s?: 1 | -1 }[] = [
+  { p: [[396, 290], [360, 270], [336, 242], [324, 214]], w: [8, 2.4], s: -1 },
+  { p: [[458, 262], [428, 226], [416, 186], [402, 150]], w: [9, 2.6], s: -1 },
+  { p: [[540, 300], [522, 250], [530, 196], [520, 150]], w: [10, 3] },
+  { p: [[598, 168], [612, 120], [606, 70], [622, 24]], w: [7, 2.4] },
+  { p: [[466, 204], [500, 166], [540, 122], [580, 70], [628, -6]], w: [10, 2.6] },
+  { p: [[470, 434], [508, 414], [540, 386], [574, 370], [612, 350]], w: [18, 4] },
+  { p: [[446, 404], [436, 360], [410, 306], [390, 254], [378, 200], [360, 150]], w: [20, 3.6], s: -1 },
+  { p: [[452, 398], [466, 336], [452, 282], [464, 210], [478, 130], [470, 60], [486, 0]], w: [23, 3.6] },
+  { p: [[464, 412], [492, 370], [530, 320], [566, 254], [596, 176], [632, 104]], w: [26, 4.4] },
+  { p: [[440, 452], [418, 412], [384, 372], [344, 330], [322, 300], [304, 270]], w: [26, 4.4], s: -1 },
 ];
-/* aerial roots hanging from the branches; the last one has reached the ground */
-const AERIAL = [
-  "M372 324C374 350 370 380 373 408",
-  "M392 316C393 336 390 356 392 372",
-  "M522 314C520 340 525 374 522 404",
-  "M540 300C541 330 538 360 541 392",
-  "M508 330C508 352 506 372 508 388",
+const TRUNK = limb([[452, 584], [446, 540], [442, 486], [448, 440], [452, 396]], 74, 50);
+const BUTTRESS = [
+  limb([[438, 556], [416, 568], [396, 576], [376, 580]], 18, 3, -1),
+  limb([[468, 556], [494, 568], [516, 574], [538, 578]], 18, 3),
+  limb([[452, 566], [446, 578], [440, 588]], 14, 3),
 ];
+/* the prop root that has come down from the low limb and cracked the paving */
+const PROP = limb([[344, 328], [342, 392], [334, 460], [322, 520], [300, 576]], 4.4, 6.4, -1);
+
+/* aerial roots: bundles of fine strands hanging from the limbs */
+const AERIAL: [number, number, number][] = [
+  [372, 352, 70], [388, 300, 52], [408, 384, 36], [520, 384, 44], [548, 372, 60], [584, 362, 50], [604, 356, 30],
+];
+function aerial() {
+  const rnd = mulberry32(53);
+  let d = "";
+  for (const [x, y, len] of AERIAL) {
+    for (let s = 0; s < 3; s++) {
+      const x0 = x + (s - 1) * 2.2;
+      const l = len * (0.6 + rnd() * 0.45);
+      d += `M${r2(x0)} ${y}C${r2(x0 + (rnd() - 0.5) * 6)} ${r2(y + l * 0.35)} ${r2(x0 + (rnd() - 0.5) * 6)} ${r2(y + l * 0.7)} ${r2(x0 + (rnd() - 0.5) * 3)} ${r2(y + l)}`;
+    }
+  }
+  return d;
+}
+
+/* the crown: overlapping foliage masses, drawn top (back) to bottom (front) */
+const MASSES: [number, number, number, number, number][] = [
+  [566, -2, 76, 44, 16],
+  [470, 18, 62, 40, 12],
+  [622, 70, 30, 52, 9],
+  [398, 92, 58, 40, 12],
+  [520, 86, 70, 44, 15],
+  [596, 160, 46, 46, 11],
+  [342, 178, 44, 36, 9],
+  [444, 168, 64, 42, 14],
+  [540, 214, 60, 40, 13],
+  [380, 252, 56, 30, 11],
+  [478, 262, 66, 32, 13],
+  [600, 290, 44, 30, 9],
+  [316, 258, 40, 28, 9],
+  [616, 340, 34, 24, 8],
+];
+function crown() {
+  const rnd = mulberry32(17);
+  return MASSES.map(([cx, cy, rx, ry, n], m) => {
+    const tips: [number, number, number][] = [];
+    for (let i = 0; i < Math.round(n * 1.5); i++) {
+      const th = rnd() * Math.PI * 2;
+      const rho = Math.sqrt(0.05 + rnd() * 0.95) * 0.9;
+      tips.push([r2(Math.min(640, cx + Math.cos(th) * rx * rho)), r2(Math.max(-36, cy + Math.sin(th) * ry * rho)), r2((th * 180) / Math.PI - 30 + (rnd() - 0.5) * 70)]);
+    }
+    return { cx, cy, rx, ry, leaves: leafClusters(100 + m, tips) };
+  });
+}
 
 /* roof garden: shrubs along the parapet, a small tree, and two façade planters */
 const ROOF_TIPS: [number, number, number][] = [
@@ -136,7 +230,7 @@ export default function UrbanParkPlate({ plateNo = "I", lang = "zh" }: { plateNo
   const t = T[lang];
   const water = waterLines(POND.cx - POND.rx, POND.cx + POND.rx, POND.cy - POND.ry + 3, POND.cy + POND.ry, 4.2, 2.8);
   const soil = stipple(5, 260, 300, 580, 676, 36).filter((m) => m.x > edgeX(m.y) + 4 && ((m.x - POND.cx) / POND.rx) ** 2 + ((m.y - POND.cy) / POND.ry) ** 2 > 1.1);
-  const leaves = leafClusters(23, canopyTips());
+  const masses = crown();
   const roof = leafClusters(41, ROOF_TIPS);
   let k = 0;
   const ink = () => ({ pathLength: 1, style: { animationDelay: `${(k++ % 40) * 0.03}s` } });
@@ -145,7 +239,7 @@ export default function UrbanParkPlate({ plateNo = "I", lang = "zh" }: { plateNo
     <figure className="plate-fig plate-fig--portrait">
       <Loupe
         artId="urbanpark-art"
-        viewBox="0 0 600 760"
+        viewBox={VIEWBOX}
         lang={lang}
         spots={[
           { n: "1", x: 380, y: 690, label: t.spots[0] },
@@ -155,7 +249,7 @@ export default function UrbanParkPlate({ plateNo = "I", lang = "zh" }: { plateNo
           { n: "5", x: 342, y: 452, label: t.spots[4] },
         ]}
       >
-        <svg className="art" viewBox="0 0 600 760" role="img" aria-labelledby="urbanpark-title urbanpark-desc">
+        <svg className="art" viewBox={VIEWBOX} role="img" aria-labelledby="urbanpark-title urbanpark-desc">
           <title id="urbanpark-title">{t.title}</title>
           <desc id="urbanpark-desc">{t.desc}</desc>
           <defs>
@@ -208,7 +302,7 @@ export default function UrbanParkPlate({ plateNo = "I", lang = "zh" }: { plateNo
             <text x="36" y="48" className="svg-mono" fill={CIN}>
               PL. {plateNo}
             </text>
-            <text x="564" y="48" textAnchor="end" className="svg-mono" fill={SEP}>
+            <text x="96" y="48" className="svg-mono" fill={SEP}>
               ECOTONUS · URBS ET SILVA
             </text>
             <line x1="36" y1="58" x2="564" y2="58" stroke={INK} strokeWidth=".5" />
@@ -307,38 +401,37 @@ export default function UrbanParkPlate({ plateNo = "I", lang = "zh" }: { plateNo
               <rect x="550.4" y="588" width="3.4" height="13" rx="1.7" fill={SEP} stroke={INK} strokeWidth=".5" transform="rotate(6 552 594)" />
               <rect x="562.4" y="596" width="3.2" height="11" rx="1.6" fill={SEP} stroke={INK} strokeWidth=".5" transform="rotate(14 564 601)" />
 
-              {/* banyan: trunk with buttress roots */}
-              <path d="M424 562C432 540 434 500 432 460C430 430 428 410 420 392L484 394C474 410 470 430 468 460C466 500 470 540 478 562Z" fill={PAPER} />
-              <path d="M452 400C456 440 456 500 460 540C462 552 466 558 470 562L478 562C470 540 466 500 468 460C470 430 474 410 484 394Z" fill="url(#hatch)" />
-              <path className="ink" {...ink()} d="M424 562C432 540 434 500 432 460C430 430 428 410 420 392M478 562C470 540 466 500 468 460C470 430 474 410 484 394" fill="none" stroke={INK} strokeWidth="1.5" />
-              <path className="ink" {...ink()} d="M424 562C414 564 404 568 394 574M432 554C426 562 422 570 420 578M478 562C490 564 500 568 510 574M470 556C474 564 478 572 480 580M444 560C444 568 442 574 440 580M438 420C440 450 442 480 440 520M446 470C448 500 450 530 452 556" fill="none" stroke={INK} strokeWidth=".7" />
-              {/* branches */}
-              {BRANCHES.map(([d, w]) => (
-                <path key={d} className="ink" {...ink()} d={d} fill="none" stroke={INK} strokeWidth={w} />
+              {/* banyan: aerial roots behind, the prop root, the limbs, the trunk */}
+              <path d={aerial()} fill="none" stroke={INK} strokeWidth=".5" />
+              {[PROP, ...LIMBS.map((l) => limb(l.p, l.w[0], l.w[1], l.s ?? 1)), ...BUTTRESS, TRUNK].map((g, i) => (
+                <g key={i}>
+                  <path d={g.fill} fill={PAPER} />
+                  <path d={g.shade} fill="url(#hatch)" />
+                  <path d={g.bark} fill="none" stroke={INK} strokeWidth=".35" />
+                  <path className="ink" {...ink()} d={g === TRUNK ? g.open : g.sides} fill="none" stroke={INK} strokeWidth={i === 0 ? 0.9 : 1.2} />
+                </g>
               ))}
-              {/* aerial roots, and the one prop root that has reached the paving */}
-              <g fill="none" stroke={INK} strokeWidth=".55">
-                {AERIAL.map((d) => (
-                  <path key={d} d={d} />
-                ))}
-                <path d="M374 318C376 314 378 310 380 306M524 306C524 302 522 298 520 296" />
-              </g>
-              <path className="ink" {...ink()} d="M346 300C344 360 338 420 330 480C322 530 312 556 300 576" fill="none" stroke={INK} strokeWidth="1.6" />
-              <path d="M350 302C348 360 342 420 334 480C326 530 316 556 304 576" fill="none" stroke={INK} strokeWidth=".45" />
-              {/* canopy: shade on the crown's underside, then the leaves */}
-              <path d="M334 290C330 314 354 332 388 334C418 342 450 340 470 334C500 340 530 330 556 310L560 276C522 298 480 308 440 304C400 304 366 298 334 290Z" fill="url(#hatchW)" opacity=".55" />
-              {leaves.map((l, i) => (
-                <g key={i} transform={`translate(${l.x} ${l.y}) rotate(${l.a}) scale(${r2(l.s * 0.46)})`}>
-                  {i % 6 === 0 ? (
-                    <g className="sway" style={{ animationDelay: `${l.delay}s`, animationDuration: `${l.dur}s` }}>
-                      <use href="#leaf" />
-                    </g>
-                  ) : (
-                    <use href="#leaf" />
+              {/* bark furrows on the trunk */}
+              <path d="M432 560C428 520 430 480 434 440M440 570C438 530 440 490 444 446M426 520C424 500 426 480 428 462M470 568C468 540 468 500 472 470" fill="none" stroke={INK} strokeWidth=".45" />
+              {/* the crown: each mass on its own paper, shaded underneath, then its leaves */}
+              {masses.map((m, mi) => (
+                <g key={mi}>
+                  <ellipse cx={m.cx} cy={m.cy + 2} rx={m.rx * 0.9} ry={m.ry * 0.82} fill={PAPER} />
+                  <path d={`M${m.cx - m.rx * 0.86} ${m.cy}A${m.rx * 0.86} ${m.ry * 0.82} 0 0 0 ${m.cx + m.rx * 0.86} ${m.cy}A${m.rx * 0.86} ${m.ry * 0.36} 0 0 1 ${m.cx - m.rx * 0.86} ${m.cy}Z`} fill="url(#hatchW)" opacity=".7" />
+                  {m.leaves.map((l, i) =>
+                    i % 7 === 0 ? (
+                      <g key={i} transform={`translate(${l.x} ${l.y}) rotate(${l.a}) scale(${r2(l.s * 0.42)})`}>
+                        <g className="sway" style={{ animationDelay: `${l.delay}s`, animationDuration: `${l.dur}s` }}>
+                          <use href="#leaf" />
+                        </g>
+                      </g>
+                    ) : (
+                      <use key={i} href="#leaf" transform={`translate(${l.x} ${l.y}) rotate(${l.a}) scale(${r2(l.s * 0.42)})`} />
+                    ),
                   )}
                 </g>
               ))}
-              <text x="572" y="420" textAnchor="end" className="svg-italic" fill={SEP}>
+              <text x="572" y="474" textAnchor="end" className="svg-italic" fill={SEP}>
                 Ficus microcarpa
               </text>
 
@@ -426,15 +519,15 @@ export default function UrbanParkPlate({ plateNo = "I", lang = "zh" }: { plateNo
                 <line x1="422" y1="699" x2="408" y2="694" stroke={CIN} strokeWidth=".6" />
                 <circle cx="430" cy="700" r="9" fill={PAPER} stroke={CIN} strokeWidth=".7" />
                 <text x="430" y="704.5">1</text>
-                <line x1="206" y1="264" x2="170" y2="306" stroke={CIN} strokeWidth=".6" />
-                <circle cx="212" cy="256" r="9" fill={PAPER} stroke={CIN} strokeWidth=".7" />
-                <text x="212" y="260.5">2</text>
+                <line x1="192" y1="240" x2="168" y2="304" stroke={CIN} strokeWidth=".6" />
+                <circle cx="196" cy="232" r="9" fill={PAPER} stroke={CIN} strokeWidth=".7" />
+                <text x="196" y="236.5">2</text>
                 <line x1="226" y1="618" x2="222" y2="576" stroke={CIN} strokeWidth=".6" />
                 <circle cx="226" cy="626" r="9" fill={PAPER} stroke={CIN} strokeWidth=".7" />
                 <text x="226" y="630.5">3</text>
-                <line x1="284" y1="270" x2="264" y2="300" stroke={CIN} strokeWidth=".6" />
-                <circle cx="290" cy="262" r="9" fill={PAPER} stroke={CIN} strokeWidth=".7" />
-                <text x="290" y="266.5">4</text>
+                <line x1="262" y1="262" x2="258" y2="298" stroke={CIN} strokeWidth=".6" />
+                <circle cx="262" cy="254" r="9" fill={PAPER} stroke={CIN} strokeWidth=".7" />
+                <text x="262" y="258.5">4</text>
                 <line x1="308" y1="474" x2="328" y2="462" stroke={CIN} strokeWidth=".6" />
                 <circle cx="300" cy="480" r="9" fill={PAPER} stroke={CIN} strokeWidth=".7" />
                 <text x="300" y="484.5">5</text>
