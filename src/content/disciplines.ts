@@ -34,7 +34,7 @@ export const DISCIPLINES: Discipline[] = [
   { key: "law", name: { zh: "法律", en: "Law" }, code: "Lw", linetype: { zh: "地籍界線", en: "cadastral boundary" } },
   { key: "politics", name: { zh: "政治", en: "Politics" }, code: "Pl", linetype: { zh: "國界線", en: "national border" } },
   { key: "ee", name: { zh: "電機", en: "Electrical Eng." }, code: "Ee", linetype: { zh: "走線焊點", en: "circuit traces" } },
-  { key: "hightech", name: { zh: "高科技", en: "High-tech" }, code: "Ht", linetype: { zh: "晶圓格", en: "wafer grid" } },
+  { key: "hightech", name: { zh: "科技", en: "Technology" }, code: "Tc", linetype: { zh: "晶圓格", en: "wafer grid" } },
   { key: "mech", name: { zh: "機械", en: "Mechanical Eng." }, code: "Me", linetype: { zh: "剖面線", en: "section hatching" } },
   { key: "agriculture", name: { zh: "農業", en: "Agriculture" }, code: "Ag", linetype: { zh: "犁溝", en: "plough furrows" } },
   { key: "fisheries", name: { zh: "漁業", en: "Fisheries" }, code: "Fs", linetype: { zh: "網目", en: "net mesh" } },

@@ -9,7 +9,7 @@ const PAIRS: [string, string, string, string][] = [
   ["法律", "Law", "海洋", "Ocean"],
   ["金融", "Finance", "農業", "Agriculture"],
   ["電機", "Electrical Eng.", "漁業", "Fisheries"],
-  ["歷史", "History", "高科技", "High-tech"],
+  ["歷史", "History", "科技", "Technology"],
   ["臺北", "Taipei", "新加坡", "Singapore"],
 ];
 

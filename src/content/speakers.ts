@@ -214,7 +214,7 @@ export const SPEAKERS: Speaker[] = [
         },
       },
     ],
-    disciplines: ["medicine"],
+    disciplines: ["medicine", "hightech"],
     places: [{ name: "Taiwan", lat: 24.2, lng: 120.9, approx: true, country: "TW" }],
     orgs: [],
     bio: {
