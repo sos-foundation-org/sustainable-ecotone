@@ -61,7 +61,6 @@ export const SPEAKERS: Speaker[] = [
     nameEn: "Syuan-Jyun Sun",
     talk: { zh: "都市化及其對自然的影響", en: "Urbanization and its impacts on nature" },
     highlights: [
-      { zh: "臺大氣候變遷與永續發展國際學位學程助理教授", en: "Assistant Professor, International Degree Program in Climate Change and Sustainable Development, National Taiwan University", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
       { zh: "英國劍橋大學博士", en: "PhD, University of Cambridge", source: "https://labspotlight.ntu.edu.tw/focus/166" },
       { zh: "實驗發現升溫 2°C 會削弱埋葬蟲親代照顧對幼蟲的保護", en: "Showed experimentally that a 2°C rise in temperature erodes the protection burying-beetle parental care gives offspring", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
       { zh: "調查臺灣北部 180 多個樣點，揭示都市化與熱島效應使埋葬蟲族群減少", en: "Surveyed 180+ sites across northern Taiwan, showing that urbanisation and urban heat reduce burying-beetle populations", source: "https://labspotlight.ntu.edu.tw/focus/166" },
@@ -80,7 +79,7 @@ export const SPEAKERS: Speaker[] = [
     tags: { zh: ["國立臺灣大學", "氣候變遷"], en: ["National Taiwan University", "Climate change"] },
     identities: [
       {
-        title: { zh: "國立臺灣大學 · 氣候變遷研究", en: "National Taiwan University · Climate change research" },
+        title: { zh: "臺大氣候變遷與永續發展國際學位學程助理教授", en: "Assistant Professor, International Degree Program in Climate Change and Sustainable Development, National Taiwan University" },
         detail: {
           zh: "研究生物如何回應快速變動的氣候，從個體行為、族群一路到群落尺度。",
           en: "Studies how living things respond to a rapidly changing climate, from individual behaviour through populations to whole communities.",
