@@ -8,7 +8,7 @@ import type { L10n } from "@/lib/i18n";
 export type EventStatus = "upcoming" | "past" | "planning";
 
 /** 可重複使用的活動圖版（見 src/components/plates/index.tsx） */
-export type EventPlate = "mangrove";
+export type EventPlate = "mangrove" | "urbanpark";
 
 /** time：時間或編號（例如 "19:00"、"Talk 1"）；可省略 */
 export type ProgramItem = { time?: string; title: L10n; detail: L10n };
@@ -90,7 +90,7 @@ export const EVENTS: ForumEvent[] = [
       },
     },
     speakers: ["sun", "chan", "yen", "yuhan", "wang"],
-    plate: "mangrove",
+    plate: "urbanpark",
     attendance: {
       zh: "活動資訊即將公布。確切日期、地點與參加方式確認後，會在這裡更新。",
       en: "Date and venue to be announced. Once the exact date, venue and how to attend are confirmed, they will be posted here.",
