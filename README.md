@@ -1,5 +1,7 @@
 # Ecotone｜兼容並續
 
+> **AI / 維護者請先讀 [`AI-README.md`](./AI-README.md)**：網站架構、設計規則、新增一冊／領域／多元聲音影片的完整步驟，以及樣式圖庫位置。
+
 NTU × NYCU × SOS Foundation 共同發起的跨領域永續論壇平台。
 「兼容並續」改自「兼容並蓄」：兼容不同學科，並讓永續延續下去。
 第一場：**Sustainable Urbanization? Rewilding?** 系列演講（2026 年 11 月）。
@@ -29,9 +31,9 @@ npm run build
 | `speakers.ts` | 講者、多重身份 (`identities`)、學科 (`disciplines`)、地點 (`places`)、介紹、照片 |
 | `disciplines.ts` | 學科與其製圖線型（新增學科需在 `EngraveDefs.tsx` 補一個 `lt-<key>` pattern） |
 | `crossings.ts` | 首頁「交會圖版」與「下一跳 / Desiderata」提問 |
-| `voices.ts` | 海外聲音影片：`youtubeId` 或 `src`、`poster`、`lat`/`lng`、時區 `tz` |
+| `voices.ts` | 多元聲音影片：`youtubeId` 或 `src`、`poster`、`lat`/`lng`、時區 `tz` |
 
-- 講者照片：放 `public/speakers/<id>.jpg`（4:5，至少 1600×2000），在 `speakers.ts` 填 `photo: "/speakers/<id>.jpg"`
+- 講者照片：裁成 4:5 後放 `public/speakers/<id>-4x5.jpg`，在 `speakers.ts` 填 `photo: "/speakers/<id>-4x5.jpg"`；**全彩，不可做灰階或褐色調**
 - 兩個表單網址留空時，按鈕會顯示「表單即將開放」/「追蹤表單即將開放」
 - `/contact` 會轉址到 `/call-for-speakers`（講者招募＋一般聯絡）
 
@@ -42,7 +44,7 @@ npm run build
 - [ ] SALAD Dressing 官網與正式 logo（目前暫用 ArchDaily 頁面與自製佔位圖 `salad-placeholder.svg`）
 - [ ] BioNarr 官網與 logo
 - [ ] 講者照片、講題、英文姓名確認，以及標記「草稿」的介紹內容；學科標註 `disciplines` 待講者確認
-- [ ] 海外聲音影片、封面、名單與地點
+- [ ] 多元聲音影片、封面、名單與地點
 - [ ] 校徽使用授權：NTU / NYCU / NDHU 校徽取自 Wikipedia（非自由授權的合理使用檔案），正式上線前請向各校公關確認
 
 ## 部署（Vercel）

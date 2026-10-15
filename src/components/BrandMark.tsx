@@ -1,4 +1,4 @@
-/** The Ecotone mark: a hand lens with a tide line and a 水筆仔 propagule crossing it. */
+/** The Ecotone mark: a coral fungus whose outer branches curl into the rim, a cinnabar tide line, mycelial threads below. */
 export default function BrandMark({ size = 32 }: { size?: number }) {
   return (
     <svg className="brand-mark" width={size} height={size} aria-hidden="true">

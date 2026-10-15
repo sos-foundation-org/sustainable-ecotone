@@ -184,9 +184,9 @@ function snapTongue(frog: SVGGElement, prey: Prey) {
 /**
  * Fig. Saltatio ranae — a chronophotograph that happens live. Each time the
  * figure scrolls into view one frog crosses it: crouch, launch, arc, land
- * (once or twice), and out past the right edge, leaving faint ghost frames and
- * its dotted trajectory. Every run is randomised. Reduced motion: one resting
- * frog on a dotted arc.
+ * (once or twice), and out past the right edge, leaving no trail. Every run is
+ * randomised; every 2–3 runs it may snatch the Next-leap grasshopper (Home only).
+ * Reduced motion: one resting frog.
  */
 export function FrogLeap({ caption = true, lang = "zh" }: { caption?: boolean; lang?: Lang }) {
   const svgRef = useRef<SVGSVGElement>(null);

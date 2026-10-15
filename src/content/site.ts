@@ -40,7 +40,7 @@ export const ORGS: Record<OrgKey, Org> = {
   nycu: { name: { zh: "國立陽明交通大學", en: "National Yang Ming Chiao Tung University" }, nameEn: "National Yang Ming Chiao Tung University", url: "https://www.nycu.edu.tw/", logo: "/logos/nycu.svg" },
   ndhu: { name: { zh: "國立東華大學", en: "National Dong Hwa University" }, nameEn: "National Dong Hwa University", url: "https://www.ndhu.edu.tw/", logo: "/logos/ndhu.svg" },
   sos: { name: { zh: "SOS Foundation", en: "SOS Foundation" }, nameEn: "Sustainability Of Sustainability", url: "https://sos-commons.vercel.app/", logo: "/logos/sos.svg" },
-  // PLACEHOLDER: 找不到 SALAD Dressing 官網與 logo，暫用 ArchDaily 頁面與自製佔位圖
+  // 官網已確認（saladlandscape.com）；logo 仍為自製佔位圖，placeholder 旗標代表「logo 待換」
   salad: { name: { zh: "SALAD Dressing", en: "SALAD Dressing" }, nameEn: "Landscape Architects, Singapore", url: "https://www.saladlandscape.com/", logo: "/logos/salad-placeholder.svg", placeholder: true },
   harvard: { name: { zh: "Harvard University", en: "Harvard University" }, nameEn: "Harvard University", url: "https://www.harvard.edu/" },
   tohoku: { name: { zh: "日本東北大學", en: "Tohoku University" }, nameEn: "Tohoku University", url: "https://www.tohoku.ac.jp/", logo: "/logos/tohoku.svg" },
@@ -160,8 +160,8 @@ export const FAQ: { q: L10n; a: L10n }[] = [
   {
     q: { zh: "申請之後會怎麼進行？", en: "What happens after I apply?" },
     a: {
-      zh: "我們會依每一冊的主題與講者組合整理名單，合適時主動與你聯繫。詳細的時程與安排，將於表單開放時一併說明。",
-      en: "We draw up a shortlist around each volume’s theme and line-up, and get in touch when there is a good fit. Timelines and arrangements will be explained in detail when the form opens.",
+      zh: "我們會依每一冊的主題與講者組合整理名單，合適時主動與你聯繫。詳細的時程與安排，會在聯繫時一併說明。",
+      en: "We draw up a shortlist around each volume’s theme and line-up, and get in touch when there is a good fit. Timelines and arrangements are explained in detail when we get in touch.",
     },
   },
 ];
