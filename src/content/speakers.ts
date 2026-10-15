@@ -61,8 +61,8 @@ export const SPEAKERS: Speaker[] = [
     nameEn: "Syuan-Jyun Sun",
     talk: { zh: "都市化及其對自然的影響", en: "Urbanization and its impacts on nature" },
     highlights: [
-      { zh: "臺大氣候變遷與永續發展國際學位學程助理教授，主持孫烜駿實驗室", en: "Assistant Professor, International Degree Program in Climate Change and Sustainable Development, National Taiwan University; leads the Sun Lab", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
-      { zh: "英國劍橋大學博士，以埋葬蟲為模式物種研究物種交互作用與適應", en: "PhD, University of Cambridge; uses burying beetles as a model system to study species interactions and adaptation", source: "https://labspotlight.ntu.edu.tw/focus/166" },
+      { zh: "臺大氣候變遷與永續發展國際學位學程助理教授", en: "Assistant Professor, International Degree Program in Climate Change and Sustainable Development, National Taiwan University", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
+      { zh: "英國劍橋大學博士", en: "PhD, University of Cambridge", source: "https://labspotlight.ntu.edu.tw/focus/166" },
       { zh: "實驗發現升溫 2°C 會削弱埋葬蟲親代照顧對幼蟲的保護", en: "Showed experimentally that a 2°C rise in temperature erodes the protection burying-beetle parental care gives offspring", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
       { zh: "調查臺灣北部 180 多個樣點，揭示都市化與熱島效應使埋葬蟲族群減少", en: "Surveyed 180+ sites across northern Taiwan, showing that urbanisation and urban heat reduce burying-beetle populations", source: "https://labspotlight.ntu.edu.tw/focus/166" },
     ],
