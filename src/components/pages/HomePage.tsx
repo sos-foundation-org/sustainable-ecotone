@@ -287,7 +287,6 @@ export default function HomePage({ lang }: { lang: Lang }) {
               idPrefix="home-atlas"
               speakers={folio.map((s) => ({ id: s.id, name: s.name[lang], photo: s.photo, initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
               disciplines={DISCIPLINES}
-              voices={VOICES}
               caption={
                 zh
                   ? `目前名錄中有 ${folio.length} 位講者，觸及 ${covered.size} / ${DISCIPLINES.length} 個學科。虛線的學科，等待下一位講者。`
