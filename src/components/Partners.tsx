@@ -68,7 +68,7 @@ export function CoOrganizers({ lang, id }: { lang: Lang; id: string }) {
 }
 
 /** All speakers' affiliations (cumulative): a small, quiet list, set apart from the co-organizers. */
-export function SpeakerAffiliations({ lang, id, logos = true }: { lang: Lang; id: string; logos?: boolean }) {
+export function SpeakerAffiliations({ lang, id, logos = true, note = true }: { lang: Lang; id: string; logos?: boolean; note?: boolean }) {
   const t = T[lang];
   const orgs = allAffiliations();
   if (!orgs.length) return null;
@@ -77,7 +77,7 @@ export function SpeakerAffiliations({ lang, id, logos = true }: { lang: Lang; id
       <h3 id={id} className="affiliations-h">
         {t.affHead} <i>{t.affSub}</i>
       </h3>
-      <p className="muted small">{t.affNote}</p>
+      {note && <p className="muted small">{t.affNote}</p>}
       <ul className="affil-list">
         {orgs.map((k) => (
           <li key={k}>
