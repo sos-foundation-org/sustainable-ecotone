@@ -151,7 +151,11 @@ export default function SpecimenSheet({
           <span className="seg">{t.top}</span>
           <span className="seg">{vol}</span>
         </span>
-        <Barcode code={`ECO-001-${no.slice(4)}`} />
+        {/* discipline linetypes sit beside the barcode, top right */}
+        <div className="sheet-top-r">
+          {disc}
+          <Barcode code={`ECO-001-${no.slice(4)}`} />
+        </div>
       </div>
       <div className="sheet-body">
         <Portrait s={s} lang={lang} />
@@ -192,7 +196,6 @@ export default function SpecimenSheet({
               </ul>
             </section>
           )}
-          {disc}
           <dl className="talk">
             <dt className="mono">{t.talk}</dt>
             <dd>{s.talk?.[lang] ?? t.talkTbc}</dd>
@@ -241,7 +244,6 @@ export default function SpecimenSheet({
           {s.draftNote && <p className="draft-note">† {s.draftNote[lang]}</p>}
         </div>
       )}
-      {!full && disc}
       <Genet seed={s.id} count={s.identities.length} names={s.identities.map((i) => i.title[lang])} lang={lang} corner />
     </article>
   );

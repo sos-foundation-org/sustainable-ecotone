@@ -1031,3 +1031,10 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 }
 .swatch--tip:hover::after, .swatch--tip:focus::after, .affil--icon:hover::after, .affil--icon:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
 @media (hover: none) { .sheet-disc { gap: 10px 14px; } .swatch--tip svg { width: 44px; height: 22px; } }
+
+/* Discipline swatches beside the barcode in the sheet's top bar */
+.sheet-top-r { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end; }
+.sheet-top .sheet-disc { margin: 0; gap: 8px; }
+.sheet-top .swatch--tip::after { bottom: auto; top: calc(100% + 8px); transform: translate(-50%, -4px); }
+.sheet-top .swatch--tip:hover::after, .sheet-top .swatch--tip:focus::after { transform: translate(-50%, 0); }
+@media (max-width: 480px) { .sheet-top-r { justify-content: flex-start; } }
