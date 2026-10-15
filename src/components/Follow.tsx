@@ -86,13 +86,17 @@ export default function FollowCard({ compact = false, note, headingId = "follow-
   const t = T[lang];
   if (compact) {
     return (
-      <div className="follow-compact">
-        <p>
-          <b>{t.title}</b> {t.titleSub && <i>{t.titleSub}</i>}
-          <br />
-          <span className="muted small">{t.short}</span>
-        </p>
-        <FollowButton variant="text" lang={lang} />
+      // a miniature seed packet; hidden by CSS on pages that already show the full one
+      <div className="follow-compact seed-mini">
+        <Propagule />
+        <div>
+          <p>
+            <b>{t.title}</b> {t.titleSub && <i>{t.titleSub}</i>}
+            <br />
+            <span className="muted small">{t.short}</span>
+          </p>
+          <FollowButton variant="text" lang={lang} />
+        </div>
       </div>
     );
   }

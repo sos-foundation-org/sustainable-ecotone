@@ -1060,3 +1060,9 @@ html:lang(en) .myco-h1 .wl--hero { font-size: clamp(3.6rem, 9vw, 8.25rem); line-
 
 /* the catalogue number in the speaker jump list never breaks (ECO-S-04) */
 .jump a .mono { white-space: nowrap; }
+
+/* Footer follow: a miniature seed packet, shown only where the page has no full seed packet */
+.seed-mini { position: relative; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; border: .5px solid var(--sepia); border-top: 2px solid var(--cinnabar); background: var(--card, #FAF6EC); padding: 14px 14px 12px; }
+.seed-mini::before { content: ""; position: absolute; left: 0; right: 0; top: 6px; border-top: 1px dashed var(--rule); }
+.seed-mini .seed-art { width: 30px; margin-top: 4px; }
+body:has(main .seed-packet) .seed-mini { display: none; }
