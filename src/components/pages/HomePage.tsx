@@ -104,7 +104,14 @@ export default function HomePage({ lang }: { lang: Lang }) {
                   Ecotone
                 </span>
                 <span className="pron">/ˈɛkəˌtoʊn/ n. 生態交會帶：兩個生態系相遇之處</span>
-                <span className="zh">兼容並續</span>
+                {/* the same waterline treatment as the volume titles */}
+                <span className="zh wl wl--hero">
+                <span className="wl-above">兼容並續</span>
+                <span className="wl-below" aria-hidden="true">
+                  兼容並續
+                </span>
+                <span className="wl-line" aria-hidden="true" />
+                </span>
               </h1>
               <p className="myco-kicker">
                 地面上，是一場場講座；
@@ -120,8 +127,12 @@ export default function HomePage({ lang }: { lang: Lang }) {
               <h1 id="hero-title" className="myco-h1">
                 <span className="lat">Ecotone</span>
                 <span className="pron">/ˈɛkəˌtoʊn/ n. the zone where two ecosystems meet</span>
-                <span className="zh" lang="zh-Hant-TW">
+                <span className="zh wl wl--hero" lang="zh-Hant-TW">
+                <span className="wl-above">兼容並續</span>
+                <span className="wl-below" aria-hidden="true">
                   兼容並續
+                </span>
+                <span className="wl-line" aria-hidden="true" />
                 </span>
               </h1>
               <p className="myco-kicker">
