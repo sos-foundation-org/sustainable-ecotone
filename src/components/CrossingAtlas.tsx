@@ -189,29 +189,7 @@ export default function CrossingAtlas({
     return hit ? " on" : " off";
   };
 
-  const plate = (L: Layout, variant: "wide" | "narrow") => (
-    <svg className={`atlas-svg atlas-svg--${variant}`} viewBox={`0 0 ${L.W} ${L.H}`} role="img" aria-labelledby={`${idPrefix}-${variant}-t`}>
-      <title id={`${idPrefix}-${variant}-t`}>{t.title}</title>
-      <path className="atlas-shore" d={`M0 ${L.shore}C${L.W * 0.25} ${L.shore - 6} ${L.W * 0.5} ${L.shore + 6} ${L.W * 0.75} ${L.shore}S${L.W} ${L.shore - 4} ${L.W} ${L.shore}`} />
-      <text x={8} y={L.shore - 8} className="atlas-tag">
-        {t.fields}
-      </text>
-      <text x={8} y={L.shore + 18} className="atlas-tag">
-        {t.places}
-      </text>
-      <g className="atlas-roots">
-        <path className="atlas-rhizome" d={L.rhizome} />
-        {L.songs.map((d, i) => (
-          <path key={i} className="atlas-song" d={d} />
-        ))}
-        {L.lace.map((l, i) => (
-          <path key={i} className={`atlas-lace${state(l.owner)}`} d={l.d} />
-        ))}
-        {L.roots.map((r, i) => (
-          <path key={i} className={`atlas-root${state(r.owner)}`} d={r.d} />
-        ))}
-      </g>
-      {L.disc.map((d) => (
+  const disc = (d: Layout["disc"][number]) => (
         <g key={d.key} className={`atlas-d${d.vacant ? " vacant" : ""}${touchedBy("d:" + d.key)}`} transform={`translate(${d.x} ${d.y})`}>
           <rect width="28" height="16" fill="#FAF6EC" className="sw-bg" />
           <rect width="28" height="16" fill={`url(#lt-${d.key})`} className="sw-pat" />
@@ -224,7 +202,33 @@ export default function CrossingAtlas({
             {d.vacant ? t.vacant : ""}
           </text>
         </g>
-      ))}
+  );
+
+  const plate = (L: Layout, variant: "wide" | "narrow") => (
+    <svg className={`atlas-svg atlas-svg--${variant}`} viewBox={`0 0 ${L.W} ${L.H}`} role="img" aria-labelledby={`${idPrefix}-${variant}-t`}>
+      <title id={`${idPrefix}-${variant}-t`}>{t.title}</title>
+      <path className="atlas-shore" d={`M0 ${L.shore}C${L.W * 0.25} ${L.shore - 6} ${L.W * 0.5} ${L.shore + 6} ${L.W * 0.75} ${L.shore}S${L.W} ${L.shore - 4} ${L.W} ${L.shore}`} />
+      <text x={8} y={L.shore - 8} className="atlas-tag">
+        {t.fields}
+      </text>
+      <text x={8} y={L.shore + 18} className="atlas-tag">
+        {t.places}
+      </text>
+      {/* vacant fields are drawn first, underneath the roots, so they never cover a real connection */}
+      {L.disc.filter((d) => d.vacant).map(disc)}
+      <g className="atlas-roots">
+        <path className="atlas-rhizome" d={L.rhizome} />
+        {L.songs.map((d, i) => (
+          <path key={i} className="atlas-song" d={d} />
+        ))}
+        {L.lace.map((l, i) => (
+          <path key={i} className={`atlas-lace${state(l.owner)}`} d={l.d} />
+        ))}
+        {L.roots.map((r, i) => (
+          <path key={i} className={`atlas-root${state(r.owner)}`} d={r.d} />
+        ))}
+      </g>
+      {L.disc.filter((d) => !d.vacant).map(disc)}
       {L.plc.map((p) => (
         <g key={p.key} className={`atlas-p atlas-p--${p.kind}${touchedBy("p:" + p.key)}`} transform={`translate(${p.x} ${p.y})`}>
           <path d="M0-6l6 6-6 6-6-6Z" />

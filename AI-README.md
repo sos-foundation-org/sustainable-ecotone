@@ -364,6 +364,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 ### 4.12 交會圖譜的空缺學科
 
 - 沒有任何講者連到的學科，在 `CrossingAtlas` 裡畫成**接近背景的藍**（`.atlas-d.vacant`：底 `#1D4468`、框與字 `#2C5479`、虛線框、線型 `opacity .18`），像沉進圖版裡。不要改回醒目色。首頁 hero 的 canvas 中，空缺節點用虛線、較低透明度（`engine.ts`）。
+- 繪製順序：空缺學科**最先畫**（在根系 `atlas-roots` 之下），有連結的學科、地點、講者在其上，空缺項目永遠不會遮住真正的連結。新增圖層時保持這個順序。
 
 ### 4.13 Logo 授權
 
