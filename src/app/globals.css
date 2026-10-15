@@ -1045,6 +1045,7 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 .affil--link:hover { border-color: var(--ink); color: var(--cinnabar); }
 
 /* Home hero 兼容並續: the waterline heading treatment, line kept to the heading column */
-.myco-h1 .wl--hero { position: relative; --wl: calc(100% - .44lh); }
+/* shrink-wrap the heading so the tide line ends just past the last glyph */
+.myco-h1 .wl--hero { position: relative; display: inline-block; --wl: calc(100% - .44lh); }
 .myco-h1 .wl--hero .wl-line { left: -14px; right: -14px; }
 html:lang(en) .myco-h1 .wl--hero { font-size: clamp(3.6rem, 9vw, 8.25rem); line-height: 1.04; --wl: calc(100% - .44lh); }
