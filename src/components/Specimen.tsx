@@ -43,6 +43,39 @@ const T = {
   },
 } satisfies Record<Lang, unknown>;
 
+/**
+ * Engraved line glyphs for a speaker's own pages, drawn in the site's ink-and-cinnabar hand:
+ * a lab flask with a sprouting seedling, and a cameo portrait framed by a leaf sprig.
+ */
+function LinkGlyph({ kind }: { kind: "lab" | "personal" }) {
+  return (
+    <svg className="link-glyph" viewBox="0 0 24 24" aria-hidden="true">
+      <g fill="none" stroke="#1C1A17" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round">
+        {kind === "lab" ? (
+          <>
+            <path d="M9.6 6.2h4.8M10.5 6.2v4.4L5.4 18.6a1.7 1.7 0 0 0 1.5 2.6h10.2a1.7 1.7 0 0 0 1.5-2.6l-5.1-8V6.2" />
+            <path d="M7.3 15.6h9.4" />
+            <path d="M8.2 18.9l2.4-2.4M10.9 20.4l3.6-3.6M14.4 20.6l2-2" strokeWidth=".6" />
+            <path d="M12 6.2V2.8" />
+            <path d="M12 4.3c-1.6.2-2.6-.6-2.9-1.9 1.5-.1 2.6.5 2.9 1.9Z" fill="#A8321F" stroke="#A8321F" strokeWidth=".6" />
+            <path d="M12 3.5c1.2-.9 2.4-.9 3.3-.1-1.1.9-2.3.9-3.3.1Z" />
+          </>
+        ) : (
+          <>
+            <ellipse cx="12" cy="11.4" rx="6.4" ry="8" />
+            <ellipse cx="12" cy="11.4" rx="5.3" ry="6.9" strokeWidth=".5" />
+            <circle cx="12" cy="9.6" r="2.2" />
+            <path d="M8.3 16.4c.7-2 2.1-3 3.7-3s3 1 3.7 3" />
+            <path d="M4.2 21.4c2.6.1 4.6-.8 5.7-2.5" />
+            <path d="M6.1 20.9c-.1-1 .4-1.8 1.3-2.2.2 1-.3 1.8-1.3 2.2Z" fill="#A8321F" stroke="#A8321F" strokeWidth=".6" />
+            <path d="M8.2 19.9c.1-1 .7-1.6 1.7-1.8 0 1-.6 1.7-1.7 1.8Z" />
+          </>
+        )}
+      </g>
+    </svg>
+  );
+}
+
 /** Herbarium-style barcode generated from the catalogue number. */
 export function Barcode({ code }: { code: string }) {
   const rnd = mulberry32(seedFrom(code));
@@ -224,18 +257,9 @@ export default function SpecimenSheet({
               })}
               {s.links?.map((l) => (
                 <li key={l.url}>
-                  <a className="affil affil--icon" href={l.url} target="_blank" rel="noopener noreferrer" aria-label={t[l.kind]} data-tip={t[l.kind]}>
-                    {l.icon ? (
-                      <img src={l.icon} alt="" />
-                    ) : (
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        {l.kind === "lab" ? (
-                          <path d="M9 3h6M10 3v6.2L4.6 18.4A1.7 1.7 0 0 0 6.1 21h11.8a1.7 1.7 0 0 0 1.5-2.6L14 9.2V3M7.4 14h9.2" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-                        ) : (
-                          <path d="M12 12.2a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4.5 20.5c.9-3.6 3.9-5.8 7.5-5.8s6.6 2.2 7.5 5.8" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-                        )}
-                      </svg>
-                    )}
+                  <a className="affil affil--link" href={l.url} target="_blank" rel="noopener noreferrer">
+                    {l.icon ? <img src={l.icon} alt="" /> : <LinkGlyph kind={l.kind} />}
+                    {t[l.kind]}
                   </a>
                 </li>
               ))}

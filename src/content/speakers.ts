@@ -73,7 +73,7 @@ export const SPEAKERS: Speaker[] = [
       { zh: "<i>Heat stress effects on offspring compound across parental care</i>，Proceedings of the Royal Society B（2025）", en: "<i>Heat stress effects on offspring compound across parental care</i>. Proceedings of the Royal Society B (2025), senior author", source: "https://ntuhighlights.ntu.edu.tw/News_Content_n_171094_s_254845.html" },
     ],
     photo: "/speakers/sun-4x5.jpg",
-    links: [{ kind: "lab", url: "https://sites.google.com/view/sjsun/home", icon: "/icons/sunlab.jpg" }],
+    links: [{ kind: "lab", url: "https://sites.google.com/view/sjsun/home" }],
     initial: { zh: "孫", en: "S" },
     eyebrow: "Climate Change · NTU",
     short: "Climate Change · NTU",
