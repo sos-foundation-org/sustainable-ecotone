@@ -114,7 +114,10 @@ export const SPEAKERS: Speaker[] = [
       { zh: "<i>A high throughput multispectral imaging system for museum specimens</i>，Communications Biology（2022）", en: "<i>A high throughput multispectral imaging system for museum specimens</i>. Communications Biology (2022)", source: "wpc_website" },
     ],
     photo: "/speakers/chan-4x5.jpg",
-    links: [{ kind: "personal", url: "https://wpchanwork.github.io/wei-ping_chan/zh/index.html" }],
+    links: [
+      { kind: "lab", url: "https://sos-commons.vercel.app/research" },
+      { kind: "personal", url: "https://wpchanwork.github.io/wei-ping_chan/zh/index.html" },
+    ],
     linkedOrgs: ["sos"],
     initial: { zh: "詹", en: "C" },
     eyebrow: "Founder · Founder · Researcher",
