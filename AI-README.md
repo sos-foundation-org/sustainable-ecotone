@@ -92,6 +92,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | **機構 Logo** | `public/logos/`（見下表） | `ORGS[key].logo`（`src/content/site.ts`），由 `Logo.tsx`（純 `<img>`）渲染 | 關於頁、首頁共同主辦、講者卡機構列 | 放檔案 → 在 `ORGS` 填 `logo` |
 | **講者肖像** | `public/speakers/<id>-4x5.jpg`（目前：`sun`、`chan`、`yen`、`yuhan`、`wang`） | `Speaker.photo`，`Specimen.tsx` 的 `Portrait`；`CrossingAtlas` 的圓形小頭像 | 活動頁講者卡 | 見 5.3 |
 | **網站圖示** | `src/app/icon.svg`（32×32 favicon，簡化版標誌）、`src/app/apple-icon.png`（180×180） | Next.js 檔案慣例自動產生 `<link rel="icon">` | 直接開檔；PNG 用圖片檢視器 | 見 8.7 |
+| **關於頁圖：兩棵樹，一片菌絲**（取代舊的三圓 TriplePoint） | `src/components/about/`：`geometry.ts`（決定性幾何：大王椰子、竹叢與竹鞭、菌絲、珊瑚菌 `coral()`）、`PartnerMycorrhiza.tsx`（伺服器元件，畫 SVG）、`PartnerTips.tsx`（客戶端：熱區與 tooltip） | `AboutPage.tsx` 的 `PageTitle aside={<PartnerMycorrhiza lang={lang} />}` | `/about`、`/en/about` 標題區右側（≤900px 時在標題下方） | 改 `geometry.ts`；標籤位置要同步改 `LABEL_BOXES`（圖形會避開）與 `PartnerMycorrhiza` 的 `SPOTS` 熱區。手機（≤480px）以 `.pmf-fine` 隱藏土壤點描與地層線 |
 | **設計 tokens** | `src/app/globals.css` 的 `:root` | `var(--token)` | 無 | 見 4.2 |
 
 ### 2.1 `EngraveDefs.tsx` 內的實際 id 一覽
@@ -99,8 +100,8 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | id | 種類 | 說明 / 使用處 |
 |---|---|---|
 | `hatch` | pattern | 38° 細斜線（墨色 .5）。最常用的陰影：葉背、蝗蟲、魚、榕樹陰影面等 |
-| `hatchW` | pattern | -42° 較疏斜線。遠景、樹冠暗部、TriplePoint |
-| `hatchC` | pattern | 45° 朱紅斜線。EdgeEffectFigure 交會帶、TriplePoint 三圓交集 |
+| `hatchW` | pattern | -42° 較疏斜線。遠景、樹冠暗部、關於頁圖的椰子冠莖 |
+| `hatchC` | pattern | 45° 朱紅斜線。EdgeEffectFigure 交會帶 |
 | `hatchL` | pattern | 淺色（`#E9EEF0`）斜線，給深底使用。目前**未被引用** |
 | `stip` | pattern | 點描。`Fungi.tsx`（Genet 土壤）、圖版 |
 | `lt-literature` … `lt-design` | pattern ×19 | 學科線型，與 `DISCIPLINES` 的 `key` 一一對應 |
@@ -218,6 +219,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `Volume.tsx` | `VolumeEmblem`（依 slug 產生的年輪徽記）、`ProgrammeToc`（目次式流程） |
 | `Follow.tsx` | `FollowButton`、`FollowCard`（種子袋，追蹤未來活動表單） |
 | `SpeakerCall.tsx` | `SpeakerFormButton`（講者表單）、`CallLink`、`BlankLabel`（空白標籤） |
+| `about/PartnerMycorrhiza.tsx` + `PartnerTips.tsx` + `geometry.ts` | 關於頁標題區的圖：NTU 大王椰子、NYCU 竹叢、SOS 菌絲網，三者在地下朱紅節點交會，地上長出珊瑚菌（兼容並續）。標籤只寫縮寫，全名在 tooltip（見 8.9） |
 | `Partners.tsx` | `CoOrganizers`（大印章）、`SpeakerAffiliations`（歷屆講者單位，自動彙整）、`allAffiliations()` |
 | `CollectorStamp.tsx` | 藏書章式機構 logo（官方 logo 不重畫，外圈刻名） |
 | `OrgLink.tsx` | 機構外連；`url` 為空時變成無效 `#` 加提示 |
@@ -696,6 +698,19 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
   - `svg-label`（19px 斜體）：大型英文標籤
   - `svg-key`：標註編號
 - HTML 標籤字級不低於 `--t-xs`（12px）。
+
+### 8.9 Tooltip 模式
+
+全站有兩種 tooltip，外觀一致：**墨底紙字、小字（約 .8rem）、無箭頭**。新 tooltip 請沿用其中一種，不要另做樣式。
+
+1. **純 CSS（短標籤）**：`.swatch--tip::after` / `.affil--icon::after`，內容來自 `data-tip`，`:hover` 與 `:focus` 顯示。元素要有 `tabIndex={0}` 與 `aria-label`（或 `role="img"`）。適合單行、位置固定、不會碰到螢幕邊緣的情況。
+2. **HTML 疊層（圖上的熱區）**：`about/PartnerTips.tsx`（`.pmf-layer` / `.pmf-spot` / `.pmf-tip`）。用在 SVG 插圖上：
+   - SVG 本身維持 `role="img"` + `<title>` + `<desc>`（desc 寫出全名），**熱區不放在 SVG 裡**，而是疊在上方、以 viewBox 座標換算成百分比定位的 HTML 元素。
+   - 每個對象**一個** `<button>`（Tab 停點），`aria-label` 為縮寫，`aria-describedby` 指向一個常駐的 `.sr-only` 全名；畫面上的 tooltip 是 `aria-hidden` 的視覺複本。其他熱區（例如椰子根、菌絲區）是 `aria-hidden` 的 `<span>`，只接 hover / tap。
+   - 開啟方式：滑鼠 hover（`pointerType === "mouse"`）；鍵盤 focus（只在 `:focus-visible` 時）；觸控 tap 切換（`pointerType` 為 touch / pen）；鍵盤 Enter / Space 也切換。Esc、點外面、視窗 resize 會關閉。滑鼠點擊不切換（hover 已顯示）。
+   - **不出畫面**：開啟後量測，太靠近頂端（含 sticky 標頭 `--mast-h`）就翻到錨點下方（`data-below="true"`），左右超出就以 `--dx` 夾回距視窗邊緣 8px 內。375px 手機上 NYCU 的長全名會被夾在右緣內。
+   - 淡入動畫只在 `prefers-reduced-motion: no-preference`。
+   - SOS 的全名在 tooltip 寫 **Sustainability of Sustainability Foundation**（中文頁前面加「SOS 基金會」）；圖上標籤只寫 NTU / NYCU / SOS。
 
 ---
 

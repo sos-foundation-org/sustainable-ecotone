@@ -802,6 +802,32 @@ a.plate-row:hover { background: var(--card); }
 
 /* ── about ───────────────────────────────────────────────── */
 .triple { max-width: 460px; }
+/* the partner figure (about/PartnerMycorrhiza): two trees, one mycelium, with hover / focus / tap tooltips */
+.pmf { position: relative; width: 100%; max-width: 460px; margin-left: auto; }
+.page-title-aside .pmf svg { max-width: none; margin: 0; }
+@media (max-width: 900px) { .pmf { margin: 0 auto; } }
+.pmf-labels text { paint-order: stroke; stroke: var(--paper); stroke-width: 5px; stroke-linejoin: round; }
+.pmf-code { font-family: var(--f-lat); font-style: italic; font-weight: 500; font-size: 30px; letter-spacing: .5px; }
+.pmf-zh { font-family: var(--f-zh); font-weight: 600; font-size: 22px; letter-spacing: 2px; }
+.pmf-zh--sm { font-weight: 400; font-size: 18px; }
+.pmf-lat { font-family: var(--f-lat); font-style: italic; font-size: 18px; }
+.pmf-layer { position: absolute; inset: 0; }
+.pmf-spot { position: absolute; display: block; padding: 0; margin: 0; border: 0; background: none; cursor: help; -webkit-tap-highlight-color: transparent; }
+.pmf-spot:focus { outline: none; }
+.pmf-spot:focus-visible { outline: 1.5px dashed var(--cinnabar); outline-offset: 2px; }
+.pmf-tip {
+  position: absolute; z-index: 6; width: max-content; max-width: min(280px, calc(100vw - 32px));
+  transform: translate(calc(-50% + var(--dx, 0px)), calc(-100% - 8px));
+  display: flex; flex-direction: column; gap: 1px; font-size: .8rem; line-height: 1.45; padding: 6px 10px;
+  background: var(--ink); color: var(--paper); pointer-events: none; text-align: left;
+}
+.pmf-tip[data-below="true"] { transform: translate(calc(-50% + var(--dx, 0px)), 8px); }
+.pmf-tip-sub { font-family: var(--f-lat); font-style: italic; font-size: .92rem; opacity: .82; }
+.pmf-tip-sub:lang(zh-Hant-TW) { font-family: var(--f-zh); font-style: normal; font-size: .76rem; }
+@media (prefers-reduced-motion: no-preference) { .pmf-tip { animation: pmf-tip .16s ease-out; } }
+@keyframes pmf-tip { from { opacity: 0; } }
+/* phones: drop the finest soil texture so the labels and network stay clear */
+@media (max-width: 480px) { .pmf-fine { display: none; } }
 .name-swap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; font-size: clamp(1.8rem, 4vw, 3rem); }
 .name-swap > span { white-space: nowrap; }
 .name-swap s { color: var(--ink); text-decoration: line-through 2px var(--cinnabar); }

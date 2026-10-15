@@ -6,6 +6,7 @@ import { VolumeEmblem } from "@/components/Volume";
 import OrgLink from "@/components/OrgLink";
 import { SpeakerAffiliations } from "@/components/Partners";
 import Swatch from "@/components/Swatch";
+import PartnerMycorrhiza from "@/components/about/PartnerMycorrhiza";
 import { CO_ORGANIZERS, ORGS, PRINCIPLES } from "@/content/site";
 import { EVENTS } from "@/content/events";
 import { DISCIPLINES } from "@/content/disciplines";
@@ -25,55 +26,6 @@ export function aboutMetadata(lang: Lang) {
             "Ecotone was co-founded by National Taiwan University, National Yang Ming Chiao Tung University and SOS Foundation. The story behind the name, what each partner brings, and what we mean to build for the long term.",
         }),
   });
-}
-
-/** Three hatched circles (Euler diagram): the triple overlap is 兼容並續 / Ecotone. */
-function TriplePoint({ lang }: { lang: Lang }) {
-  const zh = lang === "zh";
-  const C = [
-    { cx: 150, cy: 120, pat: "hatch" },
-    { cx: 250, cy: 120, pat: "hatchW" },
-    { cx: 200, cy: 205, pat: "lt-mech" },
-  ];
-  return (
-    <svg className="triple" viewBox="-40 -10 480 360" role="img" aria-labelledby="triple-t">
-      <title id="triple-t">
-        {zh
-          ? "三個圓分別代表臺大、陽明交大與 SOS Foundation；三者重疊之處，就是兼容並續。"
-          : "Three circles stand for NTU, NYCU and SOS Foundation. Where all three overlap is Ecotone."}
-      </title>
-      <defs>
-        {C.map((c, i) => (
-          <clipPath key={i} id={`tp-${i}`}>
-            <circle cx={c.cx} cy={c.cy} r="92" />
-          </clipPath>
-        ))}
-      </defs>
-      {C.map((c, i) => (
-        <rect key={`f${i}`} width="400" height="330" fill={`url(#${c.pat})`} opacity=".33" clipPath={`url(#tp-${i})`} />
-      ))}
-      <g clipPath="url(#tp-0)">
-        <g clipPath="url(#tp-1)">
-          <rect width="400" height="330" fill="url(#hatchC)" clipPath="url(#tp-2)" />
-        </g>
-      </g>
-      {C.map((c, i) => (
-        <circle key={`c${i}`} cx={c.cx} cy={c.cy} r="92" fill="none" stroke="#1C1A17" strokeWidth="1.1" />
-      ))}
-      <g stroke="#1C1A17" strokeWidth=".5">
-        <path d="M12 26L85 55" />
-        <path d="M388 26L315 55" />
-        <path d="M200 318V298" />
-      </g>
-      <text x="-30" y="22" className="svg-label" fill="#1C1A17">NTU</text>
-      <text x="430" y="22" textAnchor="end" className="svg-label" fill="#1C1A17">NYCU</text>
-      <text x="200" y="340" textAnchor="middle" className="svg-label" fill="#1C1A17">SOS Foundation</text>
-      <rect x="148" y="130" width="104" height="34" fill="#FAF6EC" stroke="#A8321F" strokeWidth=".8" />
-      <text x="200" y="153" textAnchor="middle" className={zh ? "svg-zh svg-zh--lg" : "svg-label"} fill="#A8321F">
-        {zh ? "兼容並續" : "Ecotone"}
-      </text>
-    </svg>
-  );
 }
 
 export default function AboutPage({ lang }: { lang: Lang }) {
@@ -112,7 +64,7 @@ export default function AboutPage({ lang }: { lang: Lang }) {
             </p>
           )
         }
-        aside={<TriplePoint lang={lang} />}
+        aside={<PartnerMycorrhiza lang={lang} />}
       />
 
       {/* name */}
