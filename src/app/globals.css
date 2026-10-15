@@ -475,7 +475,12 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 .atlas-place { font-family: var(--f-lat); font-style: italic; font-size: 17px; fill: var(--cyan-ink); }
 .atlas-sub { font-family: var(--f-mono); font-size: 13px; letter-spacing: .8px; fill: var(--cyan-mute); }
 .atlas-name { font-family: var(--f-zh); font-size: 17px; font-weight: 600; fill: var(--cyan-ink); paint-order: stroke; stroke: var(--cyan); stroke-width: 5px; stroke-linejoin: round; }
-.atlas-d.vacant { opacity: .62; }
+/* vacant fields sink into the plate: a blue only a shade lighter than the background */
+.atlas-d.vacant { opacity: 1; --vac: #2C5479; }
+.atlas-d.vacant .sw-bg { fill: #1D4468; }
+.atlas-d.vacant .sw-pat { opacity: .18; }
+.atlas-d.vacant .frame { stroke: var(--vac); }
+.atlas-d.vacant .atlas-label, .atlas-d.vacant .atlas-sub { fill: var(--vac); }
 .atlas-d.vacant .frame { stroke-dasharray: 2 2; }
 .atlas-d, .atlas-p, .atlas-s { transition: opacity .35s; }
 .atlas-d.off, .atlas-p.off, .atlas-s.off { opacity: .28; }
@@ -488,8 +493,8 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 .atlas-p path { fill: var(--cyan); stroke: var(--cyan-ink); stroke-width: 1.2; }
 .atlas-p--voice path { stroke-dasharray: 2 2; }
 .atlas-p.on path { fill: var(--cin-light); }
-.atlas-vacant { display: none; margin: 12px 0 0; font-size: .92rem; color: var(--cyan-mute); }
-.atlas-vacant .mono { color: var(--cin-light); margin-right: 8px; }
+.atlas-vacant { display: none; margin: 12px 0 0; font-size: .92rem; color: #2C5479; }
+.atlas-vacant .mono { color: #2C5479; margin-right: 8px; }
 .atlas-key { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0 18px; border-top: 1px solid var(--cyan-mute); }
 .atlas-key button { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 2px; width: 100%; padding: 10px 6px; border-bottom: .5px solid rgba(180, 198, 212, .35); transition: background .3s; }
 .atlas-key button:hover, .atlas-key button:focus-visible, .atlas-key button[aria-pressed="true"] { background: rgba(233, 238, 240, .08); }

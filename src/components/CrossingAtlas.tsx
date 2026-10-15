@@ -213,8 +213,8 @@ export default function CrossingAtlas({
       </g>
       {L.disc.map((d) => (
         <g key={d.key} className={`atlas-d${d.vacant ? " vacant" : ""}${touchedBy("d:" + d.key)}`} transform={`translate(${d.x} ${d.y})`}>
-          <rect width="28" height="16" fill="#FAF6EC" />
-          <rect width="28" height="16" fill={`url(#lt-${d.key})`} />
+          <rect width="28" height="16" fill="#FAF6EC" className="sw-bg" />
+          <rect width="28" height="16" fill={`url(#lt-${d.key})`} className="sw-pat" />
           <rect width="28" height="16" className="frame" />
           <text x="36" y="13" className="atlas-label">
             {d.name[lang]}
