@@ -162,7 +162,7 @@ export const SPEAKERS: Speaker[] = [
     nameEn: "Na Yen",
     talk: { zh: "人類如何觀看、對待並記錄自然", en: "How humans have viewed, interacted with, and documented nature" },
     highlights: [
-      { zh: "國立東華大學華文文學系助理教授（2026 年起），東華華文系學士、碩士", en: "Assistant Professor, Department of Sinophone Literatures, National Dong Hwa University (since 2026); BA and MA from the same department", source: "https://sili.ndhu.edu.tw/p/412-1055-22760.php?Lang=zh-tw" },
+      { zh: "國立東華大學華文系學士、碩士", en: "BA and MA, Department of Sinophone Literatures, National Dong Hwa University", source: "https://sili.ndhu.edu.tw/p/412-1055-22760.php?Lang=zh-tw" },
       { zh: "國立清華大學中國文學博士，研究筆記小說、散文創作與性別文化", en: "PhD in Chinese Literature, National Tsing Hua University; research covers biji fiction, essay writing and gender culture", source: "https://sili.ndhu.edu.tw/p/412-1055-22760.php?Lang=zh-tw" },
       { zh: "曾任中央研究院中國文哲研究所博士後研究員、哈佛大學東亞系訪問學人", en: "Former postdoctoral researcher at the Institute of Chinese Literature and Philosophy, Academia Sinica, and visiting scholar in East Asian Languages and Civilizations at Harvard", source: "https://zh.wikipedia.org/wiki/顏訥" },
       { zh: "文學直播節目「作家事」共同主持人，曾任聯合報「鳴人堂」專欄作者", en: "Co-host of the literary live-stream show 作家事 (Zuojia shi); former columnist for the United Daily News opinion platform 鳴人堂", source: "https://zh.wikipedia.org/wiki/顏訥" },
@@ -179,7 +179,7 @@ export const SPEAKERS: Speaker[] = [
     tags: { zh: ["國立東華大學", "華文文學", "作家"], en: ["National Dong Hwa University", "Sinophone literature", "Writer"] },
     identities: [
       {
-        title: { zh: "國立東華大學 · 華文文學", en: "National Dong Hwa University · Sinophone literature" },
+        title: { zh: "國立東華大學華文文學系助理教授", en: "Assistant Professor, Department of Sinophone Literatures, National Dong Hwa University" },
         detail: {
           zh: "以文學與書寫，處理人、土地與時代之間的關係。",
           en: "Works through literature and writing on the relationships between people, the land and their times.",
