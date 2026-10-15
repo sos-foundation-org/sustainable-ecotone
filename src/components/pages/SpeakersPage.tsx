@@ -198,7 +198,7 @@ export default function SpeakersPage({ lang }: { lang: Lang }) {
                 <CrossingAtlas
                   lang={lang}
                   idPrefix="sp-atlas"
-                  speakers={archived.map(({ s }) => ({ id: s.id, name: s.name[lang], disciplines: s.disciplines, places: s.places }))}
+                  speakers={archived.map(({ s }) => ({ id: s.id, name: s.name[lang], photo: s.photo, initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
                   disciplines={DISCIPLINES}
                 />
               </div>

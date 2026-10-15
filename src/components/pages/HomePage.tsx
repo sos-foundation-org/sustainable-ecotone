@@ -274,7 +274,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
             <CrossingAtlas
               lang={lang}
               idPrefix="home-atlas"
-              speakers={folio.map((s) => ({ id: s.id, name: s.name[lang], disciplines: s.disciplines, places: s.places }))}
+              speakers={folio.map((s) => ({ id: s.id, name: s.name[lang], photo: s.photo, initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
               disciplines={DISCIPLINES}
               voices={VOICES}
               caption={

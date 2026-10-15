@@ -1002,3 +1002,9 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 .highlights li::before { content: ""; position: absolute; left: 2px; top: .7em; width: 7px; height: 7px; border: 1px solid var(--cinnabar); transform: rotate(45deg); }
 .highlights--pubs li::before { border-radius: 50%; transform: none; }
 .highlights--pubs li i { font-style: italic; }
+
+/* Atlas name tags: a small round headshot beside each name */
+.atlas-key button { grid-template-columns: 34px 1fr; column-gap: 10px; align-items: center; }
+.atlas-key button > b, .atlas-key button > span:not(.atlas-avatar) { grid-column: 2; }
+.atlas-avatar { grid-column: 1; grid-row: 1 / span 2; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid var(--cyan-mute); display: block; }
+.atlas-avatar--initial { display: grid; place-items: center; font-size: .85rem; color: var(--cyan-mute); }

@@ -123,39 +123,8 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
               </dd>
             </div>
           </dl>
-          <div className="follow-row reveal">
-            <FollowCard
-              lang={lang}
-              note={
-                zh
-                  ? `${e.title} 的確切日期與地點尚未公布。留下你的 e-mail，資訊確定時我們會第一時間通知你；之後的每一冊，也不會錯過。`
-                  : `The exact date and venue for ${e.title} have not been announced yet. Leave your email and we will let you know the moment they are confirmed, and you won’t miss a volume after that.`
-              }
-            />
-          </div>
         </div>
       </section>
-
-      {e.premise && (
-        <section className="sec sec--tight" aria-labelledby="premise">
-          <div className="wrap spread">
-            <div className="reveal">
-              <p className="catno mono">
-                <span>{vol} · Premise</span>
-              </p>
-              <h2 id="premise" className="h-sec">
-                {e.premise.title[lang]}
-              </h2>
-            </div>
-            <div className="gutter" aria-hidden="true" />
-            <div className="reveal prose">
-              {e.premise.body[lang].map((p) => (
-                <Rich key={p} as="p" html={p} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       <PlateEdge from="var(--paper)" to="var(--cyan)" mode="lace" seed={e.vol * 13} label={`ECOTONE · ${vol}`} />
 
@@ -175,7 +144,7 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
               <CrossingAtlas
                 lang={lang}
                 idPrefix="ev-atlas"
-                speakers={lineup.map((s) => ({ id: s.id, name: s.name[lang], disciplines: s.disciplines, places: s.places }))}
+                speakers={lineup.map((s) => ({ id: s.id, name: s.name[lang], photo: s.photo, initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
                 disciplines={DISCIPLINES}
                 caption={
                   zh
@@ -192,6 +161,31 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
       </section>
 
       <PlateEdge from="var(--cyan)" to="var(--paper)" mode="lace" seed={e.vol * 17} />
+
+      {/* Programme as table of contents */}
+      <section className="sec" id="contents" aria-labelledby="toc-h">
+        <div className="wrap spread">
+          <div className="reveal">
+            <p className="catno mono">
+              <span>{vol} · Contents</span>
+            </p>
+            <h2 id="toc-h" className="h-sec">
+              {zh ? (
+                <>
+                  目次 <i>Programme</i>
+                </>
+              ) : (
+                "Programme"
+              )}
+            </h2>
+            <p className="muted">{zh ? "流程為暫定版本，正式時間將於日期確認後公布。" : "The running order is provisional. Final times will be published once the date is confirmed."}</p>
+          </div>
+          <div className="gutter" aria-hidden="true" />
+          <div className="reveal">
+            <ProgrammeToc e={e} lang={lang} />
+          </div>
+        </div>
+      </section>
 
       {/* The speakers of this volume, each on a herbarium-style sheet */}
       <section className="sec" id="speakers" aria-labelledby="lineup">
@@ -244,31 +238,6 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
 
       <MareyDivider caption={false} lang={lang} />
 
-      {/* Programme as table of contents */}
-      <section className="sec" id="contents" aria-labelledby="toc-h">
-        <div className="wrap spread">
-          <div className="reveal">
-            <p className="catno mono">
-              <span>{vol} · Contents</span>
-            </p>
-            <h2 id="toc-h" className="h-sec">
-              {zh ? (
-                <>
-                  目次 <i>Programme</i>
-                </>
-              ) : (
-                "Programme"
-              )}
-            </h2>
-            <p className="muted">{zh ? "流程為暫定版本，正式時間將於日期確認後公布。" : "The running order is provisional. Final times will be published once the date is confirmed."}</p>
-          </div>
-          <div className="gutter" aria-hidden="true" />
-          <div className="reveal">
-            <ProgrammeToc e={e} lang={lang} />
-          </div>
-        </div>
-      </section>
-
       {/* Voices teaser */}
       <section className="sec sec--tight sec--folio" aria-labelledby="ev-voices">
         <div className="wrap split">
@@ -296,6 +265,22 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
               )}{" "}
               <span aria-hidden="true">☞</span>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Semina: follow future volumes, just above the call for speakers */}
+      <section className="sec sec--tight" aria-label={zh ? "追蹤未來活動" : "Follow future events"}>
+        <div className="wrap">
+          <div className="follow-row reveal">
+            <FollowCard
+              lang={lang}
+              note={
+                zh
+                  ? `${e.title} 的確切日期與地點尚未公布。留下你的 e-mail，資訊確定時我們會第一時間通知你；之後的每一冊，也不會錯過。`
+                  : `The exact date and venue for ${e.title} have not been announced yet. Leave your email and we will let you know the moment they are confirmed, and you won’t miss a volume after that.`
+              }
+            />
           </div>
         </div>
       </section>

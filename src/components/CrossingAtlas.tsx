@@ -34,6 +34,9 @@ const T = {
 export type AtlasSpeaker = {
   id: string;
   name: string;
+  /** small round headshot on the name tag below the plate */
+  photo?: string;
+  initial?: string;
   disciplines: DisciplineKey[];
   places: Place[];
 };
@@ -277,6 +280,14 @@ export default function CrossingAtlas({
               onBlur={() => setHl(null)}
               onClick={() => setPinned((p) => (p === s.id ? null : s.id))}
             >
+              {s.photo ? (
+                // eslint-disable-next-line @next/next/no-img-element -- tiny static headshot
+                <img className="atlas-avatar" src={s.photo} alt="" loading="lazy" />
+              ) : (
+                <span className="atlas-avatar atlas-avatar--initial" aria-hidden="true">
+                  {s.initial ?? s.name.slice(0, 1)}
+                </span>
+              )}
               <b>{s.name}</b>
               <span>
                 {s.disciplines.map((k) => disciplines.find((d) => d.key === k)?.name[lang]).join(t.sep)}
