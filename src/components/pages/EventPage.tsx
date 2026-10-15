@@ -196,6 +196,12 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
       {/* The speakers of this volume, each on a herbarium-style sheet */}
       <section className="sec" id="speakers" aria-labelledby="lineup">
         <div className="wrap">
+          {e.talkLanguages && (
+            <p className="lang-tag reveal">
+              <span className="mono">{zh ? "語言" : "Language"}</span>
+              {e.talkLanguages[lang]}
+            </p>
+          )}
           <PlateHead
             lang={lang}
             no="§"

@@ -987,3 +987,7 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 @media print {
   .mast, .colophon, .loupe, .lens-bar { display: none; }
 }
+
+/* Language tag above a volume's speakers */
+.lang-tag { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 14px; padding: 5px 12px 5px 6px; border: 1px solid var(--ink); border-radius: 999px; font-size: .9rem; color: var(--ink); background: var(--paper); }
+.lang-tag .mono { font-size: var(--t-xs, .75rem); letter-spacing: .14em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--ink); color: var(--paper); }

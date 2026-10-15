@@ -69,7 +69,7 @@ export const SPEAKERS: Speaker[] = [
     places: [{ name: "Taipei", lat: 25.02, lng: 121.54, country: "TW" }],
     orgs: ["ntu"],
     bio: {
-      zh: `當我們談「氣候變遷」時，常常只看到溫度曲線。孫老師的研究關心的是曲線背後那些正在調整、合作、甚至演化的生命。他會從科學家的角度，拋出一個所有學科都繞不開的問題：<span class="en">how do living systems cope?</span>`,
+      zh: `當我們談「氣候變遷」時，常常只看到溫度曲線。孫老師的研究關心的是曲線背後那些正在調整、合作、甚至演化的生命。孫老師會從科學家的角度，拋出一個所有學科都繞不開的問題：生命系統要如何因應？（<span class="en">how do living systems cope?</span>）`,
       en: `When we talk about climate change, we often see only the temperature curve. Professor Sun’s research is about the lives behind that curve, which are adjusting, cooperating, even evolving. Speaking as a scientist, Professor Sun will pose a question no discipline can sidestep: <em>how do living systems cope?</em>`,
     },
     draftNote: DRAFT,
@@ -100,7 +100,7 @@ export const SPEAKERS: Speaker[] = [
         },
       },
       {
-        title: { zh: "Harvard 研究者", en: "Researcher, Harvard" },
+        title: { zh: "哈佛大學研究者", en: "Researcher, Harvard" },
         detail: {
           zh: "哈佛大學有機體與演化生物學系（OEB）；曾於比較動物學博物館、Rowland Institute 從事標本 3D 數位化與夜間人工光對蛾類影響的研究。",
           en: "Department of Organismic and Evolutionary Biology (OEB), Harvard University. Previously researched the 3D digitization of natural history collections and the effects of artificial light at night on moths, at the Museum of Comparative Zoology and the Rowland Institute.",
@@ -141,7 +141,7 @@ export const SPEAKERS: Speaker[] = [
     places: [{ name: "Hualien", lat: 23.9, lng: 121.54, country: "TW" }],
     orgs: ["ndhu"],
     bio: {
-      zh: `如果說科學負責回答「發生了什麼」，文學負責的是「我們如何感受它」。在一個充滿數據與模型的論壇裡，顏訥會帶來另一種精準：語言的精準。<span class="en">Because a crisis we can't narrate is a crisis we can't feel.</span>`,
+      zh: `如果說科學負責回答「發生了什麼」，文學負責的是「我們如何感受它」。在一個充滿數據與模型的論壇裡，顏訥會帶來另一種精準：語言的精準。一場說不出來的危機，我們也無從感受。（<span class="en">Because a crisis we can't narrate is a crisis we can't feel.</span>）`,
       en: `If science answers the question “what happened?”, literature answers “how do we feel it?” In a forum full of data and models, Na Yen brings a different kind of precision: the precision of language. <em>Because a crisis we can’t narrate is a crisis we can’t feel.</em>`,
     },
     draftNote: DRAFT,
@@ -160,7 +160,7 @@ export const SPEAKERS: Speaker[] = [
       {
         title: { zh: "SALAD Dressing 景觀建築師", en: "Landscape architect, SALAD Dressing" },
         detail: {
-          zh: "新加坡地景建築事務所，關注 rewilding、經驗策展與數位環境感知（Digital Umwelt）。",
+          zh: "新加坡地景建築事務所，關注再野化（rewilding）、經驗策展與數位環境感知（Digital Umwelt）。",
           en: "A Singapore landscape architecture practice concerned with rewilding, experience curation and digital environmental sensing (Digital Umwelt).",
         },
       },
@@ -176,11 +176,11 @@ export const SPEAKERS: Speaker[] = [
     places: [{ name: "Singapore", lat: 1.29, lng: 103.85, country: "SG" }],
     orgs: ["salad"],
     bio: {
-      zh: `SALAD Dressing 的作品包括威尼斯建築雙年展新加坡館（2021）、杜拜世博新加坡館，以及墨爾本設計週的 <span class="en">Rewilding the Sky</span>。Yuhan 將從新加坡帶來一個問題：<span class="en">what if the city itself is the ecotone?</span>`,
+      zh: `SALAD Dressing 的作品包括威尼斯建築雙年展新加坡館（2021）、杜拜世博新加坡館，以及墨爾本設計週的 <span class="en">Rewilding the Sky</span>。Yuhan 將從新加坡帶來一個問題：如果城市本身就是一個生態交會帶呢？（<span class="en">what if the city itself is the ecotone?</span>）`,
       en: `SALAD Dressing’s work includes the Singapore Pavilion at the Venice Architecture Biennale (2021), the Singapore Pavilion at the Dubai World Expo, and <em>Rewilding the Sky</em> at Melbourne Design Week. From Singapore, Yuhan brings a question: <em>what if the city itself is the ecotone?</em>`,
     },
     draftNote: {
-      zh: "介紹為草稿，待講者確認；SALAD Dressing logo 與官網連結為暫代。",
+      zh: "介紹為草稿，待講者確認；SALAD Dressing 的標誌與官網連結為暫代。",
       en: "Draft profile, pending the speaker’s confirmation. The SALAD Dressing logo and website link are placeholders.",
     },
   },
@@ -218,7 +218,7 @@ export const SPEAKERS: Speaker[] = [
     places: [{ name: "Taiwan", lat: 24.2, lng: 120.9, approx: true, country: "TW" }],
     orgs: [],
     bio: {
-      zh: `醫療是最少被放進永續討論的產業之一，卻是碳排與廢棄物的大戶。當一位牙醫同時要管診間、做研究、還要推永續政策，<span class="en">sustainability</span> 就不再是抽象概念，而是每天早上的 <span class="en">operational decision</span>。`,
+      zh: `醫療是最少被放進永續討論的產業之一，卻是碳排與廢棄物的大戶。當一位牙醫同時要管診間、做研究、還要推永續政策，永續就不再是抽象概念，而是每天早上都要做的營運決策（<span class="en">operational decision</span>）。`,
       en: `Healthcare is one of the industries least often included in conversations about sustainability, yet it is a major source of carbon emissions and waste. When one dentist has to run a clinic, do research and drive sustainability policy all at once, sustainability stops being an abstraction and becomes an <em>operational decision</em> made every morning.`,
     },
     draftNote: {
