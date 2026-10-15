@@ -119,7 +119,7 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
               <dt>{zh ? "Lang. · 語言" : "Language"}</dt>
               <dd>
                 {e.language[lang]}
-                <span className="muted">{e.languageNote[lang]}</span>
+                {e.languageNote[lang] && <span className="muted">{e.languageNote[lang]}</span>}
               </dd>
             </div>
           </dl>

@@ -28,6 +28,7 @@ export type ForumEvent = {
   format: L10n;
   formatNote: L10n;
   language: L10n;
+  /** 語言補充說明；留空則不顯示 */
   languageNote: L10n;
   /** 講者區塊上方的語言標籤，例如「中文＋英文」 */
   talkLanguages?: L10n;
@@ -59,8 +60,8 @@ export const EVENTS: ForumEvent[] = [
     venueNote: { zh: "臺北 · 實體為主", en: "Taipei · Mainly in person" },
     format: { zh: "系列演講 + 對談", en: "Talks + conversation" },
     formatNote: { zh: "約 3 小時", en: "About 3 hours" },
-    language: { zh: "中文為主", en: "Mainly Mandarin" },
-    languageNote: { zh: "部分講者以英文進行", en: "Some talks in English" },
+    language: { zh: "中文 + 英文", en: "Mandarin + English" },
+    languageNote: { zh: "", en: "" },
     talkLanguages: { zh: "中文 & 英文", en: "Mandarin & English" },
     status: "upcoming",
     statusLabel: { zh: "Vol. 01 · 籌備中", en: "Vol. 01 · In preparation" },
