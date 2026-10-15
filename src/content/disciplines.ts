@@ -18,7 +18,13 @@ export type DisciplineKey =
   | "fisheries"
   | "medicine"
   | "ecology"
-  | "design";
+  | "climate"
+  | "design"
+  | "sports"
+  | "music"
+  | "arts"
+  | "dance"
+  | "education";
 
 export type Discipline = {
   key: DisciplineKey;
@@ -39,8 +45,14 @@ export const DISCIPLINES: Discipline[] = [
   { key: "agriculture", name: { zh: "農業", en: "Agriculture" }, code: "Ag", linetype: { zh: "犁溝", en: "plough furrows" } },
   { key: "fisheries", name: { zh: "漁業", en: "Fisheries" }, code: "Fs", linetype: { zh: "網目", en: "net mesh" } },
   { key: "medicine", name: { zh: "醫學", en: "Medicine" }, code: "Md", linetype: { zh: "心電圖", en: "ECG trace" } },
-  { key: "ecology", name: { zh: "生態·氣候", en: "Ecology & Climate" }, code: "Ec", linetype: { zh: "等高線", en: "contour lines" } },
+  { key: "ecology", name: { zh: "生態", en: "Ecology" }, code: "Ec", linetype: { zh: "葉脈", en: "leaf venation" } },
+  { key: "climate", name: { zh: "氣候", en: "Climate" }, code: "Cl", linetype: { zh: "等壓線", en: "isobars" } },
   { key: "design", name: { zh: "景觀設計", en: "Landscape Design" }, code: "Ds", linetype: { zh: "樹冠平面", en: "canopy plan" } },
+  { key: "sports", name: { zh: "體育", en: "Sports" }, code: "Sp", linetype: { zh: "跑道線", en: "running-track lanes" } },
+  { key: "music", name: { zh: "音樂", en: "Music" }, code: "Mu", linetype: { zh: "五線譜", en: "staff lines" } },
+  { key: "arts", name: { zh: "美術", en: "Fine Arts" }, code: "Ar", linetype: { zh: "炭筆交叉線", en: "charcoal cross-hatching" } },
+  { key: "dance", name: { zh: "舞蹈", en: "Dance" }, code: "Dn", linetype: { zh: "舞步記譜", en: "step notation" } },
+  { key: "education", name: { zh: "教育", en: "Education" }, code: "Ed", linetype: { zh: "筆記橫線", en: "ruled notebook" } },
 ];
 
 export const disciplineByKey = (k: DisciplineKey) => DISCIPLINES.find((d) => d.key === k)!;

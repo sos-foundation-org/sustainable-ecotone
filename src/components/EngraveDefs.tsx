@@ -78,8 +78,46 @@ export default function EngraveDefs() {
         <pattern id="lt-medicine" patternUnits="userSpaceOnUse" width="40" height="14">
           <path d="M0 8h10l2-2 2 2h3l2-7 2 12 2-5h17" fill="none" stroke={INK} strokeWidth=".6" />
         </pattern>
-        <pattern id="lt-ecology" patternUnits="userSpaceOnUse" width="40" height="10">
+        <pattern id="lt-ecology" patternUnits="userSpaceOnUse" width="18" height="12">
+          {/* leaf venation: a midrib with alternate veins */}
+          <g fill="none" stroke={INK} strokeWidth=".5" strokeLinecap="round">
+            <path d="M0 6h18" />
+            <path d="M3 6l3-4M9 6l3-4M15 6l3-4M6 6l3 4M12 6l3 4M0 6l3 4" strokeWidth=".4" />
+          </g>
+        </pattern>
+        <pattern id="lt-climate" patternUnits="userSpaceOnUse" width="40" height="10">
+          {/* isobars */}
           <path d="M0 3C10 0 14 6 20 3s10-3 20 0M0 8c10-3 14 3 20 0s10-3 20 0" fill="none" stroke={INK} strokeWidth=".5" />
+        </pattern>
+        <pattern id="lt-sports" patternUnits="userSpaceOnUse" width="20" height="10">
+          {/* running-track lanes: solid lane lines with a dashed lane centre */}
+          <g stroke={INK} fill="none">
+            <path d="M0 1.5h20M0 8.5h20" strokeWidth=".6" />
+            <path d="M0 5h20" strokeWidth=".4" strokeDasharray="3 2.5" />
+          </g>
+        </pattern>
+        <pattern id="lt-music" patternUnits="userSpaceOnUse" width="24" height="12">
+          {/* staff lines with a single note head */}
+          <g stroke={INK} fill="none" strokeWidth=".4">
+            <path d="M0 2h24M0 4h24M0 6h24M0 8h24M0 10h24" />
+            <path d="M14.6 7.2V1.4" strokeWidth=".5" />
+          </g>
+          <ellipse cx="13.4" cy="7.4" rx="1.4" ry="1" fill={INK} transform="rotate(-20 13.4 7.4)" />
+        </pattern>
+        <pattern id="lt-arts" patternUnits="userSpaceOnUse" width="7" height="7" patternTransform="rotate(30)">
+          {/* charcoal cross-hatching */}
+          <path d="M0 0v7M3.5 0v7M0 3.5h7" stroke={INK} strokeWidth=".35" />
+        </pattern>
+        <pattern id="lt-dance" patternUnits="userSpaceOnUse" width="24" height="12">
+          {/* step notation: a curving path of paired footprints */}
+          <path d="M0 9C6 9 8 3 12 3s6 6 12 6" fill="none" stroke={INK} strokeWidth=".4" strokeDasharray="1.2 1.6" />
+          <ellipse cx="6" cy="6.3" rx=".9" ry="1.5" fill={INK} transform="rotate(-35 6 6.3)" />
+          <ellipse cx="18" cy="6.3" rx=".9" ry="1.5" fill={INK} transform="rotate(35 18 6.3)" />
+        </pattern>
+        <pattern id="lt-education" patternUnits="userSpaceOnUse" width="16" height="6">
+          {/* ruled notebook: feint lines and a margin rule */}
+          <path d="M0 5.5h16" stroke={INK} strokeWidth=".4" />
+          <path d="M3 0v6" stroke="#A8321F" strokeWidth=".45" />
         </pattern>
         <pattern id="lt-design" patternUnits="userSpaceOnUse" width="14" height="14">
           <circle cx="7" cy="7" r="4.6" fill="none" stroke={INK} strokeWidth=".5" />

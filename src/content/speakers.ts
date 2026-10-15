@@ -87,7 +87,7 @@ export const SPEAKERS: Speaker[] = [
         },
       },
     ],
-    disciplines: ["ecology"],
+    disciplines: ["ecology", "climate"],
     places: [{ name: "Taipei", lat: 25.02, lng: 121.54, country: "TW" }],
     orgs: ["ntu"],
     bio: {
@@ -143,7 +143,7 @@ export const SPEAKERS: Speaker[] = [
         },
       },
     ],
-    disciplines: ["ecology", "hightech"],
+    disciplines: ["ecology", "climate", "hightech"],
     places: [
       { name: "Taipei", lat: 25.02, lng: 121.54, country: "TW" },
       { name: "Cambridge, MA", lat: 42.37, lng: -71.11, country: "US" },
