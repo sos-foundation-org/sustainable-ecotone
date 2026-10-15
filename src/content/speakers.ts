@@ -103,7 +103,6 @@ export const SPEAKERS: Speaker[] = [
     highlights: [
       { zh: "打造高通量多光譜影像系統，數位化逾 18,000 件博物館館藏", en: "Built a high-throughput multispectral imaging system that has digitized more than 18,000 museum specimens", source: "wpc_website" },
       { zh: "重現半世紀前的實驗，比較並解析蛾類趨光性下降的成因", en: "Repeated a half-century-old experiment to compare, and disentangle, why moths are becoming less attracted to light", source: "wpc_website" },
-      { zh: "研究登上 Nature 與 Science，主題涵蓋全球山區氣候變遷速度與物種海拔分布", en: "First-author papers in Nature and Science on climate velocities in the world’s mountains and species’ elevational ranges", source: "wpc_website" },
       { zh: "哈佛大學有機體與演化生物學博士", en: "PhD in Organismic and Evolutionary Biology, Harvard University", source: "wpc_website" },
     ],
     publications: [
