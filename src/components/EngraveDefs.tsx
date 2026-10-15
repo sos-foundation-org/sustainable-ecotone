@@ -217,17 +217,31 @@ export default function EngraveDefs() {
         {/* ── fungi: the species library (components/fungi/library) as <symbol id="fungus-<species>"> ── */}
         <FungusSymbols />
 
-        {/* ── brand mark: a lens with a tide line and a propagule ── */}
+        {/* ── brand mark: a coral fungus on the tide line whose outer branches curl out into
+             the rim; below the waterline its trunk runs on as mycelial threads. Ink is
+             currentColor only (no paper fills), so it works on any ground. ── */}
         <symbol id="mark" viewBox="0 0 40 40">
-          <circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor" strokeWidth="1.1" />
-          <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" strokeWidth=".4" />
           <clipPath id="mark-clip">
-            <circle cx="20" cy="20" r="15.6" />
+            <circle cx="20" cy="20" r="18.5" />
           </clipPath>
-          <g clipPath="url(#mark-clip)">
-            <path d="M2 22C8 19 12 25 20 22C28 19 32 25 38 22L38 40L2 40Z" fill="url(#hatch)" />
-            <path d="M2 22C8 19 12 25 20 22C28 19 32 25 38 22" fill="none" stroke="#A8321F" strokeWidth="1" />
-            <path d="M20 6C18.6 14 18.6 24 20 33C21.4 24 21.4 14 20 6Z" fill="#F2ECDF" stroke="currentColor" strokeWidth=".8" />
+          <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6.92 6.92A18.5 18.5 0 1 0 33.08 6.92" strokeWidth="1.5" />
+            <path d="M19.2 16.6C18.2 13.6 13.3 6.2 12.2 5.2C10.9 4.05 8.9 4.95 6.92 6.92" strokeWidth="1.7" />
+            <path d="M20.8 16.6C21.8 13.6 26.7 6.2 27.8 5.2C29.1 4.05 31.1 4.95 33.08 6.92" strokeWidth="1.7" />
+            <path d="M20 22C20.1 20 19.9 18.4 20 16.4V7.4" strokeWidth="2.4" />
+            <path d="M20 22C20.1 20 19.9 18.4 20 15.6" strokeWidth="3" />
+            <path d="M16.6 11.2C16 9.8 15.8 8.6 16 7.4M23.4 11.2C24 9.8 24.2 8.6 24 7.4" strokeWidth="1.3" />
+          </g>
+          <g fill="currentColor">
+            <circle cx="20" cy="6.4" r="1.6" />
+            <circle cx="16" cy="7" r="1.05" />
+            <circle cx="24" cy="7" r="1.05" />
+          </g>
+          <g clipPath="url(#mark-clip)" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2 34.4C8 32 12.4 36.4 20 34.2C27.6 32 32 36.4 38 34.2" stroke="currentColor" strokeWidth=".45" />
+            <path d="M19.3 22.2C18.6 26.6 13.6 27 9.6 28.6C6 30 3.4 32.4 1.6 35.6M20.7 22.2C21.4 26.6 26.4 27 30.4 28.6C34 30 36.6 32.4 38.4 35.6M20 22.6C20.2 27.2 19.4 31 20 39" stroke="currentColor" strokeWidth=".9" />
+            <path d="M9.6 28.6C7.6 26.4 5 25.4 1.4 25.2M30.4 28.6C32.4 26.4 35 25.4 38.6 25.2M14 27.4C13.6 30.4 14.6 33.6 13.4 38.6M26 27.4C26.4 30.4 25.4 33.6 26.6 38.6M20 29.6C17.8 30.8 16.4 31.2 14.2 31.4M20 31.6C22.2 32.4 23.8 32.6 25.6 32.4" stroke="currentColor" strokeWidth=".5" />
+            <path d="M1 21.4C8 18 12 24.4 20 21.4C28 18.4 32 24.8 39 21.4" stroke="#A8321F" strokeWidth="1.2" />
           </g>
         </symbol>
       </defs>
