@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
     return [
       { source: "/contact", destination: "/call-for-speakers", permanent: false },
       { source: "/en/contact", destination: "/en/call-for-speakers", permanent: false },
+      // Vol. 01 was renamed from "Cross-Pollination"; keep the old links working
+      { source: "/events/cross-pollination-2026", destination: "/events/sustainable-urbanization-rewilding-2026", permanent: true },
+      { source: "/en/events/cross-pollination-2026", destination: "/en/events/sustainable-urbanization-rewilding-2026", permanent: true },
     ];
   },
 };

@@ -133,11 +133,11 @@ export default function SpeakersPage({ lang }: { lang: Lang }) {
               <p className="lead">
                 {zh ? (
                   <>
-                    第一冊 <i>{pending?.title ?? "Cross-Pollination"}</i> 將於 {pending?.dateLabel.zh ?? "2026 年 11 月"}舉行。活動結束後，這一冊的講者會自動收錄在這裡；在那之前，請到活動頁認識他們。
+                    第一冊 <i>{pending?.title ?? "Sustainable Urbanization? Rewilding?"}</i> 將於 {pending?.dateLabel.zh ?? "2026 年 11 月"}舉行。活動結束後，這一冊的講者會自動收錄在這裡；在那之前，請到活動頁認識他們。
                   </>
                 ) : (
                   <>
-                    The first volume, <i>{pending?.title ?? "Cross-Pollination"}</i>, takes place in {pending?.dateLabel.en ?? "November 2026"}. Once it is over, its speakers will be added here automatically. Until then, meet them on the event page.
+                    The first volume, <i>{pending?.title ?? "Sustainable Urbanization? Rewilding?"}</i>, takes place in {pending?.dateLabel.en ?? "November 2026"}. Once it is over, its speakers will be added here automatically. Until then, meet them on the event page.
                   </>
                 )}
               </p>

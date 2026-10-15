@@ -1010,7 +1010,7 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 .atlas-avatar--initial { display: grid; place-items: center; font-size: .85rem; color: var(--cyan-mute); }
 
 /* Names never break mid-name */
-.sheet-name h2, .sheet-name h3, .jump a, .atlas-key b, .mini-sheet b { white-space: nowrap; }
+.sheet-name h2, .sheet-name h3, .jump-name, .atlas-key b, .mini-sheet b { white-space: nowrap; }
 /* Speaker sheet: bio sits under the identity cards, above the rule */
 .sheet-right { display: grid; gap: 16px; align-content: start; }
 .sheet-right .bio { color: var(--ink-2); margin: 0; max-width: 36em; }

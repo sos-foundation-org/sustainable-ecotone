@@ -47,10 +47,10 @@ export type ForumEvent = {
 
 export const EVENTS: ForumEvent[] = [
   {
-    slug: "cross-pollination-2026",
+    slug: "sustainable-urbanization-rewilding-2026",
     vol: 1,
-    title: "Cross-Pollination",
-    subtitle: { zh: "當學科開始互相授粉", en: "When disciplines begin to pollinate one another" },
+    title: "Sustainable Urbanization? Rewilding?",
+    subtitle: { zh: "城市與自然，如何共享同一片土地", en: "How cities and nature might share the same ground" },
     kind: { zh: "系列演講", en: "Lecture series" },
     dateShort: "2026.11",
     dateLabel: { zh: "2026 年 11 月", en: "November 2026" },
@@ -65,26 +65,26 @@ export const EVENTS: ForumEvent[] = [
     status: "upcoming",
     statusLabel: { zh: "Vol. 01 · 籌備中", en: "Vol. 01 · In preparation" },
     summary: {
-      zh: `五位講者、十二種身份。從氣候變遷、生物數位化、華文文學、地景建築到牙醫診間，看永續如何在學科之間 <span class="en">cross-pollinate</span>。`,
-      en: `Five speakers, twelve identities. From climate change, the digitization of nature, Sinophone literature and landscape architecture to the dentist’s chair: a look at how sustainability cross-pollinates between disciplines.`,
+      zh: `五位講者、十二種身份。從都市裡的昆蟲、夜間人工光、人類如何記錄自然，到再野化與科技新創，一起追問：城市能永續地成長嗎？還是該把一部分土地還給自然？`,
+      en: `Five speakers, twelve identities. From insects in the city, artificial light at night and how humans have recorded nature, to rewilding and technology startups, one question runs through the evening: can cities grow sustainably, or should some of the land go back to nature?`,
     },
     intro: {
       zh: [
-        `一朵花沒辦法自己結果，它需要一隻蜜蜂把別處的花粉帶過來。知識也一樣。這一系列演講邀請五位來自氣候科學、生物數位化、華文文學、景觀建築與牙醫臨床的講者，在同一個晚上，把各自學科的花粉帶到彼此身上。`,
+        `城市還在長大，自然還在退後。永續的都市化真的可能嗎？還是我們該反過來，把一部分土地還給自然？這一系列演講邀請五位來自生態與氣候科學、生物數位化、華文文學、景觀建築與牙醫臨床的講者，從各自的學科出發，回應同一組問題。`,
       ],
       en: [
-        `A flower cannot set fruit on its own. It needs a bee to bring pollen from somewhere else, and knowledge is no different. This lecture series brings together five speakers from climate science, the digitization of nature, Sinophone literature, landscape architecture and clinical dentistry, to carry the pollen of their fields to one another over a single evening.`,
+        `Cities keep growing and nature keeps retreating. Is sustainable urbanization really possible, or should we turn it around and give some of the land back to nature? This lecture series brings together five speakers from ecology and climate science, the digitization of nature, Sinophone literature, landscape architecture and clinical dentistry, each answering the same pair of questions from their own field.`,
       ],
     },
     premise: {
-      title: { zh: "不是五場演講，是一場授粉實驗。", en: "Not five talks, but one experiment in pollination." },
+      title: { zh: "不是五場演講，是一場跨領域的對話。", en: "Not five talks, but one conversation across fields." },
       body: {
         zh: [
-          `一般的論壇是「輪流發言」：每個人講完自己的，聽眾各取所需。<span class="en">Cross-Pollination</span> 想做的不一樣：我們請每位講者在講自己專業的同時，也冒一點險，把手伸進別人的領域。`,
+          `一般的論壇是「輪流發言」：每個人講完自己的，聽眾各取所需。Ecotone 想做的不一樣：我們請每位講者在講自己專業的同時，也冒一點險，把手伸進別人的領域。`,
           `氣候科學家可能被文學研究者追問「你怎麼描述一個你看不到的未來？」；景觀建築師可能被牙醫問「你的設計怎麼算碳？」。我們相信，真正有意思的永續方案，都長在這些 <span class="en">awkward but productive</span> 的對話裡。`,
         ],
         en: [
-          `Most forums take turns: each speaker says their piece, and the audience takes what it needs. <em>Cross-Pollination</em> works differently. We ask every speaker, while speaking from their own expertise, to take a small risk and reach into someone else’s field.`,
+          `Most forums take turns: each speaker says their piece, and the audience takes what it needs. Ecotone works differently. We ask every speaker, while speaking from their own expertise, to take a small risk and reach into someone else’s field.`,
           `A climate scientist might be pressed by a literary scholar: “How do you describe a future you cannot see?” A landscape architect might be asked by a dentist: “How does your design account for carbon?” We believe the sustainability ideas really worth having grow out of exactly these conversations, <em>awkward but productive</em>.`,
         ],
       },
@@ -129,7 +129,7 @@ export const EVENTS: ForumEvent[] = [
         },
       },
       {
-        title: { zh: "Cross-Pollination 對談", en: "Cross-Pollination conversation" },
+        title: { zh: "綜合對談", en: "Closing conversation" },
         detail: { zh: "五位講者互相回應彼此的講題，開放現場提問。", en: "The five speakers respond to one another’s talks, then open the floor to questions." },
       },
     ],

@@ -156,7 +156,7 @@ export function LabelStack({ s, lang = "zh" }: { s: Speaker; lang?: Lang }) {
 /** One speaker as a living herbarium sheet. `full` adds bio, talk, affiliations and notes. */
 export default function SpecimenSheet({
   s,
-  vol = "Vol. 01 · Cross-Pollination",
+  vol = "Vol. 01 · Sustainable Urbanization? Rewilding?",
   full = false,
   headingLevel = 3,
   lang = "zh",
