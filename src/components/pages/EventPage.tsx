@@ -199,11 +199,6 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
             en={zh ? "Speakers with many identities" : "Each with many identities"}
             side={`${lineup.length} speakers · ${identityCount} identities`}
           />
-          <p className="lead plate-intro reveal">
-            {zh
-              ? "我們的講者，每一位都有好幾種身份。一個人橫跨好幾個領域，就像地上的每一朵菇，都長在同一個菌絲體上。"
-              : "Every one of our speakers has several identities. One person spanning several fields is like the mushrooms above ground: each one fruits from the same mycelium."}
-          </p>
           <nav className="jump reveal" aria-label={zh ? "本冊講者快速導覽" : "Jump to a speaker"}>
             <ol>
               {lineup.map((s) => (
