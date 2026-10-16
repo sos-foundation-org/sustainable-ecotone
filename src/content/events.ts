@@ -172,12 +172,12 @@ export const EVENTS: ForumEvent[] = [
       },
       {
         time: "Talk 3",
-        title: { zh: "人類如何看待、對待並記錄自然", en: "How humans have viewed, interacted with, and documented nature" },
+        title: { zh: "人類眼中的自然：理解、對待與記錄", en: "Nature in human eyes: understanding, treating and recording it" },
         detail: { zh: "顏訥（Yen, Na）", en: "Yen, Na (顏訥)" },
       },
       {
         time: "Talk 4",
-        title: { zh: "野化：和平地把人類的領地還給自然", en: "Rewilding: peacefully giving human territory back to nature" },
+        title: { zh: "野化：為自然讓出一點空間", en: "Rewilding: making a little room for nature" },
         detail: { zh: "吳煜涵（Goh, Yu Han）", en: "Goh, Yu Han (吳煜涵)" },
       },
       {

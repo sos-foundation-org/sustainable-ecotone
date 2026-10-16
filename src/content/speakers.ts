@@ -159,7 +159,7 @@ export const SPEAKERS: Speaker[] = [
     id: "yen",
     name: { zh: "顏訥", en: "Na Yen" },
     nameEn: "Na Yen",
-    talk: { zh: "人類如何看待、對待並記錄自然", en: "How humans have viewed, interacted with, and documented nature" },
+    talk: { zh: "人類眼中的自然：理解、對待與記錄", en: "Nature in human eyes: understanding, treating and recording it" },
     highlights: [
       { zh: "國立清華大學中國文學博士", en: "PhD in Chinese Literature, National Tsing Hua University", source: "顏訥簡歷（講者提供，2026-10）" },
       { zh: "曾任哈佛大學東亞語言與文明學系訪問學人、中研院文哲所博士後研究學者", en: "Former visiting scholar in East Asian Languages and Civilizations at Harvard, and postdoctoral scholar at the Institute of Chinese Literature and Philosophy, Academia Sinica", source: "顏訥簡歷（講者提供，2026-10）" },
@@ -205,7 +205,7 @@ export const SPEAKERS: Speaker[] = [
     id: "yuhan",
     name: { zh: "吳煜涵", en: "Goh Yu Han" },
     nameEn: "Goh Yu Han",
-    talk: { zh: "野化：和平地把人類的領地還給自然", en: "Rewilding: peacefully giving human territory back to nature" },
+    talk: { zh: "野化：為自然讓出一點空間", en: "Rewilding: making a little room for nature" },
     highlights: [
       { zh: "帶領 Salad Dressing 團隊參展 2021 威尼斯建築雙年展新加坡館", en: "Led the Salad Dressing team exhibiting in the Singapore Pavilion at the 2021 Venice Architecture Biennale", source: "https://www.labiennale.org/en/architecture/2021/singapore/" },
       { zh: "獲選文化景觀基金會（TCLF）Oberlander Prize 論壇新銳實踐者講者（2026）", en: "Selected as an emerging-practitioner speaker for The Cultural Landscape Foundation’s Virtual Oberlander Prize Forum (2026)", source: "https://www.tclf.org/virtual-oberlander-prize-forum-where-do-we-go-here" },
