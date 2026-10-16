@@ -114,7 +114,7 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
               <dt>{zh ? "Loc. · 地點" : "Venue"}</dt>
               <dd>
                 {e.venue[lang]}
-                <span className="muted">{e.venueNote[lang]}</span>
+                {e.venueNote[lang] !== e.venue[lang] && <span className="muted">{e.venueNote[lang]}</span>}
               </dd>
             </div>
             <div>

@@ -86,7 +86,7 @@ export const EVENTS: ForumEvent[] = [
     dateShort: "2026.11",
     dateLabel: { zh: "2026 年 11 月", en: "November 2026" },
     dateNote: { zh: "11/16 臺大 · 11/17 陽明交大", en: "16 Nov NTU · 17 Nov NYCU" },
-    venue: { zh: "臺大、陽明交大各一場", en: "Two sessions: NTU and NYCU" },
+    venue: { zh: "臺大公館校區 · 陽明交大新竹校區", en: "NTU Gongguan campus · NYCU Hsinchu campus" },
     venueNote: { zh: "臺大公館校區 · 陽明交大新竹校區", en: "NTU Gongguan campus · NYCU Hsinchu campus" },
     format: { zh: "系列演講 + 對談", en: "Talks + conversation" },
     formatNote: { zh: "每場約 2.5–3 小時", en: "About 2.5–3 hours per session" },
