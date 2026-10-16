@@ -135,7 +135,7 @@ export const EVENTS: ForumEvent[] = [
         venueNote: { zh: "校區與教室確認中", en: "Campus and room to be confirmed" },
         date: { zh: "日期確認中", en: "Date to be confirmed" },
         time: { zh: "時間確認中", en: "Time to be confirmed" },
-        registerUrl: "",
+        registerUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%A0%B1%E5%90%8D%E5%8F%83%E5%8A%A0%E6%B4%BB%E5%8B%95%20Register%20for%20a%20session&entry.741971672=Vol.%2001%EF%BD%9C%E8%87%BA%E5%A4%A7%E5%A0%B4%20NTU",
       },
       {
         id: "nycu",
@@ -145,10 +145,10 @@ export const EVENTS: ForumEvent[] = [
         venueNote: { zh: "校區與教室確認中", en: "Campus and room to be confirmed" },
         date: { zh: "日期確認中", en: "Date to be confirmed" },
         time: { zh: "時間確認中", en: "Time to be confirmed" },
-        registerUrl: "",
+        registerUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%A0%B1%E5%90%8D%E5%8F%83%E5%8A%A0%E6%B4%BB%E5%8B%95%20Register%20for%20a%20session&entry.741971672=Vol.%2001%EF%BD%9C%E9%99%BD%E6%98%8E%E4%BA%A4%E5%A4%A7%E5%A0%B4%20NYCU",
       },
     ],
-    registerAllUrl: "",
+    registerAllUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%A0%B1%E5%90%8D%E5%8F%83%E5%8A%A0%E6%B4%BB%E5%8B%95%20Register%20for%20a%20session&entry.741971672=Vol.%2001%EF%BD%9C%E8%87%BA%E5%A4%A7%E5%A0%B4%20NTU&entry.741971672=Vol.%2001%EF%BD%9C%E9%99%BD%E6%98%8E%E4%BA%A4%E5%A4%A7%E5%A0%B4%20NYCU",
     program: [
       {
         title: { zh: "開場", en: "Opening" },
