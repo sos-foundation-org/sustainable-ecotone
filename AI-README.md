@@ -168,6 +168,11 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
   - `pick(lang, v)`（＝`v[lang]`；程式中多半直接寫 `x[lang]`）
   - `localePath(lang, path)`：`"/events"` → `"/en/events"`（中文不變，`#hash` 不變）
   - `splitPath`、`switchPath`：給 `LangSwitch` 用（「中｜EN」，用純 `<a>` 整頁載入，因為兩語言是不同根 layout）
+- **語言偏好與英文版提示**（`src/lib/langPref.ts`、`LangPrompt.tsx`）：
+  - 預設中文。`LangSwitch` 是標頭列上獨立的框線小章（地球圖示 +「中｜EN」），**不在選單裡**，所有寬度都看得到：桌機在選單之後；≤960px 在「成為講者」與「目錄」之間；≤420px 只顯示另一種語言（中文頁「EN」、英文頁「中」），且中文頁品牌只留標誌 +「兼容並續」（對應英文頁原本就隱藏中文字的規則），才放得下。
+  - 點「中｜EN」或提示框的按鈕會把選擇存在 `localStorage`（`ecotone-lang`）。`SiteShell` `<head>` 的 inline script（`PREF_REDIRECT_SCRIPT`）在**從站外進來**（referrer 不是本站）且選擇與該頁語言不同時，於第一次繪製前 `location.replace` 到另一語言；站內導覽不轉址；`/lab` 不轉。
+  - `LangPrompt`（只掛在中文頁）：沒有語言選擇、也沒被提示過（`ecotone-lang-prompted`）的訪客，1.2 秒後向 `https://ipapi.co/country/` 查國家碼（結果快取在 `ecotone-geo`，每個瀏覽器只查一次）；**不是 `TW` 才**顯示英文提示卡（英文文案）。任何失敗、storage 被擋都不顯示。不搶焦點，Esc / × 關閉後不再出現。桌機是右下角小卡；≤560px 是貼底的 bottom sheet（含 safe-area、全寬 48px 主按鈕、44px 觸控區）；手機選單打開時隱藏。
+  - 注意：這會把訪客 IP 送到第三方 ipapi.co（免費額度約每日 1000 次，超過時只是不顯示提示）。
   - `HTML_LANG`（`zh-Hant-TW` / `en`）、`OG_LOCALE`
   - 頁面內固定文案慣例：元件頂端放 `const T = { zh: {…}, en: {…} } satisfies Record<Lang, unknown>`，或直接 `zh ? … : …`。
 - **meta**（`src/lib/meta.ts`）：`rootMetadata(lang)`（根 layout 預設、title template）、`pageMetadata({ lang, path, title, description, ogTitle?, absoluteTitle? })`（canonical、hreflang `zh-Hant-TW` / `en` / `x-default`→中文、OG locale）。`SITE_NAME`。
@@ -196,9 +201,10 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | 元件 | 說明 |
 |---|---|
 | `SiteShell.tsx` | 兩個根 layout 共用的 `<html>` 外殼 |
-| `Header.tsx` | 標頭：品牌、「成為講者」CTA、選單（手機版含焦點鎖、Esc）、`LangSwitch` |
+| `Header.tsx` | 標頭：品牌、「成為講者」CTA、選單（手機版含焦點鎖、Esc）、`LangSwitch`（在選單外，所有寬度可見） |
 | `Footer.tsx` | 頁尾：簡介、迷你種子袋 `FollowCard compact`、目錄、共同主辦 |
-| `LangSwitch.tsx` | 「中｜EN」切換，連到同頁另一語言 |
+| `LangSwitch.tsx` | 「中｜EN」切換（標頭列上的框線小章），連到同頁另一語言，並記住選擇 |
+| `LangPrompt.tsx` | 國外 IP 第一次到訪中文頁時的「We also have an English version」提示（見 3.1） |
 | `EngraveDefs.tsx` | 全站共用的隱藏 SVG defs（線型、陰影、符號、標誌） |
 | `BrandMark.tsx` | `<use href="#mark">` 的品牌標誌 |
 | `Typography.tsx` | `PlateHead`（Plate + 羅馬數字的區塊標題，h2）、`PageTitle`（內頁 h1 標題區，可選 `waterline`） |
@@ -240,6 +246,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `mycelium.ts` | `rng`、`mushroom`、`grass`、`tree`、`hyphaPath`、`walker`、`toPath`、`measure`、`pointAt` |
 | `leap.ts` | `leap()` 全站唯一的跳躍曲線、`prefersReducedMotion()` |
 | `prey.ts` | 蝗蟲與青蛙之間的小 store：`registerPrey`、`getPrey`、事件 `ecotone:grasshopper-snatched` / `ecotone:grasshopper-respawn` |
+| `langPref.ts` | 語言偏好的 localStorage key、`savePref`、`<head>` 轉址 script `PREF_REDIRECT_SCRIPT`（見 3.1） |
 
 ---
 

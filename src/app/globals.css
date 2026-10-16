@@ -214,20 +214,68 @@ i, .en { font-family: var(--f-lat); font-style: italic; font-size: 1.1em; letter
   .menu-btn i { display: none; }
 }
 
-/* language switch 「中｜EN」: the last item of the nav (inline on desktop, a row in the mobile menu) */
-.lang-switch { display: inline-flex; align-items: center; line-height: 1; color: var(--rule); }
+/* language switch 「⊕ 中｜EN」: its own framed chip in the masthead row, visible at every width
+   (after the nav on desktop; between the CTA and the menu button on phones) */
+.lang-switch { flex: none; display: inline-flex; align-items: center; line-height: 1; color: var(--rule); padding: 0 6px 0 9px; box-shadow: inset 0 0 0 1px var(--ink); background: var(--card); }
+.lang-globe { flex: none; color: var(--sepia); margin-right: 3px; }
 .lang-opt { display: inline-flex; align-items: center; }
 .lang-sep { font-family: var(--f-cjk); font-size: .8rem; }
-.nav .lang-switch a { display: inline-grid; place-items: center; min-width: 28px; min-height: 30px; padding: 4px 3px; flex-direction: row; color: var(--sepia); letter-spacing: .06em; font-size: var(--t-xs); font-family: var(--f-mono); box-shadow: none; }
-.nav .lang-switch a[lang|="zh"] { font-family: var(--f-cjk); font-size: .86rem; letter-spacing: 0; }
-.nav .lang-switch a:hover { color: var(--cinnabar); }
-.nav .lang-switch a[aria-current="page"] { color: var(--ink); box-shadow: inset 0 -1px 0 var(--cinnabar); }
-@media (min-width: 961px) { .nav-lang { margin-left: calc(-1 * clamp(4px, 1vw, 14px)); } }
+.lang-switch a { display: inline-grid; place-items: center; min-width: 30px; min-height: 34px; padding: 4px 3px; text-decoration: none; color: var(--sepia); letter-spacing: .08em; font-size: .8rem; font-family: var(--f-mono); font-weight: 500; }
+.lang-switch a[lang|="zh"] { font-family: var(--f-cjk); font-size: .95rem; font-weight: 600; letter-spacing: 0; }
+.lang-switch a:hover { color: var(--cinnabar); }
+.lang-switch a[aria-current="page"] { color: var(--ink); box-shadow: inset 0 -1.5px 0 var(--cinnabar); }
 @media (max-width: 960px) {
-  .nav .nav-lang { border-bottom: 0; padding-top: 18px; }
-  .nav .lang-switch a { min-width: 44px; min-height: 44px; font-size: .9rem; }
-  .nav .lang-switch a[lang|="zh"] { font-size: 1.05rem; }
+  .lang-switch { padding: 0 3px 0 7px; }
+  .lang-switch a { min-height: 40px; min-width: 32px; }
 }
+@media (max-width: 420px) {
+  /* smallest phones: the chip offers only the other language (「EN」 on Chinese pages, 「中」 on English) */
+  .lang-globe, .lang-sep, .lang-switch a[aria-current="page"] { display: none; }
+  .lang-switch { padding: 0; }
+  .lang-switch a { min-width: 34px; min-height: 40px; }
+  .mast-row { gap: 6px; }
+  .mast-cta { padding: 7px 10px; }
+}
+
+/* 「We also have an English version」: offered once to first-time visitors outside Taiwan (LangPrompt) */
+.lang-prompt {
+  position: fixed; z-index: 45; right: clamp(16px, 3vw, 32px); bottom: clamp(16px, 3vw, 32px);
+  width: min(360px, calc(100vw - 32px)); padding: 20px 22px 18px;
+  background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink), 0 14px 36px -18px rgba(28, 26, 23, .45);
+}
+.lang-prompt::before { content: ""; position: absolute; inset: 4px; border: .5px solid var(--rule); pointer-events: none; }
+.lang-prompt-eyebrow { color: var(--cinnabar); margin: 0 0 10px; }
+.lang-prompt-eyebrow span { font-family: var(--f-cjk); }
+.lang-prompt-title { font-family: var(--f-lat); font-size: 1.42rem; line-height: 1.2; margin: 0; padding-right: 20px; }
+.lang-prompt-q { font-family: var(--f-lat); font-style: italic; font-size: 1.1rem; color: var(--ink-2); margin: 4px 0 16px; padding-bottom: 14px; border-bottom: .5px solid var(--rule); }
+.lang-prompt-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; position: relative; }
+.lang-prompt-yes { padding: 11px 16px 11px 16px; font-size: .9rem; }
+.lang-prompt-x { position: absolute; top: 8px; right: 8px; width: 36px; height: 36px; display: grid; place-items: center; background: none; border: 0; cursor: pointer; color: var(--sepia); font-size: 1.3rem; line-height: 1; }
+.lang-prompt-x:hover { color: var(--cinnabar); }
+/* phones: a bottom sheet across the width, clear of the home indicator, with thumb-sized full-width actions */
+@media (max-width: 560px) {
+  .lang-prompt {
+    left: 0; right: 0; bottom: 0; width: auto;
+    padding: 20px var(--m) calc(16px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -1px 0 var(--ink), 0 -16px 36px -22px rgba(28, 26, 23, .5);
+  }
+  .lang-prompt::before { inset: 4px 4px auto; height: 0; border-width: .5px 0 0; }
+  .lang-prompt-title { font-size: 1.32rem; padding-right: 36px; }
+  .lang-prompt-q { margin-bottom: 14px; padding-bottom: 12px; }
+  .lang-prompt-actions { flex-direction: column; align-items: stretch; gap: 4px; }
+  .lang-prompt-yes { justify-content: center; min-height: 48px; font-size: .98rem; }
+  .lang-prompt-actions .text-btn { align-self: center; min-height: 44px; border-bottom: 0; text-decoration: underline; text-underline-offset: 4px; font-size: .95rem; }
+  .lang-prompt-x { top: 6px; right: 6px; width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lang-prompt { animation: lang-prompt-in .5s var(--ease) both; }
+  @keyframes lang-prompt-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes lang-prompt-up { from { transform: translateY(100%); } to { transform: none; } }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 560px) { .lang-prompt { animation: lang-prompt-up .45s var(--ease) both; } }
+/* the open mobile menu takes the whole screen; the card waits underneath */
+.menu-open .lang-prompt { display: none; }
+@media print { .lang-prompt { display: none; } }
 
 /* ── the waterline heading (signature, max one per page) ─── */
 .wl-heading { position: relative; margin-bottom: 22px; }
@@ -1021,6 +1069,8 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 @media (max-width: 420px) {
   /* the brand glyphs give way to the call-to-action on the smallest phones */
   html:lang(en) .brand-name em, html:lang(en) .brand-name .brand-zh { display: none; }
+  /* and on Chinese pages the Latin name gives way, so the CTA, 「EN」 and the menu all fit beside the mark */
+  html:not(:lang(en)) .brand-name b, html:not(:lang(en)) .brand-name em { display: none; }
 }
 
 @media print {

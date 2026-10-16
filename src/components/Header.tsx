@@ -84,9 +84,6 @@ export default function Header({ lang }: { lang: Lang }) {
         <Link className="mast-cta" href={href(CALL_NAV.href)} aria-current={isActive(CALL_NAV.href) ? "page" : undefined}>
           {CALL_NAV.label[lang]}
         </Link>
-        <button ref={btn} className="menu-btn" type="button" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen((o) => !o)}>
-          {menuMain} {menuSub && <i>{menuSub}</i>}
-        </button>
         <nav id="site-nav" ref={nav} className="nav" aria-label={t.nav}>
           <ul>
             {NAV.map((n) => (
@@ -103,11 +100,13 @@ export default function Header({ lang }: { lang: Lang }) {
                 <small>{CALL_NAV.sub[lang]}</small>
               </Link>
             </li>
-            <li className="nav-lang">
-              <LangSwitch lang={lang} pathname={pathname} />
-            </li>
           </ul>
         </nav>
+        {/* after the nav on desktop; between the CTA and the menu button on phones (the nav is fixed there) */}
+        <LangSwitch lang={lang} pathname={pathname} />
+        <button ref={btn} className="menu-btn" type="button" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen((o) => !o)}>
+          {menuMain} {menuSub && <i>{menuSub}</i>}
+        </button>
       </div>
     </header>
   );

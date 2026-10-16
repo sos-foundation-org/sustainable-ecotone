@@ -3,7 +3,9 @@ import Header from "./Header";
 import Footer from "./Footer";
 import RevealObserver from "./RevealObserver";
 import EngraveDefs from "./EngraveDefs";
+import LangPrompt from "./LangPrompt";
 import { HTML_LANG, type Lang } from "@/lib/i18n";
+import { PREF_REDIRECT_SCRIPT } from "@/lib/langPref";
 import "@/app/globals.css";
 
 // Chinese pages need the TC serif in full; English pages add EB Garamond for running text
@@ -21,7 +23,7 @@ export default function SiteShell({ lang, children }: { lang: Lang; children: Re
     <html lang={HTML_LANG[lang]} suppressHydrationWarning>
       {/* eslint-disable-next-line @next/next/no-head-element -- shared by the two root layouts, so <head> lives here */}
       <head>
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js');" + PREF_REDIRECT_SCRIPT }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href={FONTS[lang]} />
@@ -35,6 +37,7 @@ export default function SiteShell({ lang, children }: { lang: Lang; children: Re
         <main id="main">{children}</main>
         <Footer lang={lang} />
         <RevealObserver />
+        {lang === "zh" && <LangPrompt />}
       </body>
     </html>
   );
