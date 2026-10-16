@@ -11,7 +11,7 @@ const T = {
     title: "場次與報名",
     titleSub: "Sessions",
     nb: "請注意",
-    reminder: "誠摯歡迎你來到現場！出發前請記得填寫報名表，若時間或地點有所調整，我們會第一時間通知你，讓你安心赴約。",
+    reminder: "誠摯歡迎你來到現場！出發前請記得填寫報名表，若時間或地點有所調整，我們會第一時間通知你。",
     session: "Session",
     venue: "Loc. · 地點",
     date: "Date · 日期",

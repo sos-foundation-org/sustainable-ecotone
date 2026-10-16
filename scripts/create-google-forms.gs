@@ -290,7 +290,7 @@ function createParticipationForm() {
   const form = FormApp.create('Ecotone｜兼容並續 活動報名與通知 Register & Stay in the loop');
   form.setDescription(
     '報名 Ecotone｜兼容並續 的場次，或只留下聯絡方式，在新的活動公布時收到通知。填寫約 1 分鐘。\n' +
-    '誠摯歡迎你來到現場！出發前請記得填寫報名表，若時間或地點有所調整，我們會第一時間通知你，讓你安心赴約。\n' +
+    '誠摯歡迎你來到現場！出發前請記得填寫報名表，若時間或地點有所調整，我們會第一時間通知你。\n' +
     '我們只用這些資料處理報名與寄送活動消息，不會轉交給任何第三方。\n\n' +
     'Register for an Ecotone session, or just leave your details to hear when new events are announced. Takes about 1 minute.\n' +
     'We would love to see you there. Please take a moment to register, so we can let you know right away if the time or venue changes.
