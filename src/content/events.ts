@@ -96,8 +96,8 @@ export const EVENTS: ForumEvent[] = [
     status: "upcoming",
     statusLabel: { zh: "Vol. 01 · 籌備中", en: "Vol. 01 · In preparation" },
     summary: {
-      zh: `五位講者、十二種身份。從都市裡的昆蟲、夜間人工光、人類如何記錄自然，到再野化與科技新創，一起追問：城市能永續地成長嗎？還是該把一部分土地還給自然？`,
-      en: `Five speakers, twelve identities. From insects in the city, artificial light at night and how humans have recorded nature, to rewilding and technology startups, one question runs through the evening: can cities grow sustainably, or should some of the land go back to nature?`,
+      zh: `五位講者、十二種身份。從都市裡的昆蟲、夜間人工光、人類如何記錄自然，到再野化，最後一起對談，追問：城市能永續地成長嗎？還是該把一部分土地還給自然？`,
+      en: `Five speakers, twelve identities. From insects in the city, artificial light at night and how humans have recorded nature, to rewilding, closing with a shared conversation, one question runs through the evening: can cities grow sustainably, or should some of the land go back to nature?`,
     },
     intro: {
       zh: [
@@ -152,7 +152,10 @@ export const EVENTS: ForumEvent[] = [
     program: [
       {
         title: { zh: "開場", en: "Opening" },
-        detail: { zh: "三方主辦單位致詞，介紹論壇。", en: "A welcome from the three co-organizers and an introduction to the forum." },
+        detail: {
+          zh: "詹偉平（Chan, Wei-Ping）介紹整場活動；孫烜駿（Sun, Syuan-Jyun）談都市化（urbanization），引言本冊主題。",
+          en: "Chan, Wei-Ping (詹偉平) introduces the event; Sun, Syuan-Jyun (孫烜駿) introduces urbanization and the evening’s theme.",
+        },
       },
       {
         time: "Talk 1",
@@ -161,30 +164,25 @@ export const EVENTS: ForumEvent[] = [
       },
       {
         time: "Talk 2",
-        title: { zh: "夜間人工光（ALAN），以及橫跨城鄉地景的研究", en: "Artificial light at night (ALAN) and conducting research across urban-rural landscapes" },
+        title: { zh: "再現 50 年前的實驗，夜間光源對蛾類趨光性的影響", en: "Repeating a 50-year-old experiment: how light at night affects moths’ attraction to light" },
         detail: { zh: "詹偉平（Chan, Wei-Ping）", en: "Chan, Wei-Ping (詹偉平)" },
       },
       {
         time: "Talk 3",
-        title: { zh: "人類如何觀看、對待並記錄自然", en: "How humans have viewed, interacted with, and documented nature" },
+        title: { zh: "人類如何看待、對待並記錄自然", en: "How humans have viewed, interacted with, and documented nature" },
         detail: { zh: "顏訥（Yen, Na）", en: "Yen, Na (顏訥)" },
       },
       {
         time: "Talk 4",
-        title: { zh: "再野化：和平地把人類的領域還給自然", en: "Rewilding: peacefully giving human territory back to nature" },
+        title: { zh: "野化：和平地把人類的領地還給自然", en: "Rewilding: peacefully giving human territory back to nature" },
         detail: { zh: "吳煜涵（Goh, Yu Han）", en: "Goh, Yu Han (吳煜涵)" },
       },
       {
-        time: "Talk 5",
-        title: { zh: "科技、自然與永續：新興新創", en: "Technology, nature, and sustainability: emerging startups" },
-        detail: {
-          zh: "王鼎涵（Hank Wang）。分享循環材料與永續校園行動的經驗。",
-          en: "Hank Wang (王鼎涵). Sharing experiences with circular materials and sustainable campus initiatives.",
-        },
-      },
-      {
         title: { zh: "綜合對談", en: "Closing conversation" },
-        detail: { zh: "五位講者互相回應彼此的講題，開放現場提問。", en: "The five speakers respond to one another’s talks, then open the floor to questions." },
+        detail: {
+          zh: "主持人：王鼎涵（Hank Wang）。講者與現場一起討論。",
+          en: "Moderated by Hank Wang (王鼎涵). The speakers and the audience in conversation.",
+        },
       },
     ],
   },
