@@ -11,7 +11,7 @@ const T = {
     title: "場次與報名",
     titleSub: "Sessions",
     nb: "請注意",
-    reminder: "要來現場的朋友，請務必填寫報名表。若時間、地點有任何異動，我們只會通知已報名的朋友，以免你錯過，或白跑一趟。",
+    reminder: "誠摯歡迎你來到現場！出發前請記得填寫報名表，若時間或地點有所調整，我們會第一時間通知你，讓你安心赴約。",
     session: "Session",
     venue: "Loc. · 地點",
     date: "Date · 日期",
@@ -21,14 +21,13 @@ const T = {
     newTab: "（另開新視窗）",
     pending: "報名即將開放",
     pendingSmall: "OPENING SOON",
-    fine: "同一份報名表可勾選多個場次 · 只用來通知場次異動與活動消息",
   },
   en: {
     catno: "Registration",
     title: "Sessions & registration",
     titleSub: "",
     nb: "Please note",
-    reminder: "Planning to come? Please register. If the time or venue changes, we will only be able to tell those who signed up, so you don’t miss it or make a wasted trip.",
+    reminder: "We would love to see you there. Please take a moment to register, so we can let you know right away if the time or venue changes.",
     session: "Session",
     venue: "Venue",
     date: "Date",
@@ -38,7 +37,6 @@ const T = {
     newTab: " (opens in a new tab)",
     pending: "Registration opening soon",
     pendingSmall: "",
-    fine: "One form, tick as many sessions as you like · Used only for session updates and event news",
   },
 } satisfies Record<Lang, unknown>;
 
@@ -165,7 +163,6 @@ export default function RegisterBlock({ e, lang }: { e: ForumEvent; lang: Lang }
         </ol>
         <div className="register-all reveal">
           <RegisterButton url={e.registerUrl ?? ""} lang={lang} label={t.one} small={t.oneSmall} />
-          <p className="seed-fine mono">{t.fine}</p>
         </div>
       </div>
     </section>

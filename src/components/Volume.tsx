@@ -36,7 +36,7 @@ export function ProgrammeToc({ e, lang = "zh" }: { e: ForumEvent; lang?: Lang })
             <span className="toc-leader" aria-hidden="true" />
             {p.time && <span className="toc-time mono">{p.time}</span>}
           </div>
-          <p>{p.detail[lang]}</p>
+          {p.detail && <p>{p.detail[lang]}</p>}
         </li>
       ))}
     </ol>

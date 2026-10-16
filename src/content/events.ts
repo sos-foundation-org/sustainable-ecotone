@@ -11,7 +11,7 @@ export type EventStatus = "upcoming" | "past" | "planning";
 export type EventPlate = "mangrove" | "urbanpark";
 
 /** time：時間或編號（例如 "19:00"、"Talk 1"）；可省略 */
-export type ProgramItem = { time?: string; title: L10n; detail: L10n };
+export type ProgramItem = { time?: string; title: L10n; detail?: L10n };
 
 /**
  * 一個場次（觀眾報名）。報名表是「活動報名與通知」Google 表單（scripts/create-google-forms.gs 的
@@ -89,7 +89,7 @@ export const EVENTS: ForumEvent[] = [
     venue: { zh: "臺大、陽明交大各一場", en: "Two sessions: NTU and NYCU" },
     venueNote: { zh: "臺大公館校區 · 陽明交大新竹校區", en: "NTU Gongguan campus · NYCU Hsinchu campus" },
     format: { zh: "系列演講 + 對談", en: "Talks + conversation" },
-    formatNote: { zh: "約 3 小時", en: "About 3 hours" },
+    formatNote: { zh: "每場約 2.5 小時", en: "About 2.5 hours per session" },
     language: { zh: "中文 + 英文", en: "Mandarin + English" },
     languageNote: { zh: "", en: "" },
     talkLanguages: { zh: "中文 & 英文", en: "Mandarin & English" },
@@ -133,9 +133,9 @@ export const EVENTS: ForumEvent[] = [
         name: { zh: "臺大場", en: "NTU session" },
         venue: { zh: "國立臺灣大學", en: "National Taiwan University" },
         venueNote: { zh: "公館校區 · 全球變遷中心 G202", en: "Gongguan campus · Global Change Research Center, Room G202" },
-        date: { zh: "11/16（一）晚間", en: "Mon 16 November, evening" },
+        date: { zh: "11/16（一）", en: "Mon 16 November" },
         isoDate: "2026-11-16",
-        time: { zh: "詳細時間待定", en: "Exact time to be confirmed" },
+        time: { zh: "晚間（詳細時間待訂，活動約 2.5 小時）", en: "Evening (exact time to be confirmed; about 2.5 hours)" },
       },
       {
         id: "nycu",
@@ -143,9 +143,9 @@ export const EVENTS: ForumEvent[] = [
         name: { zh: "陽明交大場", en: "NYCU session" },
         venue: { zh: "國立陽明交通大學", en: "National Yang Ming Chiao Tung University" },
         venueNote: { zh: "新竹校區 · 場地確認中", en: "Hsinchu campus · Room to be confirmed" },
-        date: { zh: "11/17（二）下午", en: "Tue 17 November, afternoon" },
+        date: { zh: "11/17（二）", en: "Tue 17 November" },
         isoDate: "2026-11-17",
-        time: { zh: "時間確認中", en: "Time to be confirmed" },
+        time: { zh: "下午（詳細時間待訂，活動約 2.5 小時）", en: "Afternoon (exact time to be confirmed; about 2.5 hours)" },
       },
     ],
     registerUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%A0%B1%E5%90%8D%E5%8F%83%E5%8A%A0%E6%B4%BB%E5%8B%95%20Register%20for%20a%20session",
@@ -166,6 +166,9 @@ export const EVENTS: ForumEvent[] = [
         time: "Talk 2",
         title: { zh: "再現 50 年前的實驗，夜間光源對蛾類趨光性的影響", en: "Repeating a 50-year-old experiment: how light at night affects moths’ attraction to light" },
         detail: { zh: "詹偉平（Chan, Wei-Ping）", en: "Chan, Wei-Ping (詹偉平)" },
+      },
+      {
+        title: { zh: "中場休息", en: "Break" },
       },
       {
         time: "Talk 3",
