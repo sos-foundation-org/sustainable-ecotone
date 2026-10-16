@@ -153,7 +153,7 @@ export const EVENTS: ForumEvent[] = [
       {
         title: { zh: "開場", en: "Opening" },
         detail: {
-          zh: "詹偉平（Chan, Wei-Ping）為整場活動開場；孫烜駿（Sun, Syuan-Jyun）從都市化（urbanization）切入，帶出本冊主題。",
+          zh: "詹偉平（Chan, Wei-Ping）為整場活動開場；孫烜駿（Sun, Syuan-Jyun）從都市化切入，帶出本冊主題。",
           en: "Chan, Wei-Ping (詹偉平) opens the event; Sun, Syuan-Jyun (孫烜駿) sets out the theme through the lens of urbanization.",
         },
       },
