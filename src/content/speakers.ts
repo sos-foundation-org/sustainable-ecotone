@@ -99,7 +99,7 @@ export const SPEAKERS: Speaker[] = [
     id: "chan",
     name: { zh: "詹偉平", en: "Wei-Ping Chan" },
     nameEn: "Wei-Ping Chan",
-    talk: { zh: "再現 50 年前的實驗，夜間光源對蛾類趨光性的影響", en: "Repeating a 50-year-old experiment: how light at night affects moths’ attraction to light" },
+    talk: { zh: "再現 50 年前的實驗，夜間光源對蛾類趨光性的影響", en: "Repeating a 50-Year-Old Experiment: How Light at Night Affects Moths’ Attraction to Light" },
     highlights: [
       { zh: "打造高通量多光譜影像系統，數位化逾 18,000 件博物館館藏", en: "Built a high-throughput multispectral imaging system that has digitized more than 18,000 museum specimens", source: "wpc_website" },
       { zh: "重現半世紀前的實驗，比較並解析蛾類趨光性下降的成因", en: "Repeated a half-century-old experiment to compare, and disentangle, why moths are becoming less attracted to light", source: "wpc_website" },
@@ -159,7 +159,7 @@ export const SPEAKERS: Speaker[] = [
     id: "yen",
     name: { zh: "顏訥", en: "Na Yen" },
     nameEn: "Na Yen",
-    talk: { zh: "人類眼中的自然：理解、對待與記錄", en: "Nature in human eyes: understanding, treating and recording it" },
+    talk: { zh: "人類眼中的自然：理解、對待與記錄", en: "Nature through Human Eyes: How We Understand, Treat and Record It" },
     highlights: [
       { zh: "國立清華大學中國文學博士", en: "PhD in Chinese Literature, National Tsing Hua University", source: "顏訥簡歷（講者提供，2026-10）" },
       { zh: "曾任哈佛大學東亞語言與文明學系訪問學人、中研院文哲所博士後研究學者", en: "Former visiting scholar in East Asian Languages and Civilizations at Harvard, and postdoctoral scholar at the Institute of Chinese Literature and Philosophy, Academia Sinica", source: "顏訥簡歷（講者提供，2026-10）" },
@@ -205,7 +205,7 @@ export const SPEAKERS: Speaker[] = [
     id: "yuhan",
     name: { zh: "吳煜涵", en: "Goh Yu Han" },
     nameEn: "Goh Yu Han",
-    talk: { zh: "野化：為自然讓出一點空間", en: "Rewilding: making a little room for nature" },
+    talk: { zh: "野化：為自然讓出一點空間", en: "Rewilding: Making a Little Room for Nature" },
     highlights: [
       { zh: "帶領 Salad Dressing 團隊參展 2021 威尼斯建築雙年展新加坡館", en: "Led the Salad Dressing team exhibiting in the Singapore Pavilion at the 2021 Venice Architecture Biennale", source: "https://www.labiennale.org/en/architecture/2021/singapore/" },
       { zh: "獲選文化景觀基金會（TCLF）Oberlander Prize 論壇新銳實踐者講者（2026）", en: "Selected as an emerging-practitioner speaker for The Cultural Landscape Foundation’s Virtual Oberlander Prize Forum (2026)", source: "https://www.tclf.org/virtual-oberlander-prize-forum-where-do-we-go-here" },

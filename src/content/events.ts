@@ -164,7 +164,7 @@ export const EVENTS: ForumEvent[] = [
       },
       {
         time: "Talk 2",
-        title: { zh: "再現 50 年前的實驗，夜間光源對蛾類趨光性的影響", en: "Repeating a 50-year-old experiment: how light at night affects moths’ attraction to light" },
+        title: { zh: "再現 50 年前的實驗，夜間光源對蛾類趨光性的影響", en: "Repeating a 50-Year-Old Experiment: How Light at Night Affects Moths’ Attraction to Light" },
         detail: { zh: "詹偉平（Chan, Wei-Ping）", en: "Chan, Wei-Ping (詹偉平)" },
       },
       {
@@ -172,12 +172,12 @@ export const EVENTS: ForumEvent[] = [
       },
       {
         time: "Talk 3",
-        title: { zh: "人類眼中的自然：理解、對待與記錄", en: "Nature in human eyes: understanding, treating and recording it" },
+        title: { zh: "人類眼中的自然：理解、對待與記錄", en: "Nature through Human Eyes: How We Understand, Treat and Record It" },
         detail: { zh: "顏訥（Yen, Na）", en: "Yen, Na (顏訥)" },
       },
       {
         time: "Talk 4",
-        title: { zh: "野化：為自然讓出一點空間", en: "Rewilding: making a little room for nature" },
+        title: { zh: "野化：為自然讓出一點空間", en: "Rewilding: Making a Little Room for Nature" },
         detail: { zh: "吳煜涵（Goh, Yu Han）", en: "Goh, Yu Han (吳煜涵)" },
       },
       {
