@@ -329,7 +329,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | 活動報名與通知（各場次） | `events.ts` 的 `sessions[].registerUrl`、`registerAllUrl` | 客戶執行腳本後才會有（目前留空） | `RegisterBlock` / `RegisterButton`（`Register.tsx`） |
 
 - 欄位留空時按鈕會變成不可點的「即將開放」狀態（講者 / 追蹤：「表單即將開放」；場次：「報名即將開放」）。
-- 表單都是用 `scripts/create-google-forms.gs`（Google Apps Script）建立的：`createEcotoneForms()` 建講者與舊追蹤表單（已執行過）；`createParticipationForm()` 建「活動報名與通知」表單（**客戶尚未執行**）。注意：該腳本的 `DISCIPLINES` 清單是**表單用的分類**，和網站 `disciplines.ts` 不同，不會自動同步。
+- 表單都是用 `scripts/create-google-forms.gs`（Google Apps Script）建立的：`createEcotoneForms_()` 建講者與舊追蹤表單（已執行過；名稱結尾加底線使其不出現在 Apps Script 執行選單，避免誤跑出重複表單）；`createParticipationForm()` 建「活動報名與通知」表單（有防呆：已建立過就只印訊息，不會重建）。注意：該腳本的 `DISCIPLINES` 清單是**表單用的分類**，和網站 `disciplines.ts` 不同，不會自動同步。
 
 #### 4.6.1 場次（`Session`）與預填網址
 

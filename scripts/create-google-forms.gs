@@ -4,7 +4,7 @@
  * 用法（只需執行一次）/ How to run (once):
  *   1. 以 sos.initiative.org@gmail.com 登入，開 https://script.google.com → 新專案 New project
  *   2. 把這整個檔案貼進去，取代原本的內容 / Paste this whole file over the default code
- *   3. 上方函式選單選 createEcotoneForms → 按「執行 Run」→ 依指示授權 / Authorise when prompted
+ *   3. （已執行過，函式已改名為 createEcotoneForms_ 並從執行選單隱藏，請勿再跑）
  *   4. 兩份表單與各自的回覆試算表會出現在 My Drive/Contact；
  *      執行紀錄（Execution log）會印出兩個表單網址
  *
@@ -100,7 +100,12 @@ const SUSTAINABILITY = [
   '自然啟發的設計與科技 Nature-inspired design & technology',
 ];
 
-function createEcotoneForms() {
+/**
+ * 已執行過（2026-10-15），不要再跑：結尾的底線讓它不會出現在 Apps Script 的「執行」函式選單裡，
+ * 避免誤觸又建一套重複的講者表單與舊追蹤表單。
+ * Already run once; the trailing underscore hides it from the Run menu so it can't be re-run by accident.
+ */
+function createEcotoneForms_() {
   const folder = DriveApp.getFolderById(FOLDER_ID);
   const speaker = createSpeakerForm_(folder);
   const follow = createFollowForm_(folder);
@@ -274,6 +279,13 @@ function createFollowForm_(folder) {
 // One form, one response sheet: audience registration per session, plus "just notify me".
 
 function createParticipationForm() {
+  // guard: only ever create this form once; afterwards use addSession() / logParticipationUrls()
+  const existing = PropertiesService.getScriptProperties().getProperty(PARTICIPATION_FORM_ID_KEY);
+  if (existing) {
+    Logger.log('活動報名與通知表單已經建立過（ID: ' + existing + '），這次不會再建立。要重新印出網址，請改執行 logParticipationUrls。');
+    Logger.log('The participation form already exists (ID: ' + existing + '). Run logParticipationUrls to print its URLs again.');
+    return;
+  }
   const folder = DriveApp.getFolderById(FOLDER_ID);
   const form = FormApp.create('Ecotone｜兼容並續 活動報名與通知 Register & Stay in the loop');
   form.setDescription(
