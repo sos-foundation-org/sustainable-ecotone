@@ -181,6 +181,7 @@ export const EVENTS: ForumEvent[] = [
         detail: { zh: "吳煜涵（Goh, Yu Han）", en: "Goh, Yu Han (吳煜涵)" },
       },
       {
+        time: "Panel",
         title: { zh: "綜合對談", en: "Closing conversation" },
         detail: {
           zh: "主持人：王鼎涵（Hank Wang）。講者與現場一起討論。",
