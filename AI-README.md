@@ -325,7 +325,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | 表單 | 網站欄位 | 網址 | 渲染元件 |
 |---|---|---|---|
 | 講者招募 | `SITE.speakerFormUrl` | `https://forms.gle/BBCC85ocLYbZUs5G8` | `SpeakerFormButton`（`SpeakerCall.tsx`） |
-| 追蹤未來活動（種子袋） | `SITE.followFormUrl` | 目前仍是**舊的**獨立追蹤表單 `https://forms.gle/HaViaLhxS1P4wGwFA`。新表單建好後改成「活動報名與通知」的「**只想收到通知**」預填網址 | `FollowButton` / `FollowCard`（`Follow.tsx`） |
+| 追蹤未來活動（種子袋） | `SITE.followFormUrl` | 「活動報名與通知」表單（`https://forms.gle/ibhD1EBMR6Sx723s9`）的「只想收到未來活動通知」預填網址（第一題 `entry.1577784457`）。舊的獨立追蹤表單已刪除（從未有回覆）。 |
 | 活動報名與通知（各場次） | `events.ts` 的 `sessions[].registerUrl`、`registerAllUrl` | 客戶執行腳本後才會有（目前留空） | `RegisterBlock` / `RegisterButton`（`Register.tsx`） |
 
 - 欄位留空時按鈕會變成不可點的「即將開放」狀態（講者 / 追蹤：「表單即將開放」；場次：「報名即將開放」）。
