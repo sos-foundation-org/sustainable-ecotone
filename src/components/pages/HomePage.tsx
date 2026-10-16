@@ -11,7 +11,7 @@ import { VolumeEmblem } from "@/components/Volume";
 import { CoOrganizers, SpeakerAffiliations } from "@/components/Partners";
 import { BlankLabel, CallLink, SpeakerFormButton } from "@/components/SpeakerCall";
 import FollowCard from "@/components/Follow";
-import { SessionLine } from "@/components/Register";
+import { RegisterButton, SessionLine } from "@/components/Register";
 import Rich from "@/components/Rich";
 import { EVENTS, upcomingEvents } from "@/content/events";
 import { COUNTRIES, SPEAKERS, catalogNo, speakerById, type CountryCode } from "@/content/speakers";
@@ -343,19 +343,9 @@ export default function HomePage({ lang }: { lang: Lang }) {
                     ☞
                   </span>
                 </Link>
+                {/* goes straight to the Google Form (「報名參加活動」 pre-filled; sessions are ticked in the form) */}
                 {latest.sessions && latest.sessions.length > 0 && (
-                  <Link className="btn btn--line" href={href(`/events/${latest.slug}#register`)}>
-                    {zh ? (
-                      <>
-                        報名參加 <small>REGISTER</small>
-                      </>
-                    ) : (
-                      "Register"
-                    )}
-                    <span className="mani" aria-hidden="true">
-                      ☞
-                    </span>
-                  </Link>
+                  <RegisterButton url={latest.registerUrl ?? ""} lang={lang} label={zh ? "報名參加" : "Register"} small={zh ? "REGISTER" : undefined} variant="line" />
                 )}
               </div>
             </div>
