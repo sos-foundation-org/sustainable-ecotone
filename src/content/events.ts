@@ -156,7 +156,7 @@ export const EVENTS: ForumEvent[] = [
       },
       {
         time: "Talk 1",
-        title: { zh: "都市化及其對自然的影響", en: "Urbanization and its impacts on nature" },
+        title: { zh: "環境變遷下的育兒策略：從行為可塑性到環境適應", en: "Raising the Next Generation under Environmental Change: Behavioural Plasticity and Adaptation in Burying Beetles" },
         detail: { zh: "孫烜駿（Sun, Syuan-Jyun）", en: "Sun, Syuan-Jyun (孫烜駿)" },
       },
       {
