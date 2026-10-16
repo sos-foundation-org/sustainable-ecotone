@@ -7,9 +7,59 @@
  *   3. 上方函式選單選 createEcotoneForms → 按「執行 Run」→ 依指示授權 / Authorise when prompted
  *   4. 兩份表單與各自的回覆試算表會出現在 My Drive/Contact；
  *      執行紀錄（Execution log）會印出兩個表單網址
+ *
+ * ── 活動報名與通知表單 Participation form（觀眾報名 + 追蹤未來活動，合併成一份）─────────────
+ *
+ * 建立（只需執行一次）/ Create (once):
+ *   1. 同上，在同一個 Apps Script 專案裡，函式選單選 createParticipationForm →「執行 Run」
+ *   2. 表單與回覆試算表（只有一份）會出現在 My Drive/Contact
+ *   3. 執行紀錄會印出：正式網址、「只想收到通知」的預填網址、每一場的預填網址、
+ *      每一冊「全部場次」的預填網址
+ *   4. 把這些網址貼進網站：
+ *        - 每一場：src/content/events.ts → 該冊 sessions[].registerUrl
+ *        - 全部場次：src/content/events.ts → 該冊 registerAllUrl
+ *        - 只想收到通知：src/content/site.ts → SITE.followFormUrl（種子袋按鈕）
+ *   表單 ID 會存在本專案的「指令碼屬性 Script properties」（PARTICIPATION_FORM_ID），
+ *   之後 addSession() 與 logParticipationUrls() 會用到。
+ *   第一題用「依答案前往的區段 Go to section based on answer」分流：
+ *     報名參加活動 → 報名區段 → 聯絡資料；只想收到未來活動通知 → 直接跳到聯絡資料。
+ *
+ * 之後新增場次（新的一冊）/ Adding a session later:
+ *   方法 A（建議）：在 addSession 的呼叫裡填新標籤，例如
+ *     function run() { addSession('Vol. 02｜東華場 NDHU'); }
+ *   執行後會在「報名場次」核取方塊最後加一個選項，並印出那一場的預填網址。
+ *   方法 B：在 Google 表單介面手動於「報名場次 Sessions」加選項（文字要和網站 formLabel 一字不差），
+ *     再用表單右上角 ⋮ →「取得預先填入的連結 Get pre-filled link」產生網址；
+ *     或執行 logParticipationUrls() 重新印出所有網址。
+ *   不論哪種方法，最後都要：
+ *     - 同時把標籤加進下方 SESSIONS（讓這份腳本與表單保持一致）
+ *     - 在 src/content/events.ts 該冊的 sessions 加一筆，formLabel 與表單選項一字不差，
+ *       registerUrl 貼上預填網址；有多場時，registerAllUrl 貼上該冊「全部場次」的網址
  */
 
 const FOLDER_ID = '1mHRunF6HaP1Joz195K6a3WNw9JRP9f-W'; // My Drive/Contact
+
+/**
+ * 報名場次的選項文字 Session labels（= 回覆試算表裡的值，也 = 網站 events.ts 的 formLabel）。
+ *
+ * ⚠ 上線後絕對不要修改既有的標籤：改了之後，舊回覆與新回覆會變成兩個不同的值，
+ *   網站上的預填網址也會失效（勾不到選項）。日期、時間、教室等會變的資訊不放在標籤裡。
+ *   Never edit a label once the form is live. Dates, times and rooms stay out of the label.
+ * 新的一冊：在最後面「新增」標籤（格式 `Vol. NN｜場名 Short name`），不要改舊的。
+ *   For a new volume, append new labels; never rename or reorder the old ones.
+ */
+const SESSIONS = [
+  'Vol. 01｜臺大場 NTU',
+  'Vol. 01｜陽明交大場 NYCU',
+];
+
+const PARTICIPATION_FORM_ID_KEY = 'PARTICIPATION_FORM_ID';
+const P_TITLES = {
+  intent: '你想要？ What would you like to do?',
+  register: '報名參加活動 Register for a session',
+  follow: '只想收到未來活動通知 Just notify me about future events',
+  sessions: '報名場次 Sessions',
+};
 
 const DISCIPLINES = [
   '生態／環境科學 Ecology & Environmental Science',
@@ -217,4 +267,169 @@ function createFollowForm_(folder) {
     .setRequired(true);
 
   return finish_(form, folder, 'Ecotone 追蹤未來活動 Stay in the loop (Responses)');
+}
+
+// ─── 活動報名與通知 Participation form ─────────────────────────────────────────
+// 一份表單、一份回覆試算表：觀眾報名各場次，以及只想收到未來活動通知的人。
+// One form, one response sheet: audience registration per session, plus "just notify me".
+
+function createParticipationForm() {
+  const folder = DriveApp.getFolderById(FOLDER_ID);
+  const form = FormApp.create('Ecotone｜兼容並續 活動報名與通知 Register & Stay in the loop');
+  form.setDescription(
+    '報名 Ecotone｜兼容並續 的場次，或只留下聯絡方式，在新的活動公布時收到通知。填寫約 1 分鐘。\n' +
+    '要來現場的朋友，請務必填寫報名表。若時間、地點有任何異動，我們只會通知已報名的朋友，以免你錯過，或白跑一趟。\n' +
+    '我們只用這些資料處理報名與寄送活動消息，不會轉交給任何第三方。\n\n' +
+    'Register for an Ecotone session, or just leave your details to hear when new events are announced. Takes about 1 minute.\n' +
+    'Planning to come? Please register. If the time or venue changes, we will only be able to tell those who signed up, ' +
+    'so you don\'t miss it or make a wasted trip.\n' +
+    'We only use these details for registration and event news, and never share them with third parties.'
+  );
+  form.setConfirmationMessage(
+    '謝謝你！我們收到了。報名的場次若有任何異動，我們會寫信通知你；有新的活動時，也會讓你知道。\n' +
+    'Thank you! We have received your response. If anything changes for your session we will email you, ' +
+    'and we will let you know when new events are announced.'
+  );
+  form.setAllowResponseEdits(true);
+
+  // Section 1: what would you like to do? (navigation is set once the later sections exist)
+  const intent = form.addMultipleChoiceItem()
+    .setTitle(P_TITLES.intent)
+    .setRequired(true);
+
+  // Section 2: registration
+  const regPage = form.addPageBreakItem()
+    .setTitle('報名 Registration')
+    .setHelpText(
+      '可以勾選多個場次。日期、時間與教室確認後，會公布在網站上，並寫信通知已報名的朋友。\n' +
+      'You can tick more than one session. Dates, times and rooms will be posted on the website once confirmed, ' +
+      'and we will email everyone who has registered.'
+    );
+  const sessions = form.addCheckboxItem()
+    .setTitle(P_TITLES.sessions)
+    .setChoiceValues(SESSIONS)
+    .setRequired(true);
+  form.addMultipleChoiceItem()
+    .setTitle('身份 You are')
+    .setChoiceValues([
+      '學生 Student',
+      '教職員 Faculty & staff',
+      '業界 Industry',
+      '一般民眾 Member of the public',
+    ])
+    .showOtherOption(true)
+    .setRequired(true);
+  form.addTextItem()
+    .setTitle('所屬單位（選填）Affiliation (optional)')
+    .setHelpText('學校、系所、公司或團體 / School, department, company or organisation');
+  form.addCheckboxItem()
+    .setTitle('也通知我未來的活動 Also notify me about future events')
+    .setChoiceValues(['好，也通知我未來的活動 Yes, also tell me about future events']);
+  // the end of this section simply continues to the next one (Contact)
+
+  // Section 3: contact (everyone ends here)
+  const contactPage = form.addPageBreakItem()
+    .setTitle('聯絡資料 Contact details')
+    .setHelpText(
+      '我們只會用這些資料寄送報名確認、場次異動與活動消息。\n' +
+      'We will only use these details for registration, session updates and event news.'
+    );
+  form.addTextItem().setTitle('姓名 Name').setRequired(true);
+  emailItem_(form);
+  form.addCheckboxItem()
+    .setTitle('同意 Consent')
+    .setChoiceValues([
+      '我同意 Ecotone｜兼容並續 主辦單位使用以上資料處理報名，並寄送場次異動與活動通知；可隨時來信取消 / ' +
+      'I agree that the Ecotone organisers may use these details for registration, session updates ' +
+      'and event news, and that I can unsubscribe at any time',
+    ])
+    .setRequired(true);
+
+  intent.setChoices([
+    intent.createChoice(P_TITLES.register, regPage),
+    intent.createChoice(P_TITLES.follow, contactPage),
+  ]);
+
+  const url = finish_(form, folder, 'Ecotone 活動報名與通知 Register & Stay in the loop (Responses)');
+  PropertiesService.getScriptProperties().setProperty(PARTICIPATION_FORM_ID_KEY, form.getId());
+  Logger.log('活動報名與通知表單 Participation form: ' + url);
+  logParticipationUrls_(form);
+}
+
+/** 重新印出所有網址 / Re-log every URL (base, follow-only, each session, all sessions per volume). */
+function logParticipationUrls() {
+  logParticipationUrls_(openParticipationForm_());
+}
+
+/**
+ * 新增一個場次：在「報名場次」最後加一個選項，並印出它的預填網址。
+ * Appends a session option to the live form and logs its pre-filled URL.
+ * 也請把同一個標籤加進上方 SESSIONS，並在網站 events.ts 加一筆 session。
+ */
+function addSession(label) {
+  if (!label) throw new Error('請提供場次標籤，例如 addSession(\'Vol. 02｜東華場 NDHU\')');
+  const form = openParticipationForm_();
+  const cb = participationItems_(form).sessions;
+  const values = cb.getChoices().map(function (c) { return c.getValue(); });
+  if (values.indexOf(label) === -1) {
+    cb.setChoiceValues(values.concat([label]));
+    Logger.log('已新增場次 Added session: ' + label);
+  } else {
+    Logger.log('場次已存在 Session already exists: ' + label);
+  }
+  Logger.log(label + ' → ' + registerUrl_(form, [label]));
+}
+
+function openParticipationForm_() {
+  const id = PropertiesService.getScriptProperties().getProperty(PARTICIPATION_FORM_ID_KEY);
+  if (!id) throw new Error('找不到表單 ID：請先執行 createParticipationForm() / Run createParticipationForm() first.');
+  return FormApp.openById(id);
+}
+
+function participationItems_(form) {
+  const find = function (type, title) {
+    const item = form.getItems(type).filter(function (i) { return i.getTitle() === title; })[0];
+    if (!item) throw new Error('表單裡找不到題目 Missing item: ' + title);
+    return item;
+  };
+  return {
+    intent: find(FormApp.ItemType.MULTIPLE_CHOICE, P_TITLES.intent).asMultipleChoiceItem(),
+    sessions: find(FormApp.ItemType.CHECKBOX, P_TITLES.sessions).asCheckboxItem(),
+  };
+}
+
+/** 預填網址：第一題選「報名」，並勾好指定場次 / Pre-filled URL: register, with these sessions ticked. */
+function registerUrl_(form, labels) {
+  const it = participationItems_(form);
+  return form.createResponse()
+    .withItemResponse(it.intent.createResponse(P_TITLES.register))
+    .withItemResponse(it.sessions.createResponse(labels))
+    .toPrefilledUrl();
+}
+
+function logParticipationUrls_(form) {
+  const it = participationItems_(form);
+  const labels = it.sessions.getChoices().map(function (c) { return c.getValue(); });
+
+  Logger.log('正式網址 Published URL: ' + form.getPublishedUrl());
+  Logger.log(
+    '只想收到通知 Follow only → SITE.followFormUrl: ' +
+    form.createResponse().withItemResponse(it.intent.createResponse(P_TITLES.follow)).toPrefilledUrl()
+  );
+
+  labels.forEach(function (label) {
+    Logger.log('場次 Session ' + label + ' → registerUrl: ' + registerUrl_(form, [label]));
+  });
+
+  // 每一冊「全部場次」/ all sessions of each volume (only when a volume has more than one)
+  const byVol = {};
+  labels.forEach(function (label) {
+    const vol = label.split('｜')[0];
+    (byVol[vol] = byVol[vol] || []).push(label);
+  });
+  Object.keys(byVol).forEach(function (vol) {
+    if (byVol[vol].length > 1) {
+      Logger.log('全部場次 All sessions of ' + vol + ' → registerAllUrl: ' + registerUrl_(form, byVol[vol]));
+    }
+  });
 }

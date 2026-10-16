@@ -12,7 +12,7 @@
 1. **講者不是標本。** 講者卡片「看起來」像植物標本台紙，但中英文案都**不可**稱講者為「標本 / specimen」。
 2. **講者照片永遠全彩**，4:5，放在 `public/speakers/<id>-4x5.jpg`。**絕不**加灰階、褐色（sepia）濾鏡：在臺灣，在世者的黑白照會被讀成遺照。
 3. **網站上沒有任何「Secret Slide」。**
-4. 「報名」＝**講者申請**（Google Form），不是觀眾報名。觀眾用另一份「追蹤未來活動」表單。
+4. 「報名」有兩種：**講者申請**（講者招募表單）與**觀眾報名場次**（「活動報名與通知」表單，第一題分流：報名場次 / 只想收到未來活動通知）。兩者不可混用（見 4.6）。
 5. 「多元聲音 / Diverse Voices」是年齡、性別、族群、學歷、職業與生命經驗的多元，**不只是地理**；**絕不**寫成「海外聲音」。
 6. 水線標題（waterline heading）**每頁最多一個**。
 7. 種子袋（追蹤卡 `FollowCard`）**每頁最多一個完整版**。
@@ -189,7 +189,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | 檔案 | 主要匯出 | 控制 |
 |---|---|---|
 | `site.ts` | `SITE`、`SHOW_DRAFTS`、`OrgKey`、`Org`、`ORGS`、`CO_ORGANIZERS`、`PRINCIPLES`、`NAV`、`CALL_NAV`、`FAQ`、`CALL_FIELDS` | 站名、副標、tagline、網域、兩個表單網址、聯絡信箱、IG；機構（名稱、英文描述、網址、logo、暫代旗標）；三個共同主辦的介紹（首頁 `blurb`、關於頁 `role`/`detail`）；關於頁原則；主選單（`label` + 博物館式小標 `sub`）；「成為講者」按鈕；講者招募頁 FAQ；講者表單欄位（空白標籤 `BlankLabel`） |
-| `events.ts` | `EventStatus`、`EventPlate`、`ProgramItem`、`ForumEvent`、`EVENTS`、`eventBySlug`、`upcomingEvents`、`pastEvents` | 每一冊活動（見第 5 章） |
+| `events.ts` | `EventStatus`、`EventPlate`、`ProgramItem`、`Session`、`ForumEvent`、`EVENTS`、`eventBySlug`、`upcomingEvents`、`pastEvents` | 每一冊活動（見第 5 章）與觀眾報名場次（見 4.6.1） |
 | `speakers.ts` | `Identity`、`Place`、`CountryCode`、`COUNTRIES`、`Speaker`、`SPEAKERS`、`speakerById`、`catalogNo`、`LABEL_KINDS` | 講者資料、國家節點、講者編號 `ECO-S-NN`、身份標籤編號 |
 | `disciplines.ts` | `DisciplineKey`、`Discipline`、`DISCIPLINES`、`disciplineByKey` | 交會圖譜的學科：名稱、兩字母代碼、線型名稱 |
 | `crossings.ts` | `Desideratum`、`DESIDERATA` | 「下一跳 / Desiderata」學科配對與提問（首頁 hero 卡、活動頁、講者招募頁） |
@@ -225,6 +225,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `Volume.tsx` | `VolumeEmblem`（依 slug 產生的年輪徽記）、`ProgrammeToc`（目次式流程） |
 | `Follow.tsx` | `FollowButton`、`FollowCard`（種子袋，追蹤未來活動表單） |
 | `SpeakerCall.tsx` | `SpeakerFormButton`（講者表單）、`CallLink`、`BlankLabel`（空白標籤） |
+| `Register.tsx` | 觀眾報名：`RegisterBlock`（活動頁 `#register`，每場一張票根卡 `.stub` + 提醒句 + 「兩場都報名」）、`RegisterButton`（網址空白時顯示「報名即將開放」）、`SessionLine`（首頁最新一冊的場次列）。沒有 `sessions` 的活動什麼都不渲染 |
 | `about/PartnerMycorrhiza.tsx` + `PartnerTips.tsx` + `geometry.ts` | 關於頁標題區的圖：NTU 大王椰子、NYCU 竹叢、SOS 菌絲網，三者在地下朱紅節點交會，地上長出珊瑚菌（兼容並續）。標籤只寫縮寫，全名在 tooltip（見 8.9） |
 | `Partners.tsx` | `CoOrganizers`（大印章）、`SpeakerAffiliations`（歷屆講者單位，自動彙整）、`allAffiliations()` |
 | `CollectorStamp.tsx` | 藏書章式機構 logo（官方 logo 不重畫，外圈刻名） |
@@ -311,18 +312,40 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 
 - 全站**沒有、也不可加入**任何「Secret Slide」。
 
-### 4.6 「報名」的意思與兩份表單
+### 4.6 「報名」的意思與表單
 
-- 「報名」＝**講者申請**未來活動（Google Form），**不是**觀眾報名。觀眾想知道下一冊消息，用另一份「**追蹤未來活動**」表單（只收 e-mail 與選填欄位）。
-- 兩份表單都是**中英雙語**，兩種語言頁面連到同一個網址（`src/content/site.ts`）：
+- 「報名」有**兩種**，文案與按鈕不可混用：
+  1. **講者申請**：想成為未來講者的人，填「講者招募」表單（「成為講者」按鈕、`/call-for-speakers`）。
+  2. **觀眾報名場次**：想到現場聽講的人，填「**活動報名與通知**」表單（活動頁 `#register` 的場次卡、首頁最新一冊的「報名參加」）。
+- 「活動報名與通知」是**一份**表單、**一份**回覆試算表，同時收「觀眾報名」與「只想收到未來活動通知」。第一題「你想要？ What would you like to do?」用區段分流：
+  - 「報名參加活動 Register for a session」→ 報名區段（報名場次〔可複選〕、身份、所屬單位〔選填〕、也通知我未來的活動〔選填〕）→ 聯絡資料
+  - 「只想收到未來活動通知 Just notify me about future events」→ 直接跳到聯絡資料（姓名、email、同意）
+- 所有表單都是**中英雙語**，兩種語言頁面連到同一個網址：
 
-| 表單 | 欄位 | 網址 | 渲染元件 |
+| 表單 | 網站欄位 | 網址 | 渲染元件 |
 |---|---|---|---|
 | 講者招募 | `SITE.speakerFormUrl` | `https://forms.gle/BBCC85ocLYbZUs5G8` | `SpeakerFormButton`（`SpeakerCall.tsx`） |
-| 追蹤未來活動 | `SITE.followFormUrl` | `https://forms.gle/HaViaLhxS1P4wGwFA` | `FollowButton` / `FollowCard`（`Follow.tsx`） |
+| 追蹤未來活動（種子袋） | `SITE.followFormUrl` | 目前仍是**舊的**獨立追蹤表單 `https://forms.gle/HaViaLhxS1P4wGwFA`。新表單建好後改成「活動報名與通知」的「**只想收到通知**」預填網址 | `FollowButton` / `FollowCard`（`Follow.tsx`） |
+| 活動報名與通知（各場次） | `events.ts` 的 `sessions[].registerUrl`、`registerAllUrl` | 客戶執行腳本後才會有（目前留空） | `RegisterBlock` / `RegisterButton`（`Register.tsx`） |
 
-- 欄位留空時按鈕會變成不可點的「表單即將開放」狀態。
-- 表單是用 `scripts/create-google-forms.gs`（Google Apps Script，執行一次 `createEcotoneForms()`）建立的。注意：該腳本的 `DISCIPLINES` 清單是**表單用的分類**，和網站 `disciplines.ts` 不同，不會自動同步。
+- 欄位留空時按鈕會變成不可點的「即將開放」狀態（講者 / 追蹤：「表單即將開放」；場次：「報名即將開放」）。
+- 表單都是用 `scripts/create-google-forms.gs`（Google Apps Script）建立的：`createEcotoneForms()` 建講者與舊追蹤表單（已執行過）；`createParticipationForm()` 建「活動報名與通知」表單（**客戶尚未執行**）。注意：該腳本的 `DISCIPLINES` 清單是**表單用的分類**，和網站 `disciplines.ts` 不同，不會自動同步。
+
+#### 4.6.1 場次（`Session`）與預填網址
+
+- 每一冊可有 `sessions?: Session[]`（`events.ts`）。欄位：`id`、`formLabel`、`name`（短場名，首頁場次列用）、`venue`、`venueNote?`、`date`（未定寫「日期確認中」）、`isoDate?`（填了首頁才顯示日期）、`time?`、`registerUrl`。另有活動層級的 `registerAllUrl?`：**不寫 = 不顯示**「兩場都報名」；**空字串 = 顯示為「即將開放」**。
+- **`formLabel` 是穩定標籤**：必須和 Google 表單「報名場次 Sessions」的選項文字**一字不差**，格式 `Vol. NN｜場名 Short name`（例：`Vol. 01｜臺大場 NTU`、`Vol. 01｜陽明交大場 NYCU`）。**上線後絕對不要改**（回覆試算表與預填網址都靠它），日期、時間、教室**不寫**在標籤裡。腳本頂端的 `SESSIONS` 陣列是同一份清單。
+- **每個按鈕都是同一份表單的預填網址**（`?usp=pp_url&entry.…=…`）：
+  - 單一場次：第一題 = 報名、只勾這一場 → `sessions[].registerUrl`
+  - 全部場次：第一題 = 報名、勾好本冊所有場次 → `registerAllUrl`
+  - 只想收到通知：第一題 = 只想收到通知 → `SITE.followFormUrl`（種子袋）
+  - `createParticipationForm()` 執行後，執行紀錄（Execution log）會印出以上全部網址與正式網址；之後可執行 `logParticipationUrls()` 重印。
+- **新增場次**（新的一冊或加場）：
+  1. 表單：在 Apps Script 執行 `addSession('Vol. NN｜場名 Short')`（會在「報名場次」最後加選項並印出預填網址），或在 Google 表單介面手動加選項，再用 ⋮ →「取得預先填入的連結」產生網址。同時把標籤 append 到腳本的 `SESSIONS`。**只新增，不改、不刪、不重排舊選項。**
+  2. 網站：在該冊 `sessions` 加一筆，`formLabel` 一字不差，`registerUrl` 貼預填網址；多場時 `registerAllUrl` 貼「全部場次」網址（執行 `logParticipationUrls()` 會印出每一冊的全部場次網址）。
+  3. 日期、時間、教室確定後，只改 `date` / `isoDate` / `time` / `venueNote`，**不動 `formLabel`**。
+- **顯示位置**：活動頁標題區的「參加方式」後面有「場次與報名 ↓」連到 `#register`；資訊卡之後是 `RegisterBlock`（提醒句「要來現場的朋友，請務必填寫報名表……」+ 每場一張票根卡）；首頁 Pl. IV 最新一冊有 `SessionLine`（臺大場 · 陽明交大場）與「報名參加」按鈕（連到 `/events/<slug>#register`，英文頁 `/en/…`）。沒有 `sessions` 的活動這些都不出現。
+- 提醒句是客戶指定文案，中英都不要改寫。
 
 ### 4.7 講者標準
 
@@ -413,8 +436,10 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `premise?` | `{ title, body }` | **仍在資料中但目前不渲染** |
 | `speakers` | `string[]` | 講者 id，順序就是活動頁、首頁、hero 菇的順序 |
 | `plate?` | `EventPlate` | 活動頁標題旁的圖版（`"mangrove"` / `"urbanpark"`） |
-| `attendance` | `L10n` | 參加方式（活動頁、首頁 Pl. IV） |
+| `attendance` | `L10n` | 參加方式（活動頁、首頁 Pl. IV）。有場次時寫概述並指向場次（「報名請見各場次」） |
 | `program` | `ProgramItem[]` | 目次：`{ time?, title, detail }`。`time` 可省略（開場、對談），可放「Talk 1」或「19:00」。**`title.zh` 在同一冊內必須唯一**（當 React key） |
+| `sessions?` | `Session[]` | 觀眾報名場次（見 4.6.1）：活動頁 `#register` 票根卡、首頁場次列與「報名參加」。`id` 同冊內唯一 |
+| `registerAllUrl?` | `string` | 「兩場都報名 / 全部場次都報名」預填網址；不寫 = 不顯示，空字串 = 即將開放 |
 
 `eventBySlug(slug)`、`upcomingEvents()`（`status !== "past"`，所以 `planning` 也算 upcoming）、`pastEvents()`。
 
@@ -429,6 +454,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 - [ ] `status: "past"`
 - [ ] `statusLabel` 改成例如 `{ zh: "Vol. 01 · 已舉辦", en: "Vol. 01 · Held" }`（文字與使用者確認）
 - [ ] `dateLabel`、`dateNote`、`venue`、`venueNote`、`attendance` 改成確定 / 已舉辦的描述
+- [ ] 已舉辦的冊**移除 `sessions` 與 `registerAllUrl`**（否則活動頁仍顯示報名區塊）；表單上的舊場次選項保留不刪（舊回覆要對得上）
 - [ ] 活動頁有寫死「尚未公布」的文案（見 5.7），past 活動看起來會不對，需改程式加條件
 
 ### 5.3 新增講者（`speakers.ts` 的 `Speaker`）
@@ -513,7 +539,8 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 2. [ ] `site.ts`：新機構加進 `OrgKey` + `ORGS`；logo → `public/logos/`（授權狀態寫 `placeholder` 與註解）。
 3. [ ] `speakers.ts`：新國家加進 `CountryCode` + `COUNTRIES`。
 4. [ ] `disciplines.ts` + `EngraveDefs.tsx`：如需新學科，照第 6 章。
-5. [ ] `events.ts`：新增新冊；舊冊改 `status: "past"` 與 `statusLabel`。
+5. [ ] `events.ts`：新增新冊；舊冊改 `status: "past"` 與 `statusLabel`，並移除舊冊的 `sessions` / `registerAllUrl`。
+5a. [ ] 觀眾報名（4.6.1）：表單用 `addSession()` 新增本冊場次（只新增、不改舊標籤），腳本 `SESSIONS` 同步 append；`events.ts` 新冊填 `sessions`（`formLabel` 一字不差、`registerUrl` 預填網址）與 `registerAllUrl`；確認 `SITE.followFormUrl` 是同一份表單的「只想收到通知」預填網址。
 6. [ ] 如需新圖版：`plates/` + `EventPlate` + `EVENT_PLATES`（第 8 章）。
 7. [ ] 處理 5.5 的寫死文案。
 8. [ ] 跑第 9 章 QA。
@@ -737,6 +764,8 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 - [ ] 每頁**只有一個 `<h1>`**。
 - [ ] 每頁**最多一個水線標題**（`.wl` 元素數 ≤ 1）。
 - [ ] 每頁最多一個完整種子袋 `.seed-packet`。
+- [ ] 報名：活動頁 `#register` 錨點可用（標題區「場次與報名」可跳過去）；每張場次卡的按鈕連到**該場**的預填網址（打開確認第一題已選「報名」、只勾該場）；「兩場都報名」勾好全部場次；網址空白時顯示「報名即將開放」；首頁「報名參加」中英各連到 `/events/<slug>#register`、`/en/events/<slug>#register`。
+- [ ] `events.ts` 的每個 `formLabel` 與表單「報名場次」選項一字不差；種子袋（`SITE.followFormUrl`）打開時第一題是「只想收到未來活動通知」。
 - [ ] 講者照片沒有任何去色濾鏡。
 - [ ] 禁用字 grep（應只命中允許的地方）：
   ```bash
@@ -757,8 +786,11 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 | 項目 | 位置 | 狀態 |
 |---|---|---|
 | Vol. 01 確切日期 | `events.ts`：`dateNote`「確切日期確認中」、`isoDate` 未填 | 待定 |
-| Vol. 01 地點 | `events.ts`：`venue`「地點確認中」 | 待定 |
-| 參加方式 | `events.ts`：`attendance`「活動資訊即將公布…」 | 待定 |
+| Vol. 01 地點 | `events.ts`：`venue`「臺大、陽明交大各一場」；校區與教室見各場次 `venueNote` | 待定 |
+| 參加方式 | `events.ts`：`attendance`「分兩天、兩場舉辦…日期確認中，報名請見各場次。」 | 日期確定後更新 |
+| Vol. 01 場次 | `events.ts`：`sessions` 兩場（臺大場、陽明交大場）的 `date`、`time`、`venueNote` 皆「確認中」；`registerUrl` 與 `registerAllUrl` 皆空（按鈕顯示「報名即將開放」） | 客戶執行 `createParticipationForm()` 後貼上預填網址；日期確定後填 `date` / `isoDate` / `time` |
+| 「活動報名與通知」表單 | `scripts/create-google-forms.gs` 的 `createParticipationForm()` 尚未執行；`SITE.followFormUrl` 仍指向舊追蹤表單 | 建好後把 `followFormUrl` 換成新表單的「只想收到通知」預填網址；舊追蹤表單可停止收回覆（不要刪，保留舊名單） |
+| Vol. 01 `venueNote` | 仍是「臺北 · 實體為主」（首頁 hero 取「臺北」當城市），但陽明交大場的校區未定 | 校區確定後確認是否仍正確 |
 | 流程時間 | `EventPage.tsx`「流程為暫定版本…」 | 待定 |
 | 聯絡信箱 | `site.ts`：`contactEmail: ""`（顯示「待公布」） | 待補 |
 | Instagram | `site.ts`：`instagram: ""`（空則不顯示） | 待補 |

@@ -9,6 +9,7 @@ import SpecimenSheet from "@/components/Specimen";
 import { CallLink } from "@/components/SpeakerCall";
 import Rich from "@/components/Rich";
 import FollowCard from "@/components/Follow";
+import RegisterBlock from "@/components/Register";
 import { EVENT_PLATES } from "@/components/plates";
 import type { ForumEvent } from "@/content/events";
 import { catalogNo, speakerById } from "@/content/speakers";
@@ -64,6 +65,14 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
             </div>
             <p className="attendance mono" role="note">
               <span className="cin">{zh ? "Attendance · 參加方式" : "Attendance"}</span> {e.attendance[lang]}
+              {e.sessions && e.sessions.length > 0 && (
+                <>
+                  {" "}
+                  <a className="txtlink" href="#register">
+                    {zh ? "場次與報名" : "Sessions & registration"} <span aria-hidden="true">↓</span>
+                  </a>
+                </>
+              )}
             </p>
             <div className="actions">
               <a className="btn btn--ink" href="#speakers">
@@ -125,6 +134,9 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
           </dl>
         </div>
       </section>
+
+      {/* Audience registration: one ticket stub per session (only for events with sessions) */}
+      <RegisterBlock e={e} lang={lang} />
 
       <PlateEdge from="var(--paper)" to="var(--cyan)" mode="lace" seed={e.vol * 13} label={`ECOTONE · ${vol}`} />
 

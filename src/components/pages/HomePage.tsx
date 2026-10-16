@@ -11,6 +11,7 @@ import { VolumeEmblem } from "@/components/Volume";
 import { CoOrganizers, SpeakerAffiliations } from "@/components/Partners";
 import { BlankLabel, CallLink, SpeakerFormButton } from "@/components/SpeakerCall";
 import FollowCard from "@/components/Follow";
+import { SessionLine } from "@/components/Register";
 import Rich from "@/components/Rich";
 import { EVENTS, upcomingEvents } from "@/content/events";
 import { COUNTRIES, SPEAKERS, catalogNo, speakerById, type CountryCode } from "@/content/speakers";
@@ -326,20 +327,37 @@ export default function HomePage({ lang }: { lang: Lang }) {
               </h3>
               <Rich as="p" className="muted" html={latest.summary[lang]} />
               <p className="attendance mono">{latest.attendance[lang]}</p>
-              <Link className="btn btn--ink" href={href(`/events/${latest.slug}`)}>
-                {zh ? (
-                  <>
-                    翻開這一冊 <small>READ THE PLATE</small>
-                  </>
-                ) : (
-                  <>
-                    Open the volume <small>{vol}</small>
-                  </>
+              <SessionLine e={latest} lang={lang} />
+              <div className="actions actions--tight">
+                <Link className="btn btn--ink" href={href(`/events/${latest.slug}`)}>
+                  {zh ? (
+                    <>
+                      翻開這一冊 <small>READ THE PLATE</small>
+                    </>
+                  ) : (
+                    <>
+                      Open the volume <small>{vol}</small>
+                    </>
+                  )}
+                  <span className="mani" aria-hidden="true">
+                    ☞
+                  </span>
+                </Link>
+                {latest.sessions && latest.sessions.length > 0 && (
+                  <Link className="btn btn--line" href={href(`/events/${latest.slug}#register`)}>
+                    {zh ? (
+                      <>
+                        報名參加 <small>REGISTER</small>
+                      </>
+                    ) : (
+                      "Register"
+                    )}
+                    <span className="mani" aria-hidden="true">
+                      ☞
+                    </span>
+                  </Link>
                 )}
-                <span className="mani" aria-hidden="true">
-                  ☞
-                </span>
-              </Link>
+              </div>
             </div>
             <div className="gutter" aria-hidden="true" />
             <div className="reveal">

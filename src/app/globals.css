@@ -576,6 +576,40 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 .attendance { color: var(--sepia); border-top: .5px solid var(--rule); border-bottom: .5px solid var(--rule); padding: 10px 0; margin: 18px 0; text-transform: none; letter-spacing: .04em; font-family: var(--f-zh); font-size: .9rem; max-width: 40em; }
 .attendance .cin { font-family: var(--f-mono); font-size: var(--t-xs); }
 .attendance .cin { margin-right: 8px; text-transform: uppercase; }
+.attendance .txtlink { font-size: inherit; margin-left: 4px; }
+
+/* ── audience registration: one ticket stub per session (Register.tsx) ── */
+.actions--tight { margin-top: 18px; }
+.session-line { font-size: .92rem; margin: -6px 0 0; }
+.session-line .cin { margin-right: 8px; }
+.register-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: clamp(18px, 4vw, 56px); align-items: end; margin-bottom: clamp(26px, 4vw, 44px); }
+.register-head .h-sec { margin-bottom: 0; }
+.register-nb { margin: 0; background: var(--card); border: 1px solid var(--ink); border-left: 3px solid var(--cinnabar); padding: 14px 18px 16px; font-size: 1.04rem; line-height: 1.85; color: var(--ink); }
+.register-nb .cin { display: block; margin-bottom: 4px; }
+@media (max-width: 860px) { .register-head { grid-template-columns: 1fr; } }
+.stubs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: clamp(22px, 3vw, 36px); max-width: 1040px; }
+.stub {
+  --stub-pad: clamp(16px, 2.4vw, 24px);
+  position: relative; display: grid; grid-template-rows: auto auto 1fr auto; background: var(--card); border: 1px solid var(--ink);
+  padding: 0 var(--stub-pad); box-shadow: 8px 8px 0 -1px var(--paper-2), 8px 8px 0 0 var(--ink); --fillp: var(--card);
+}
+.stub-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; color: var(--cinnabar); padding: 12px 0 8px; border-bottom: .5px solid var(--rule); }
+.stub-name { font-size: 1.4rem; letter-spacing: .06em; margin: 14px 0 8px; }
+.stub-name i { font-family: var(--f-lat); font-weight: 400; color: var(--sepia); font-size: .9em; letter-spacing: .02em; margin-left: .5em; }
+.stub-facts { margin: 0 0 6px; }
+.stub-facts > div { display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: 10px; padding: 8px 0; border-top: .5px dotted var(--rule); }
+.stub-facts > div:first-child { border-top: 0; }
+.stub-facts dt { font-family: var(--f-mono); font-size: var(--t-xs); letter-spacing: .12em; text-transform: uppercase; color: var(--cinnabar); padding-top: 4px; }
+.stub-facts dd { margin: 0; font-weight: 600; display: grid; }
+.stub-facts dd .muted { font-weight: 400; font-size: .86rem; }
+/* the perforation: a dashed tear line with a notch punched out of each edge */
+.stub-foot { position: relative; margin: 8px calc(-1 * var(--stub-pad)) 0; padding: 18px var(--stub-pad) 20px; border-top: 1px dashed var(--ink); }
+.stub-foot::before, .stub-foot::after { content: ""; position: absolute; top: -10px; width: 10px; height: 19px; background: var(--paper); border: 1px solid var(--ink); }
+.stub-foot::before { left: -1px; border-left: 0; border-radius: 0 10px 10px 0; }
+.stub-foot::after { right: -1px; border-right: 0; border-radius: 10px 0 0 10px; }
+.register-all { margin-top: clamp(26px, 3.5vw, 40px); display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+.register-all .seed-fine { margin: 0; }
+@media (max-width: 480px) { .stub-facts > div { grid-template-columns: 5.6em minmax(0, 1fr); } }
 .toc-head { font-size: 1.15rem; margin-bottom: 14px; }
 .toc-head i { font-weight: 400; color: var(--sepia); }
 .toc { list-style: none; border-top: 1px solid var(--ink); }

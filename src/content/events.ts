@@ -13,6 +13,29 @@ export type EventPlate = "mangrove" | "urbanpark";
 /** time：時間或編號（例如 "19:00"、"Talk 1"）；可省略 */
 export type ProgramItem = { time?: string; title: L10n; detail: L10n };
 
+/**
+ * 一個場次（觀眾報名）。報名表是「活動報名與通知」Google 表單（scripts/create-google-forms.gs 的
+ * createParticipationForm），每一場是「報名場次」核取方塊的一個選項。
+ */
+export type Session = {
+  id: string; // 小寫短代號，例如 "ntu"；同一冊內唯一（React key）
+  /**
+   * Google 表單「報名場次」的選項文字，必須一字不差。格式 `Vol. NN｜場名 Short name`。
+   * ⚠ 表單上線後絕對不要改（回覆試算表與預填網址都靠它）；日期、教室不寫在這裡。
+   */
+  formLabel: string;
+  /** 短場名，用在首頁「最新一冊」的場次列，例如「臺大場 / NTU session」 */
+  name: L10n;
+  venue: L10n; // 例如 國立臺灣大學 / National Taiwan University
+  venueNote?: L10n; // 校區、教室
+  date: L10n; // 顯示用；未定時寫「日期確認中」
+  /** 日期確定後填 YYYY-MM-DD；有填時首頁場次列才會顯示日期 */
+  isoDate?: string;
+  time?: L10n;
+  /** 這一場的預填報名網址（第一題 = 報名、已勾好本場）。留空 = 按鈕顯示「報名即將開放」 */
+  registerUrl: string;
+};
+
 export type ForumEvent = {
   slug: string;
   vol: number;
@@ -44,6 +67,13 @@ export type ForumEvent = {
   /** 參加方式說明，例如「活動資訊即將公布」 */
   attendance: L10n;
   program: ProgramItem[];
+  /** 觀眾報名的場次。有填 = 活動頁出現報名區塊（#register）、首頁最新一冊出現「報名參加」；沒填 = 都不顯示 */
+  sessions?: Session[];
+  /**
+   * 「全部場次都報名」的預填網址（本冊所有場次都已勾好）。
+   * 不寫這個欄位 = 不顯示該按鈕；寫空字串 = 顯示「報名即將開放」。
+   */
+  registerAllUrl?: string;
 };
 
 export const EVENTS: ForumEvent[] = [
@@ -56,8 +86,8 @@ export const EVENTS: ForumEvent[] = [
     dateShort: "2026.11",
     dateLabel: { zh: "2026 年 11 月", en: "November 2026" },
     dateNote: { zh: "確切日期確認中", en: "Exact date to be confirmed" },
-    venue: { zh: "地點確認中", en: "Venue to be confirmed" },
-    venueNote: { zh: "臺北 · 實體為主", en: "Taipei · Mainly in person" },
+    venue: { zh: "臺大、陽明交大各一場", en: "Two sessions: NTU and NYCU" },
+    venueNote: { zh: "實體為主 · 校區確認中", en: "In person · Campuses to be confirmed" },
     format: { zh: "系列演講 + 對談", en: "Talks + conversation" },
     formatNote: { zh: "約 3 小時", en: "About 3 hours" },
     language: { zh: "中文 + 英文", en: "Mandarin + English" },
@@ -93,9 +123,32 @@ export const EVENTS: ForumEvent[] = [
     speakers: ["sun", "chan", "yen", "yuhan", "wang"],
     plate: "urbanpark",
     attendance: {
-      zh: "活動資訊即將公布。確切日期、地點與參加方式確認後，會在這裡更新。",
-      en: "Date and venue to be announced. Once the exact date, venue and how to attend are confirmed, they will be posted here.",
+      zh: "分兩天、兩場舉辦：國立臺灣大學與國立陽明交通大學各一場。日期確認中，報名請見各場次。",
+      en: "Two sessions on two days, one at National Taiwan University and one at National Yang Ming Chiao Tung University. Dates to be confirmed. See each session to register.",
     },
+    sessions: [
+      {
+        id: "ntu",
+        formLabel: "Vol. 01｜臺大場 NTU",
+        name: { zh: "臺大場", en: "NTU session" },
+        venue: { zh: "國立臺灣大學", en: "National Taiwan University" },
+        venueNote: { zh: "校區與教室確認中", en: "Campus and room to be confirmed" },
+        date: { zh: "日期確認中", en: "Date to be confirmed" },
+        time: { zh: "時間確認中", en: "Time to be confirmed" },
+        registerUrl: "",
+      },
+      {
+        id: "nycu",
+        formLabel: "Vol. 01｜陽明交大場 NYCU",
+        name: { zh: "陽明交大場", en: "NYCU session" },
+        venue: { zh: "國立陽明交通大學", en: "National Yang Ming Chiao Tung University" },
+        venueNote: { zh: "校區與教室確認中", en: "Campus and room to be confirmed" },
+        date: { zh: "日期確認中", en: "Date to be confirmed" },
+        time: { zh: "時間確認中", en: "Time to be confirmed" },
+        registerUrl: "",
+      },
+    ],
+    registerAllUrl: "",
     program: [
       {
         title: { zh: "開場", en: "Opening" },

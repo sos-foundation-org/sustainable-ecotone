@@ -13,7 +13,11 @@ export const SITE = {
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://sustainable-ecotone.vercel.app").replace(/\/+$/, ""),
   /** 講者招募表單（Google Form，中英雙語，兩種語言共用）。留空 = 按鈕顯示「表單即將開放」；填入後會在新分頁開啟。 */
   speakerFormUrl: "https://forms.gle/BBCC85ocLYbZUs5G8",
-  /** 「追蹤未來活動」表單（第二個 Google Form，只收 e-mail，兩種語言共用）。留空 = 顯示「即將開放」；填入後在新分頁開啟。 */
+  /**
+   * 「追蹤未來活動」（種子袋按鈕）。留空 = 顯示「即將開放」；填入後在新分頁開啟。
+   * 目前仍是舊的獨立追蹤表單。客戶執行 createParticipationForm() 建好「活動報名與通知」表單後，
+   * 改成那份表單的「只想收到通知 Follow only」預填網址（執行紀錄會印出），讓報名與追蹤都進同一份試算表。
+   */
   followFormUrl: "https://forms.gle/HaViaLhxS1P4wGwFA",
   /** 聯絡信箱。留空 = 顯示「待公布」 */
   contactEmail: "",
