@@ -407,6 +407,9 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 
 ---
 
+
+> **2026-10-16 更新：每一冊只有「一個」報名按鈕。** `ForumEvent.registerUrl` 是活動報名表單、第一題預填「報名參加活動」的網址，場次由填表人在表單中自行勾選（可複選）。`Session` 不再有 `registerUrl`，`registerAllUrl` 已移除；場次卡只顯示地點、日期、時間。
+
 ## 5. 新增下一冊（下一冊 checklist）
 
 ### 5.1 `events.ts` 的 `ForumEvent` 欄位

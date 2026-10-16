@@ -2,9 +2,9 @@ import type { ForumEvent, Session } from "@/content/events";
 import { pad2, roman } from "@/lib/engrave";
 import type { Lang } from "@/lib/i18n";
 
-// Audience registration. Every session links to its own pre-filled URL of the one
-// bilingual participation form (scripts/create-google-forms.gs → createParticipationForm),
-// so both languages share the same URLs. An empty URL shows a pending state.
+// Audience registration. One button per event opens the bilingual participation form
+// (scripts/create-google-forms.gs → createParticipationForm) with 「報名參加活動」 pre-filled;
+// visitors tick one or more sessions in the form. An empty URL shows a pending state.
 const T = {
   zh: {
     catno: "Registration · 報名",
@@ -16,11 +16,8 @@ const T = {
     venue: "Loc. · 地點",
     date: "Date · 日期",
     time: "Time · 時間",
-    one: "報名此場",
+    one: "報名參加",
     oneSmall: "REGISTER",
-    both: (n: number) => (n === 2 ? "兩場都報名" : "全部場次都報名"),
-    bothSmall: (n: number) => (n === 2 ? "REGISTER FOR BOTH" : "REGISTER FOR ALL"),
-    bothPending: (n: number) => (n === 2 ? "兩場都報名，即將開放" : "全部場次都報名，即將開放"),
     newTab: "（另開新視窗）",
     pending: "報名即將開放",
     pendingSmall: "OPENING SOON",
@@ -38,9 +35,6 @@ const T = {
     time: "Time",
     one: "Register",
     oneSmall: "OPENS IN A NEW TAB",
-    both: (n: number) => (n === 2 ? "Register for both" : "Register for all sessions"),
-    bothSmall: () => "OPENS IN A NEW TAB",
-    bothPending: (n: number) => (n === 2 ? "Register for both: opening soon" : "Register for all sessions: opening soon"),
     newTab: " (opens in a new tab)",
     pending: "Registration opening soon",
     pendingSmall: "",
@@ -119,9 +113,6 @@ function SessionStub({ s, i, e, lang }: { s: Session; i: number; e: ForumEvent; 
           </div>
         )}
       </dl>
-      <div className="stub-foot">
-        <RegisterButton url={s.registerUrl} lang={lang} label={t.one} small={t.oneSmall} />
-      </div>
     </li>
   );
 }
@@ -173,9 +164,7 @@ export default function RegisterBlock({ e, lang }: { e: ForumEvent; lang: Lang }
           ))}
         </ol>
         <div className="register-all reveal">
-          {e.registerAllUrl !== undefined && sessions.length > 1 && (
-            <RegisterButton url={e.registerAllUrl} lang={lang} label={t.both(sessions.length)} small={t.bothSmall(sessions.length)} pendingLabel={t.bothPending(sessions.length)} variant="line" />
-          )}
+          <RegisterButton url={e.registerUrl ?? ""} lang={lang} label={t.one} small={t.oneSmall} />
           <p className="seed-fine mono">{t.fine}</p>
         </div>
       </div>

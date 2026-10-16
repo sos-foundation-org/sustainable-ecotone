@@ -33,7 +33,6 @@ export type Session = {
   isoDate?: string;
   time?: L10n;
   /** 這一場的預填報名網址（第一題 = 報名、已勾好本場）。留空 = 按鈕顯示「報名即將開放」 */
-  registerUrl: string;
 };
 
 export type ForumEvent = {
@@ -73,7 +72,8 @@ export type ForumEvent = {
    * 「全部場次都報名」的預填網址（本冊所有場次都已勾好）。
    * 不寫這個欄位 = 不顯示該按鈕；寫空字串 = 顯示「報名即將開放」。
    */
-  registerAllUrl?: string;
+  /** 單一報名按鈕的網址：活動報名表單，第一題預填「報名參加活動」，場次由填表人在表單中勾選（可複選） */
+  registerUrl?: string;
 };
 
 export const EVENTS: ForumEvent[] = [
@@ -85,9 +85,9 @@ export const EVENTS: ForumEvent[] = [
     kind: { zh: "系列演講", en: "Lecture series" },
     dateShort: "2026.11",
     dateLabel: { zh: "2026 年 11 月", en: "November 2026" },
-    dateNote: { zh: "確切日期確認中", en: "Exact date to be confirmed" },
+    dateNote: { zh: "11/16 臺大 · 11/17 陽明交大", en: "16 Nov NTU · 17 Nov NYCU" },
     venue: { zh: "臺大、陽明交大各一場", en: "Two sessions: NTU and NYCU" },
-    venueNote: { zh: "實體為主 · 校區確認中", en: "In person · Campuses to be confirmed" },
+    venueNote: { zh: "臺大公館校區 · 陽明交大新竹校區", en: "NTU Gongguan campus · NYCU Hsinchu campus" },
     format: { zh: "系列演講 + 對談", en: "Talks + conversation" },
     formatNote: { zh: "約 3 小時", en: "About 3 hours" },
     language: { zh: "中文 + 英文", en: "Mandarin + English" },
@@ -123,8 +123,8 @@ export const EVENTS: ForumEvent[] = [
     speakers: ["sun", "chan", "yen", "yuhan", "wang"],
     plate: "urbanpark",
     attendance: {
-      zh: "分兩天、兩場舉辦：國立臺灣大學與國立陽明交通大學各一場。日期確認中，報名請見各場次。",
-      en: "Two sessions on two days, one at National Taiwan University and one at National Yang Ming Chiao Tung University. Dates to be confirmed. See each session to register.",
+      zh: "分兩天、兩場舉辦：11/16（一）晚間在臺大公館校區，11/17（二）下午在陽明交大新竹校區。報名請見下方場次。",
+      en: "Two sessions on two days: Monday 16 November (evening) at NTU’s Gongguan campus, and Tuesday 17 November (afternoon) at NYCU’s Hsinchu campus. Register below.",
     },
     sessions: [
       {
@@ -132,29 +132,29 @@ export const EVENTS: ForumEvent[] = [
         formLabel: "Vol. 01｜臺大場 NTU",
         name: { zh: "臺大場", en: "NTU session" },
         venue: { zh: "國立臺灣大學", en: "National Taiwan University" },
-        venueNote: { zh: "校區與教室確認中", en: "Campus and room to be confirmed" },
-        date: { zh: "日期確認中", en: "Date to be confirmed" },
-        time: { zh: "時間確認中", en: "Time to be confirmed" },
-        registerUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%A0%B1%E5%90%8D%E5%8F%83%E5%8A%A0%E6%B4%BB%E5%8B%95%20Register%20for%20a%20session&entry.741971672=Vol.%2001%EF%BD%9C%E8%87%BA%E5%A4%A7%E5%A0%B4%20NTU",
+        venueNote: { zh: "公館校區 · 全球變遷中心 G202", en: "Gongguan campus · Global Change Research Center, Room G202" },
+        date: { zh: "11/16（一）晚間", en: "Mon 16 November, evening" },
+        isoDate: "2026-11-16",
+        time: { zh: "詳細時間待定", en: "Exact time to be confirmed" },
       },
       {
         id: "nycu",
         formLabel: "Vol. 01｜陽明交大場 NYCU",
         name: { zh: "陽明交大場", en: "NYCU session" },
         venue: { zh: "國立陽明交通大學", en: "National Yang Ming Chiao Tung University" },
-        venueNote: { zh: "校區與教室確認中", en: "Campus and room to be confirmed" },
-        date: { zh: "日期確認中", en: "Date to be confirmed" },
+        venueNote: { zh: "新竹校區 · 場地確認中", en: "Hsinchu campus · Room to be confirmed" },
+        date: { zh: "11/17（二）下午", en: "Tue 17 November, afternoon" },
+        isoDate: "2026-11-17",
         time: { zh: "時間確認中", en: "Time to be confirmed" },
-        registerUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%A0%B1%E5%90%8D%E5%8F%83%E5%8A%A0%E6%B4%BB%E5%8B%95%20Register%20for%20a%20session&entry.741971672=Vol.%2001%EF%BD%9C%E9%99%BD%E6%98%8E%E4%BA%A4%E5%A4%A7%E5%A0%B4%20NYCU",
       },
     ],
-    registerAllUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%A0%B1%E5%90%8D%E5%8F%83%E5%8A%A0%E6%B4%BB%E5%8B%95%20Register%20for%20a%20session&entry.741971672=Vol.%2001%EF%BD%9C%E8%87%BA%E5%A4%A7%E5%A0%B4%20NTU&entry.741971672=Vol.%2001%EF%BD%9C%E9%99%BD%E6%98%8E%E4%BA%A4%E5%A4%A7%E5%A0%B4%20NYCU",
+    registerUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%A0%B1%E5%90%8D%E5%8F%83%E5%8A%A0%E6%B4%BB%E5%8B%95%20Register%20for%20a%20session",
     program: [
       {
         title: { zh: "開場", en: "Opening" },
         detail: {
-          zh: "詹偉平（Chan, Wei-Ping）介紹整場活動；孫烜駿（Sun, Syuan-Jyun）談都市化（urbanization），引言本冊主題。",
-          en: "Chan, Wei-Ping (詹偉平) introduces the event; Sun, Syuan-Jyun (孫烜駿) introduces urbanization and the evening’s theme.",
+          zh: "詹偉平（Chan, Wei-Ping）為整場活動開場；孫烜駿（Sun, Syuan-Jyun）從都市化（urbanization）切入，帶出本冊主題。",
+          en: "Chan, Wei-Ping (詹偉平) opens the event; Sun, Syuan-Jyun (孫烜駿) sets out the theme through the lens of urbanization.",
         },
       },
       {
