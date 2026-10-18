@@ -177,7 +177,14 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
   - 頁面內固定文案慣例：元件頂端放 `const T = { zh: {…}, en: {…} } satisfies Record<Lang, unknown>`，或直接 `zh ? … : …`。
 - **meta**（`src/lib/meta.ts`）：`rootMetadata(lang)`（根 layout 預設、title template）、`pageMetadata({ lang, path, title, description, ogTitle?, absoluteTitle? })`（canonical、hreflang `zh-Hant-TW` / `en` / `x-default`→中文、OG locale）。`SITE_NAME`。
 - **sitemap**（`src/app/sitemap.ts`）：固定六頁 + 每個 `EVENTS` 的 `/events/<slug>`，每頁兩種語言並列 hreflang。新增活動會自動進 sitemap。`/lab/*` 不在其中。
-- **robots**（`src/app/robots.ts`）：全站允許，指向 `${SITE.url}/sitemap.xml`。
+- **robots**（`src/app/robots.ts`）：全站允許，指向 `${SITE.url}/sitemap.xml`；另外明列 AI 搜尋 / 問答爬蟲（GPTBot、OAI-SearchBot、ClaudeBot、PerplexityBot、Google-Extended…，`AI_BOTS`）為允許。**不要封鎖它們**：被它們讀得到，ChatGPT、Claude、Perplexity、Gemini 才會引用本站。
+- **SEO 與 AI 搜尋（GEO）**，全部由 `src/content` 自動產生，改內容就會跟著更新：
+  - **分享圖**：`public/og/ecotone-zh.png`、`ecotone-en.png`（1200×630），由 `meta.ts` 的 `OG_IMAGE` 放進每頁的 `og:image` 與 `twitter:image`（`summary_large_image`）。重畫見 8.10。不用 Next 的 `opengraph-image.png` 檔案慣例，因為那會產生帶 hash 的網址，結構化資料無法穩定引用。
+  - **結構化資料（JSON-LD）**：`src/lib/jsonld.ts` + `<JsonLd>`。首頁、關於頁：`Organization`（Ecotone，`founder` 指向三個共同主辦）+ `WebSite`；活動頁：`EventSeries` + 每個有 `isoDate` 的場次一個 `EducationEvent`（日期、地點、城市 `Session.locality`、主辦、講者）+ 講者 `Person`（中英名、照片、所屬機構、學科、身份、個人網頁）+ `BreadcrumbList`；講者招募頁：`FAQPage`（`FAQ`）。驗證：Google Rich Results Test / Schema.org Validator 貼正式網址。
+  - **`/llms.txt`、`/llms-full.txt`**（llmstxt.org 格式，`src/lib/llms.ts`，路由 `src/app/llms.txt/route.ts`、`src/app/llms-full.txt/route.ts`）：給 AI 引擎讀的純文字事實摘要，英文為主、附中文名稱。前者是總覽（定義、名字由來、共同主辦、每一冊的日期 / 場地 / 講者 / 流程、頁面連結），後者再加每位講者的完整介紹、亮點、著作、原則與 FAQ。文案一樣要守 4.x 的規則（不稱講者為標本、不用性別代名詞、不寫「海外聲音」）。
+  - `rootMetadata` 另有 `keywords`（`KEYWORDS`）、`authors`、`publisher`、`category`、`applicationName`。
+  - **官方帳號**：`SITE.instagram` 與 `SITE.profiles`（字串陣列：YouTube 頻道、Facebook 粉專、活動平台頁、學校公告頁等**代表 Ecotone 本身**的頁面）會進 `Organization.sameAs` 與 `/llms.txt`。目前都是空的；有新頁面就貼網址進 `profiles`，不必改程式。
+  - **網域**：canonical、sitemap、JSON-LD、llms.txt 的絕對網址都來自 `SITE.url`。正式網域確定後在 Vercel 設 `NEXT_PUBLIC_SITE_URL`，全部自動改。
 - **轉址**（`next.config.ts` 的 `redirects()`）：
   - `/contact` → `/call-for-speakers`、`/en/contact` → `/en/call-for-speakers`（`permanent: false`）
   - `/events/cross-pollination-2026` → `/events/sustainable-urbanization-rewilding-2026`（中英各一，`permanent: true`；Vol. 01 舊名 "Cross-Pollination"）
@@ -236,6 +243,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `RevealObserver.tsx` | `.reveal` 捲動淡入；有 `#hash` 時整頁關閉淡入 |
 | `Rich.tsx` | 以 `dangerouslySetInnerHTML` 渲染 repo 內自己寫的含標記文案（`<span class="en">`、`<em>`、`<i>`） |
 | `Logo.tsx` | logo `<img>` |
+| `JsonLd.tsx` | 輸出 `<script type="application/ld+json">`（`<` 會被跳脫），資料來自 `lib/jsonld.ts` |
 
 ### 3.4 `src/lib/`
 
@@ -248,6 +256,8 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `leap.ts` | `leap()` 全站唯一的跳躍曲線、`prefersReducedMotion()` |
 | `prey.ts` | 蝗蟲與青蛙之間的小 store：`registerPrey`、`getPrey`、事件 `ecotone:grasshopper-snatched` / `ecotone:grasshopper-respawn` |
 | `langPref.ts` | 語言偏好的 localStorage key、`savePref`、`<head>` 轉址 script `PREF_REDIRECT_SCRIPT`（見 3.1） |
+| `jsonld.ts` | schema.org 結構化資料：`siteGraph`、`eventGraph`、`faqGraph`，以及 `absUrl`、`plain`（去掉站內標記）（見 3.1） |
+| `llms.ts` | `/llms.txt`、`/llms-full.txt` 的內容 `llmsText(full)`（見 3.1） |
 
 ---
 
@@ -334,6 +344,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 #### 4.6.1 場次（`Session`）與預填網址
 
 - 每一冊可有 `sessions?: Session[]`（`events.ts`）。欄位：`id`、`formLabel`、`name`（短場名，首頁場次列用）、`venue`、`venueNote?`、`date`（未定寫「日期確認中」）、`isoDate?`（填了首頁才顯示日期）、`time?`、`registerUrl`。另有活動層級的 `registerAllUrl?`：**不寫 = 不顯示**「兩場都報名」；**空字串 = 顯示為「即將開放」**。
+- `locality?`（`{ zh, en }`，例如 臺北市 / Taipei）：城市，只給活動結構化資料（JSON-LD 的 `addressLocality`）與 `llms.txt` 用，不顯示在頁面上。新場次請填。
 - **`formLabel` 是穩定標籤**：必須和 Google 表單「報名場次 Sessions」的選項文字**一字不差**，格式 `Vol. NN｜場名 Short name`（例：`Vol. 01｜臺大場 NTU`、`Vol. 01｜陽明交大場 NYCU`）。**上線後絕對不要改**（回覆試算表與預填網址都靠它），日期、時間、教室**不寫**在標籤裡。腳本頂端的 `SESSIONS` 陣列是同一份清單。
 - **每個按鈕都是同一份表單的預填網址**（`?usp=pp_url&entry.…=…`）：
   - 單一場次：第一題 = 報名、只勾這一場 → `sessions[].registerUrl`
@@ -512,7 +523,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 
 | 檔案 | 內容 | 要做什麼 |
 |---|---|---|
-| `src/components/pages/HomePage.tsx` `homeMetadata` | 中英 description「第一場：2026 年 11 月 Sustainable Urbanization? Rewilding? 系列演講」/「First volume: … November 2026.」 | 改成新一冊或通用描述 |
+| `src/components/pages/HomePage.tsx` `homeMetadata` | 中英 description「第一冊 Sustainable Urbanization? Rewilding? 系列演講：2026 年 11 月 16 日在臺大、17 日在陽明交大。」/「First volume: … on 16 November 2026 at NTU (Taipei) and 17 November at NYCU (Hsinchu).」 | 改成新一冊或通用描述 |
 | `src/components/pages/SpeakersPage.tsx` 空狀態 | `en="The collection begins after Vol. 01, November 2026."`、「第一冊」、fallback 字串 | 只在沒有 past 活動時出現；若仍會出現就改 |
 | `src/components/Specimen.tsx` | `vol` 預設值 `"Vol. 01 · Sustainable Urbanization? Rewilding?"`（呼叫端都有傳，實際不會用到）；`Barcode code={\`ECO-001-${…}\`}` | `ECO-001` 看起來是系列編號，所有冊都一樣；要不要按冊變，先問使用者 |
 | `EventsPage.tsx`、`AboutPage.tsx`、`HomePage.tsx`（Pl. II 側標） | `"ECO-001"` 編目字樣 | 同上，裝飾性 |
@@ -754,6 +765,12 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
    - 淡入動畫只在 `prefers-reduced-motion: no-preference`。
    - SOS 的全名在 tooltip 寫 **Sustainability of Sustainability Foundation**（中文頁前面加「SOS 基金會」）；圖上標籤只寫 NTU / NYCU / SOS。
 
+### 8.10 分享圖（Open Graph / X 卡片）
+
+- 檔案：`public/og/ecotone-zh.png`、`public/og/ecotone-en.png`，1200×630。紙色底、雙框、朱紅 `NTU × NYCU × SOS`、斜體 *Ecotone*、音標行、水線版「兼容並續」（墨色在上、藍曬藍 `#3B6D96` 在下、朱紅虛線）、副標與 tagline、底部三方全名與 `ECO-001`，右側圓框內是品牌標誌 `#mark`。
+- 生成：`node scripts/og-image.mjs`（用 `sharp`，需要本機有安裝 **Noto Serif TC** 字型，否則中文會變成替代字型）。產生後用 Read / 圖片檢視器確認。
+- 這是一張全站通用的圖，**不寫日期**，換冊不必重畫。改品牌標誌（8.7）時要同步改腳本裡的 `mark`。
+
 ---
 
 ## 9. Push 前的 QA checklist
@@ -777,6 +794,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
   目前允許的命中：程式識別字 `SpecimenSheet` / `Specimen.tsx` / `you-the-next-specimen`（seed 字串）、`Fungi.tsx` 與 `Specimen.tsx` / `speakers.ts` 中提醒「不可稱講者為標本」的**註解**、以及詹偉平資料中描述**博物館館藏**的「標本 3D 數位化」「museum specimens」。任何把講者稱為標本的文案都不允許。
 - [ ] 破折號 grep：`grep -rn "—" src/content src/components/pages`，文案中盡量為零（註解不限）。
 - [ ] 新增的連結 `target="_blank"` 都有 `rel="noopener noreferrer"`。
+- [ ] 改了活動、講者或 FAQ：看一下 `/llms.txt` 與活動頁的 JSON-LD（`<script type="application/ld+json">`）內容正確；上線後可用 Google Rich Results Test 驗證活動頁。
 - [ ] Commit 訊息風格（照 `git log`）：英文、一行摘要用「區域: 做了什麼」，例如 `Atlas: vacant fields sink into the plate in a near-background blue`、`Follow: one seed packet per page`、`Chan: add lab website link (SOS research)`；需要時空一行寫說明；結尾加 `Co-Authored-By:` trailer（依當下環境指示）。
 - [ ] **使用者明確要求才 push**（push 到 `main` 即自動部署上線）。
 
@@ -795,7 +813,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 | 「活動報名與通知」表單 | `scripts/create-google-forms.gs` 的 `createParticipationForm()` 尚未執行；`SITE.followFormUrl` 仍指向舊追蹤表單 | 建好後把 `followFormUrl` 換成新表單的「只想收到通知」預填網址；舊追蹤表單可停止收回覆（不要刪，保留舊名單） |
 | Vol. 01 `venueNote` | 仍是「臺北 · 實體為主」（首頁 hero 取「臺北」當城市），但陽明交大場的校區未定 | 校區確定後確認是否仍正確 |
 | 流程時間 | `EventPage.tsx`「流程為暫定版本…」 | 待定 |
-| 聯絡信箱 | `site.ts`：`contactEmail: ""`（顯示「待公布」） | 待補 |
+| 聯絡信箱 | `site.ts`：`contactEmail: ""`（講者招募頁聯絡區改成「請透過上方的講者申請或追蹤表單與我們聯繫」，連到 `#two-ways`；填了才顯示 Email 與「歡迎來信」標題） | 客戶目前沒有公開信箱 |
 | Instagram | `site.ts`：`instagram: ""`（空則不顯示） | 待補 |
 | SALAD Dressing logo | `public/logos/salad-placeholder.svg`，`ORGS.salad.placeholder: true` | 待換正式 logo |
 | SALAD Dressing 網址 | `ORGS.salad.url` 已是 `https://www.saladlandscape.com/`，但註解仍寫「暫用 ArchDaily 頁面」，且仍標 `placeholder: true` | 需確認網址是否已正確，再更新註解與旗標 |

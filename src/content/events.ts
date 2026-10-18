@@ -28,6 +28,8 @@ export type Session = {
   name: L10n;
   venue: L10n; // 例如 國立臺灣大學 / National Taiwan University
   venueNote?: L10n; // 校區、教室
+  /** 城市，用於搜尋引擎的活動結構化資料（JSON-LD 的 addressLocality），例如 臺北市 / Taipei */
+  locality?: L10n;
   date: L10n; // 顯示用；未定時寫「日期確認中」
   /** 日期確定後填 YYYY-MM-DD；有填時首頁場次列才會顯示日期 */
   isoDate?: string;
@@ -133,6 +135,7 @@ export const EVENTS: ForumEvent[] = [
         name: { zh: "臺大場", en: "NTU session" },
         venue: { zh: "國立臺灣大學", en: "National Taiwan University" },
         venueNote: { zh: "公館校區 · 全球變遷中心 G202", en: "Gongguan campus · Global Change Research Center, Room G202" },
+        locality: { zh: "臺北市", en: "Taipei" },
         date: { zh: "11/16（一）", en: "Mon 16 November" },
         isoDate: "2026-11-16",
         time: { zh: "晚間（詳細時間待訂）", en: "Evening (exact time to be confirmed)" },
@@ -143,6 +146,7 @@ export const EVENTS: ForumEvent[] = [
         name: { zh: "陽明交大場", en: "NYCU session" },
         venue: { zh: "國立陽明交通大學", en: "National Yang Ming Chiao Tung University" },
         venueNote: { zh: "新竹校區 · 場地確認中", en: "Hsinchu campus · Room to be confirmed" },
+        locality: { zh: "新竹市", en: "Hsinchu" },
         date: { zh: "11/17（二）", en: "Tue 17 November" },
         isoDate: "2026-11-17",
         time: { zh: "午後（詳細時間待訂）", en: "Afternoon (exact time to be confirmed)" },

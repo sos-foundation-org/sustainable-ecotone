@@ -12,6 +12,8 @@ import { EVENTS } from "@/content/events";
 import { SPEAKERS } from "@/content/speakers";
 import { localePath, type L10n, type Lang } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/meta";
+import JsonLd from "@/components/JsonLd";
+import { faqGraph } from "@/lib/jsonld";
 
 export function callMetadata(lang: Lang) {
   return pageMetadata({
@@ -95,6 +97,7 @@ export default function CallPage({ lang }: { lang: Lang }) {
 
   return (
     <>
+      <JsonLd data={faqGraph(lang)} />
       <PageTitle
         catalog={[zh ? "Call for Speakers · 講者招募" : "Call for Speakers", "Desiderata", "ECO-S-??"]}
         title={
@@ -354,13 +357,25 @@ export default function CallPage({ lang }: { lang: Lang }) {
             <header className="accession-head mono">
               <span>{zh ? "Correspondence · 一般聯絡" : "Correspondence · General enquiries"}</span>
             </header>
-            <h2 id="contact-h">{zh ? "其他事情，也歡迎來信" : "For anything else, write to us"}</h2>
+            <h2 id="contact-h">{SITE.contactEmail ? (zh ? "其他事情，也歡迎來信" : "For anything else, write to us") : zh ? "其他事情，也歡迎聯絡我們" : "For anything else, get in touch"}</h2>
             <p className="muted">{zh ? "合作提案、為多元聲音錄一段你對跨領域永續的期待、媒體採訪，或只是想打個招呼。" : "Partnership proposals, a film for Diverse Voices about your hopes for interdisciplinary sustainability, press enquiries, or simply to say hello."}</p>
             <dl className="fields">
-              <div>
-                <dt>Email</dt>
-                <dd>{SITE.contactEmail ? <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a> : zh ? "待公布" : "To be announced"}</dd>
-              </div>
+              {SITE.contactEmail ? (
+                <div>
+                  <dt>Email</dt>
+                  <dd>
+                    <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>
+                  </dd>
+                </div>
+              ) : (
+                // no public inbox yet: the two forms above are the way in
+                <div>
+                  <dt>Forms</dt>
+                  <dd>
+                    <a href="#two-ways">{zh ? "請透過上方的講者申請或追蹤表單與我們聯繫" : "Reach us through the speaker or follow form above"}</a>
+                  </dd>
+                </div>
+              )}
               <div>
                 <dt>Organizers</dt>
                 <dd>NTU × NYCU × SOS</dd>

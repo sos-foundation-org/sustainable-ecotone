@@ -13,6 +13,8 @@ import { DISCIPLINES } from "@/content/disciplines";
 import { pad2, roman } from "@/lib/engrave";
 import { localePath, type Lang } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/meta";
+import JsonLd from "@/components/JsonLd";
+import { siteGraph } from "@/lib/jsonld";
 
 export function aboutMetadata(lang: Lang) {
   return pageMetadata({
@@ -36,6 +38,7 @@ export default function AboutPage({ lang }: { lang: Lang }) {
 
   return (
     <>
+      <JsonLd data={siteGraph(lang)} />
       <PageTitle
         catalog={[zh ? "Colophon · 關於" : "Colophon · About", "Collectors & provenance", "ECO-001"]}
         title={

@@ -19,9 +19,15 @@ export const SITE = {
    * 改成那份表單的「只想收到通知 Follow only」預填網址（執行紀錄會印出），讓報名與追蹤都進同一份試算表。
    */
   followFormUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%8F%AA%E6%83%B3%E6%94%B6%E5%88%B0%E6%9C%AA%E4%BE%86%E6%B4%BB%E5%8B%95%E9%80%9A%E7%9F%A5%20Just%20notify%20me%20about%20future%20events", // 「活動報名與通知」表單的「只想收到通知」預填網址（舊的獨立追蹤表單已刪除）
-  /** 聯絡信箱。留空 = 顯示「待公布」 */
+  /** 聯絡信箱。留空 = 講者招募頁的聯絡區改為指向上方兩份表單 */
   contactEmail: "",
   instagram: "",
+  /**
+   * 其他官方帳號或關於本論壇的官方頁面（YouTube 頻道、Facebook 粉專、活動平台頁、學校公告頁…）。
+   * 貼完整網址即可，會自動進結構化資料（Organization 的 sameAs）與 /llms.txt，幫助搜尋引擎與 AI 認出同一個組織。
+   * 只放「代表 Ecotone 本身」的頁面，不放講者個人頁。
+   */
+  profiles: [] as string[],
 };
 
 /** 「暫代」等草稿標記只在預覽環境顯示：設定 NEXT_PUBLIC_SHOW_DRAFTS=1 */

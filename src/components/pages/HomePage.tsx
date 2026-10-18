@@ -22,6 +22,8 @@ import { VOICES } from "@/content/voices";
 import { fmtCoord, pad2, roman } from "@/lib/engrave";
 import { localePath, type Lang } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/meta";
+import JsonLd from "@/components/JsonLd";
+import { siteGraph } from "@/lib/jsonld";
 
 export function homeMetadata(lang: Lang) {
   return lang === "zh"
@@ -32,7 +34,7 @@ export function homeMetadata(lang: Lang) {
         title: "Ecotone｜兼容並續 · NTU × NYCU × SOS 跨領域永續論壇",
         ogTitle: "Ecotone｜兼容並續",
         description:
-          "Ecotone 兼容並續是由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起的跨領域永續論壇：在學科的交界處，讓永續長出新的物種。第一場：2026 年 11 月 Sustainable Urbanization? Rewilding? 系列演講。",
+          "Ecotone 兼容並續是由國立臺灣大學、國立陽明交通大學與 SOS Foundation 共同發起的跨領域永續論壇：在學科的交界處，讓永續長出新的物種。第一冊 Sustainable Urbanization? Rewilding? 系列演講：2026 年 11 月 16 日在臺大、17 日在陽明交大。",
       })
     : pageMetadata({
         lang,
@@ -41,7 +43,7 @@ export function homeMetadata(lang: Lang) {
         title: "Ecotone · Interdisciplinary Sustainability Forum · NTU × NYCU × SOS",
         ogTitle: "Ecotone · Interdisciplinary Sustainability Forum",
         description:
-          "Ecotone is an interdisciplinary sustainability forum co-founded by National Taiwan University, National Yang Ming Chiao Tung University and SOS Foundation. Where disciplines meet, sustainability grows new species. First volume: Sustainable Urbanization? Rewilding?, a lecture series in November 2026.",
+          "Ecotone is an interdisciplinary sustainability forum co-founded by National Taiwan University, National Yang Ming Chiao Tung University and SOS Foundation. Where disciplines meet, sustainability grows new species. First volume: Sustainable Urbanization? Rewilding?, a lecture series on 16 November 2026 at NTU (Taipei) and 17 November at NYCU (Hsinchu).",
       });
 }
 
@@ -82,6 +84,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
 
   return (
     <>
+      <JsonLd data={siteGraph(lang)} />
       {/* ───────── Above & below: the mycorrhizal hero ───────── */}
       <MycorrhizaHero
         lang={lang}

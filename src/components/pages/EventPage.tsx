@@ -18,6 +18,8 @@ import { DESIDERATA } from "@/content/crossings";
 import { pad2, roman } from "@/lib/engrave";
 import { localePath, type Lang } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/meta";
+import JsonLd from "@/components/JsonLd";
+import { eventGraph } from "@/lib/jsonld";
 
 export function eventMetadata(lang: Lang, e: ForumEvent) {
   const vol = `Vol. ${pad2(e.vol)}`;
@@ -47,6 +49,7 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
 
   return (
     <>
+      <JsonLd data={eventGraph(lang, e)} />
       {/* Title page (+ the volume's engraved plate) */}
       <section className={`title-hero${Plate ? " title-hero--plate" : ""}`} aria-labelledby="ev-title">
         <div className="wrap title-hero-grid">
