@@ -115,7 +115,7 @@ function SessionStub({ s, i, e, lang }: { s: Session; i: number; e: ForumEvent; 
   );
 }
 
-/** Compact session list for the home page: 臺大場 · 陽明交大場 (with dates once they are known). */
+/** Compact session list for the home page: 臺大場 · 陽明交大場 (with dates, and hours, once they are known). */
 export function SessionLine({ e, lang }: { e: ForumEvent; lang: Lang }) {
   const sessions = e.sessions ?? [];
   if (sessions.length === 0) return null;
@@ -126,7 +126,13 @@ export function SessionLine({ e, lang }: { e: ForumEvent; lang: Lang }) {
         <span key={s.id}>
           {i > 0 && <span className="muted"> · </span>}
           {s.name[lang]}
-          {s.isoDate && <span className="muted"> {s.date[lang]}</span>}
+          {s.isoDate && (
+            <span className="muted">
+              {" "}
+              {s.date[lang]}
+              {s.start && ` ${s.start}${s.end ? `–${s.end}` : ""}`}
+            </span>
+          )}
         </span>
       ))}
     </p>

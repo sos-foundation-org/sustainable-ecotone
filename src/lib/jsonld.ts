@@ -125,7 +125,9 @@ export function eventGraph(lang: Lang, e: ForumEvent): Node {
     "@id": `${url}#session-${s.id}`,
     name: `${name} · ${s.name[lang]}`,
     description,
-    startDate: s.isoDate,
+    // Taiwan time; a bare date until the hours are confirmed
+    startDate: s.start ? `${s.isoDate}T${s.start}:00+08:00` : s.isoDate,
+    ...(s.end ? { endDate: `${s.isoDate}T${s.end}:00+08:00` } : {}),
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     inLanguage: [HTML_LANG.zh, HTML_LANG.en],

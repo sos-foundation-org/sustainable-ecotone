@@ -34,6 +34,9 @@ export type Session = {
   /** 日期確定後填 YYYY-MM-DD；有填時首頁場次列才會顯示日期 */
   isoDate?: string;
   time?: L10n;
+  /** 確定後填 "HH:MM"（臺灣時間）：首頁場次列顯示時段，結構化資料（JSON-LD）帶入精確的開始 / 結束時間 */
+  start?: string;
+  end?: string;
   /** 這一場的預填報名網址（第一題 = 報名、已勾好本場）。留空 = 按鈕顯示「報名即將開放」 */
 };
 
@@ -125,8 +128,8 @@ export const EVENTS: ForumEvent[] = [
     speakers: ["sun", "chan", "yen", "yuhan", "wang"],
     plate: "urbanpark",
     attendance: {
-      zh: "分兩天、兩場舉辦：11/16（一）晚間在臺大公館校區，11/17（二）午後在陽明交大新竹校區。報名請見下方場次。",
-      en: "Two sessions on two days: Monday 16 November (evening) at NTU’s Gongguan campus, and Tuesday 17 November (afternoon) at NYCU’s Hsinchu campus. Register below.",
+      zh: "分兩天、兩場舉辦：11/16（一）18:30–21:00 在臺大公館校區，11/17（二）午後在陽明交大新竹校區。報名請見下方場次。",
+      en: "Two sessions on two days: Monday 16 November, 18:30–21:00, at NTU’s Gongguan campus, and Tuesday 17 November (afternoon) at NYCU’s Hsinchu campus. Register below.",
     },
     sessions: [
       {
@@ -138,7 +141,9 @@ export const EVENTS: ForumEvent[] = [
         locality: { zh: "臺北市", en: "Taipei" },
         date: { zh: "11/16（一）", en: "Mon 16 November" },
         isoDate: "2026-11-16",
-        time: { zh: "晚間（詳細時間待訂）", en: "Evening (exact time to be confirmed)" },
+        time: { zh: "18:30–21:00", en: "18:30–21:00" },
+        start: "18:30",
+        end: "21:00",
       },
       {
         id: "nycu",

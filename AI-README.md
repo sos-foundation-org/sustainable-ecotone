@@ -344,6 +344,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 #### 4.6.1 場次（`Session`）與預填網址
 
 - 每一冊可有 `sessions?: Session[]`（`events.ts`）。欄位：`id`、`formLabel`、`name`（短場名，首頁場次列用）、`venue`、`venueNote?`、`date`（未定寫「日期確認中」）、`isoDate?`（填了首頁才顯示日期）、`time?`、`registerUrl`。另有活動層級的 `registerAllUrl?`：**不寫 = 不顯示**「兩場都報名」；**空字串 = 顯示為「即將開放」**。
+- `start?` / `end?`（`"HH:MM"`，臺灣時間，例如臺大場 `18:30` / `21:00`）：時段確定後填。首頁場次列會在日期後顯示時段，結構化資料的 `startDate` / `endDate` 會帶入精確時間（`+08:00`）；顯示在票根卡上的文字仍是 `time`，兩者要一致。
 - `locality?`（`{ zh, en }`，例如 臺北市 / Taipei）：城市，只給活動結構化資料（JSON-LD 的 `addressLocality`）與 `llms.txt` 用，不顯示在頁面上。新場次請填。
 - **`formLabel` 是穩定標籤**：必須和 Google 表單「報名場次 Sessions」的選項文字**一字不差**，格式 `Vol. NN｜場名 Short name`（例：`Vol. 01｜臺大場 NTU`、`Vol. 01｜陽明交大場 NYCU`）。**上線後絕對不要改**（回覆試算表與預填網址都靠它），日期、時間、教室**不寫**在標籤裡。腳本頂端的 `SESSIONS` 陣列是同一份清單。
 - **每個按鈕都是同一份表單的預填網址**（`?usp=pp_url&entry.…=…`）：
