@@ -23,6 +23,7 @@ import { fmtCoord, pad2, roman } from "@/lib/engrave";
 import { localePath, type Lang } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/meta";
 import JsonLd from "@/components/JsonLd";
+import { faces } from "@/components/Trio";
 import { siteGraph } from "@/lib/jsonld";
 
 export function homeMetadata(lang: Lang) {
@@ -289,7 +290,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
             <CrossingAtlas
               lang={lang}
               idPrefix="home-atlas"
-              speakers={folio.map((s) => ({ id: s.id, name: s.name[lang], photo: s.photo, initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
+              speakers={folio.map((s) => ({ id: s.id, name: s.name[lang], photo: s.photo, members: faces(s.members), initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
               disciplines={DISCIPLINES}
               caption={
                 zh

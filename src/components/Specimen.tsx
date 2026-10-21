@@ -8,11 +8,14 @@ import OrgLink from "./OrgLink";
 import Rich from "./Rich";
 import Swatch from "./Swatch";
 import { Genet } from "./Fungi";
+import { ROMAN, TrioPortrait, isTrio } from "./Trio";
 
 // The sheets borrow the look of a herbarium mount, but the copy never calls a speaker a specimen.
 const T = {
   zh: {
     portrait: (n: string) => `${n} 肖像`,
+    members: "成員",
+    team: (n: string, k: number) => `${n} ${k === 3 ? "三" : k}位成員肖像`,
     placeholder: "講者肖像 4:5 · 待補",
     labels: (n: string, k: number) => `${n} 的 ${k} 種身份`,
     top: "Ecotone · 講者",
@@ -28,6 +31,8 @@ const T = {
   },
   en: {
     portrait: (n: string) => `Portrait of ${n}`,
+    members: "Members",
+    team: (n: string, k: number) => `Portraits of the ${k} members of ${n}`,
     placeholder: "Portrait 4:5 · to come",
     labels: (n: string, k: number) => `${n}: ${k} identities`,
     top: "Ecotone · Speaker",
@@ -100,17 +105,26 @@ export function Barcode({ code }: { code: string }) {
 
 /**
  * Mounted portrait. With `photo` it shows the image in full colour (never greyscale);
+ * a three-person team shows the three photos as a triptych (Trio.tsx);
  * without, an engraved placeholder card clearly marked for the client.
  */
 export function Portrait({ s, size = "md", lang = "zh" }: { s: Speaker; size?: "sm" | "md"; lang?: Lang }) {
   const t = T[lang];
+  const trio = isTrio(s.members);
   return (
-    <div className={`mounted mounted--${size}${s.photo ? " has-photo" : ""}`}>
+    <div className={`mounted mounted--${size}${s.photo || trio ? " has-photo" : ""}`}>
       <span className="tape a" aria-hidden="true" />
       <span className="tape b" aria-hidden="true" />
       <span className="tape c" aria-hidden="true" />
       <span className="tape d" aria-hidden="true" />
-      {s.photo ? (
+      {trio ? (
+        <TrioPortrait
+          members={s.members!}
+          numerals={size === "md"}
+          // the small home-page card names only the team; the full sheet names all three
+          label={size === "md" ? t.portrait(`${s.name[lang]}：${s.members!.map((m) => m.name[lang]).join(lang === "zh" ? "、" : ", ")}`) : t.team(s.name[lang], s.members!.length)}
+        />
+      ) : s.photo ? (
         <img src={s.photo} alt={t.portrait(s.name[lang])} style={s.photoPos ? { objectPosition: s.photoPos } : undefined} />
       ) : (
         <div className="ph" aria-hidden="true">
@@ -202,6 +216,21 @@ export default function SpecimenSheet({
         <H id={`sheet-${s.id}`}>{s.name[lang]}</H>
         {/* the italic line repeats the name in English on Chinese pages, unless it already is English */}
         {lang === "zh" ? s.nameEn !== s.name.zh && <i>{s.nameEn}</i> : <i>{s.short}</i>}
+        {s.members && s.members.length > 0 && (
+          // a team: the members as a plate key, numbered like the panes of the triptych
+          <ol className="sheet-members" aria-label={t.members}>
+            {s.members.map((m, i) => (
+              <li key={m.nameEn}>
+                <span className="mono cin" aria-hidden="true">
+                  {ROMAN[i] ?? i + 1}.
+                </span>{" "}
+                <b>{m.name[lang]}</b>
+                {lang === "zh" && m.nameEn !== m.name.zh && <i lang="en"> {m.nameEn}</i>}
+                {m.role && <span className="muted"> · {m.role[lang]}</span>}
+              </li>
+            ))}
+          </ol>
+        )}
         <span className="mono sheet-loc">
           {no} · Loc. {s.places.map((p) => `${p.name}${p.approx ? "" : ` ${fmtCoord(p.lat, p.lng)}`}`).join(" ⇄ ")}
         </span>

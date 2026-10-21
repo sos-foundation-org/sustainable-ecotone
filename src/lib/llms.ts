@@ -44,7 +44,7 @@ function eventBlock(e: ForumEvent, full: boolean) {
     ``,
     ...(full ? [...e.intro.en.map(plain), ``, ...e.intro.zh.map(plain), ``] : []),
     `Speakers:`,
-    ...speakersOf(e).map((s) => `- ${who(s)}: ${s.short}${s.talk ? `. Talk or role: “${s.talk.en}” (${s.talk.zh})` : ""}`),
+    ...speakersOf(e).map((s) => `- ${who(s)}${s.members?.length ? ` (a team: ${s.members.map((m) => `${m.name.en} ${m.name.zh}`).join(", ")})` : ""}: ${s.short}${s.talk ? `. Talk or role: “${s.talk.en}” (${s.talk.zh})` : ""}`),
     ``,
     `Programme:`,
     ...e.program.map((p) => `- ${p.time ? `${p.time}: ` : ""}${p.title.en}${p.detail ? `. ${plain(p.detail.en)}` : ""}`),
@@ -57,6 +57,7 @@ function speakerBlock(s: Speaker) {
   return [
     `### ${who(s)}`,
     ``,
+    ...(s.members?.length ? [`- Members: ${s.members.map((m) => `${m.name.en} (${m.name.zh})${m.role ? `, ${m.role.en}` : ""}`).join("; ")}`] : []),
     `- Affiliations: ${s.orgs.map(org).join("; ")}`,
     `- Identities: ${s.identities.map((i) => `${plain(i.title.en)} (${plain(i.title.zh)})`).join("; ")}`,
     ...(s.talk ? [`- Talk or role: ${s.talk.en} / ${s.talk.zh}`] : []),

@@ -91,18 +91,31 @@ export function siteGraph(lang: Lang): Node {
   };
 }
 
+/** A speaker as a Person, or as an Organization with its members when the speaker is a team. */
 function person(s: Speaker, lang: Lang): Node {
   const names = Array.from(new Set([s.name.zh, s.name.en, s.nameEn])).filter((n) => n !== s.name[lang]);
+  const team = !!s.members?.length;
   return {
-    "@type": "Person",
+    "@type": team ? "Organization" : "Person",
     "@id": personId(s.id),
     name: s.name[lang],
     ...(names.length ? { alternateName: names } : {}),
     description: plain(s.bio[lang]),
     ...(s.photo ? { image: SITE.url + s.photo } : {}),
-    affiliation: s.orgs.map((k) => partnerOrg(k, lang)),
+    ...(team
+      ? {
+          member: s.members!.map((m) => ({
+            "@type": "Person",
+            name: m.name[lang],
+            alternateName: Array.from(new Set([m.name.zh, m.name.en, m.nameEn])).filter((n) => n !== m.name[lang]),
+            ...(m.photo ? { image: SITE.url + m.photo } : {}),
+            ...(m.role ? { jobTitle: m.role[lang] } : {}),
+          })),
+          ...(s.orgs.length ? { sameAs: s.orgs.map((k) => ORGS[k].url).filter(Boolean) } : {}),
+        }
+      : { affiliation: s.orgs.map((k) => partnerOrg(k, lang)) }),
     knowsAbout: s.disciplines.map((d) => disciplineByKey(d)?.name[lang]).filter(Boolean),
-    hasOccupation: s.identities.map((i) => ({ "@type": "Occupation", name: plain(i.title[lang]) })),
+    ...(team ? {} : { hasOccupation: s.identities.map((i) => ({ "@type": "Occupation", name: plain(i.title[lang]) })) }),
     ...(s.links?.length ? { sameAs: s.links.map((l) => l.url) } : {}),
   };
 }

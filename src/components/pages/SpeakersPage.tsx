@@ -12,6 +12,7 @@ import { DISCIPLINES } from "@/content/disciplines";
 import { pad2, roman } from "@/lib/engrave";
 import { localePath, type Lang } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/meta";
+import { faces } from "@/components/Trio";
 
 export function speakersMetadata(lang: Lang) {
   return pageMetadata({
@@ -198,7 +199,7 @@ export default function SpeakersPage({ lang }: { lang: Lang }) {
                 <CrossingAtlas
                   lang={lang}
                   idPrefix="sp-atlas"
-                  speakers={archived.map(({ s }) => ({ id: s.id, name: s.name[lang], photo: s.photo, initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
+                  speakers={archived.map(({ s }) => ({ id: s.id, name: s.name[lang], photo: s.photo, members: faces(s.members), initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
                   disciplines={DISCIPLINES}
                 />
               </div>

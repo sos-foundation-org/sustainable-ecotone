@@ -187,7 +187,7 @@ export const EVENTS: ForumEvent[] = [
       {
         time: "Talk 4",
         title: { zh: "野化：為自然讓出一點空間", en: "Rewilding: Making a Little Room for Nature" },
-        detail: { zh: "吳煜涵（Goh, Yu Han）", en: "Goh, Yu Han (吳煜涵)" },
+        detail: { zh: "SALAD Dressing：吳煜涵、黃美娜、何欣蕊", en: "SALAD Dressing: Goh Yu Han (吳煜涵), Wong Mee Na (黃美娜), He Xinrui (何欣蕊)" },
       },
       {
         time: "Panel",

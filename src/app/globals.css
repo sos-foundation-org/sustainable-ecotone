@@ -1181,3 +1181,21 @@ html:lang(en) .myco-h1 .wl--hero { font-size: clamp(3.6rem, 9vw, 8.25rem); line-
 .seed-mini::before { content: ""; position: absolute; left: 0; right: 0; top: 6px; border-top: 1px dashed var(--rule); }
 .seed-mini .seed-art { width: 30px; margin-top: 4px; }
 body:has(main .seed-packet) .seed-mini { display: none; }
+
+/* ── a three-person speaker (Trio.tsx): three panes / sectors with cinnabar boundaries, photos in full colour ── */
+.trio { position: absolute; inset: 0; z-index: 0; overflow: hidden; background: #EFE8D8; }
+.trio-pane { position: absolute; inset: 0; overflow: hidden; }
+.mounted .trio-pane img { position: absolute; max-width: none; width: auto; height: auto; object-fit: cover; }
+.trio-cuts { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 .6px var(--sheet)) drop-shadow(0 0 .6px var(--sheet)); }
+.trio-cuts line { stroke: var(--cinnabar); stroke-width: 1.4; }
+.trio-nums span { position: absolute; bottom: 10px; font-family: var(--f-mono); font-size: var(--t-xs); line-height: 1; letter-spacing: .08em; color: var(--cinnabar); background: var(--sheet); border: .5px solid var(--cinnabar); padding: 3px 6px; }
+.trio-avatar { display: block; }
+.atlas-avatar.trio-avatar { border: 0; border-radius: 0; overflow: visible; }
+.trio-avatar-cuts line { stroke: var(--cin-light); stroke-width: .9; stroke-linecap: round; }
+.trio-avatar-cuts circle { fill: var(--cin-light); }
+.trio-avatar-rim { fill: none; stroke: var(--cyan-mute); stroke-width: 1; }
+.sheet-members { flex-basis: 100%; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 2px 0 0; padding: 0; font-size: .95rem; }
+.sheet-members b { font-weight: 600; letter-spacing: .06em; }
+.sheet-members i { color: var(--sepia); }
+html:lang(en) .sheet-members b { font-family: var(--f-lat); font-size: 1.1rem; letter-spacing: normal; }
+.sheet-members .mono { text-transform: none; letter-spacing: .04em; }

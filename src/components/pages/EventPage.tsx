@@ -19,6 +19,7 @@ import { pad2, roman } from "@/lib/engrave";
 import { localePath, type Lang } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/meta";
 import JsonLd from "@/components/JsonLd";
+import { faces } from "@/components/Trio";
 import { eventGraph } from "@/lib/jsonld";
 
 export function eventMetadata(lang: Lang, e: ForumEvent) {
@@ -159,7 +160,7 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
               <CrossingAtlas
                 lang={lang}
                 idPrefix="ev-atlas"
-                speakers={lineup.map((s) => ({ id: s.id, name: s.name[lang], photo: s.photo, initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
+                speakers={lineup.map((s) => ({ id: s.id, name: s.name[lang], photo: s.photo, members: faces(s.members), initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
                 disciplines={DISCIPLINES}
                 caption={
                   zh

@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Discipline, DisciplineKey } from "@/content/disciplines";
 import type { Place } from "@/content/speakers";
+import { TrioAvatar, isTrio, type Face } from "./Trio";
 import type { Voice } from "@/content/voices";
 import { fmtCoord, r2, seedFrom } from "@/lib/engrave";
 import { hyphaPath, rng, toPath, walker, type Rng } from "@/lib/mycelium";
@@ -37,6 +38,8 @@ export type AtlasSpeaker = {
   /** small round headshot on the name tag below the plate */
   photo?: string;
   initial?: string;
+  /** a three-person team: drawn as one avatar cut into three (Trio.tsx) */
+  members?: Face[];
   disciplines: DisciplineKey[];
   places: Place[];
 };
@@ -284,7 +287,9 @@ export default function CrossingAtlas({
               onBlur={() => setHl(null)}
               onClick={() => setPinned((p) => (p === s.id ? null : s.id))}
             >
-              {s.photo ? (
+              {isTrio(s.members) ? (
+                <TrioAvatar members={s.members} className="atlas-avatar" />
+              ) : s.photo ? (
                 // eslint-disable-next-line @next/next/no-img-element -- tiny static headshot
                 <img className="atlas-avatar" src={s.photo} alt="" loading="lazy" />
               ) : (

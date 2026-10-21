@@ -90,7 +90,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | **鯨與海** | `src/components/WhaleSea.tsx` 自帶 `#sea-whale`、`#sea-dolphin`、`#sea-fish` | 只在 `WhaleSea` 內使用 | `/voices` | 改 `WhaleSea.tsx` |
 | **城市公園圖版內的符號** | `UrbanParkPlate.tsx`：`#urbanpark-moth`、`#urbanpark-beetle`、patterns `#urbanpark-win`、`#urbanpark-floor`、clipPath `#urbanpark-pave`、`#urbanpark-pond` | 圖版內部 | 活動頁 | 新圖版請用自己的 id 前綴 |
 | **機構 Logo** | `public/logos/`（見下表） | `ORGS[key].logo`（`src/content/site.ts`），由 `Logo.tsx`（純 `<img>`）渲染 | 關於頁、首頁共同主辦、講者卡機構列 | 放檔案 → 在 `ORGS` 填 `logo` |
-| **講者肖像** | `public/speakers/<id>-4x5.jpg`（目前：`sun`、`chan`、`yen`、`yuhan`、`wang`） | `Speaker.photo`，`Specimen.tsx` 的 `Portrait`；`CrossingAtlas` 的圓形小頭像 | 活動頁講者卡 | 見 5.3 |
+| **講者肖像** | `public/speakers/<id>-4x5.jpg`（目前：`sun`、`chan`、`yen`、`yuhan`、`wang`；SALAD Dressing 團隊成員另有 `meena`、`xinrui`） | `Speaker.photo`，`Specimen.tsx` 的 `Portrait`；`CrossingAtlas` 的圓形小頭像 | 活動頁講者卡 | 見 5.3 |
 | **網站圖示** | `src/app/icon.svg`（32×32 favicon，簡化版標誌）、`src/app/apple-icon.png`（180×180） | Next.js 檔案慣例自動產生 `<link rel="icon">` | 直接開檔；PNG 用圖片檢視器 | 見 8.7 |
 | **關於頁圖：兩棵樹，一片菌絲**（取代舊的三圓 TriplePoint） | `src/components/about/`：`geometry.ts`（決定性幾何：大王椰子、竹叢與竹鞭、菌絲、珊瑚菌 `coral()`）、`PartnerMycorrhiza.tsx`（伺服器元件，畫 SVG）、`PartnerTips.tsx`（客戶端：熱區與 tooltip） | `AboutPage.tsx` 的 `PageTitle aside={<PartnerMycorrhiza lang={lang} />}` | `/about`、`/en/about` 標題區右側（≤900px 時在標題下方） | 改 `geometry.ts`；標籤位置要同步改 `LABEL_BOXES`（圖形會避開）與 `PartnerMycorrhiza` 的 `SPOTS` 熱區。手機（≤480px）以 `.pmf-fine` 隱藏土壤點描與地層線 |
 | **設計 tokens** | `src/app/globals.css` 的 `:root` | `var(--token)` | 無 | 見 4.2 |
@@ -243,6 +243,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `RevealObserver.tsx` | `.reveal` 捲動淡入；有 `#hash` 時整頁關閉淡入 |
 | `Rich.tsx` | 以 `dangerouslySetInnerHTML` 渲染 repo 內自己寫的含標記文案（`<span class="en">`、`<em>`、`<i>`） |
 | `Logo.tsx` | logo `<img>` |
+| `Trio.tsx` | 三人團隊講者的照片組合（設計理由：三個人＝三個棲地，彼此的界線用朱紅邊界線，即 ecotone 的意象）。`TrioPortrait`：4:5 肖像窗以兩條**微斜**的朱紅線切成三格（上緣 36% / 70%、下緣 30% / 64%），大肖像底部標 i / ii / iii；`TrioAvatar`：34px 圓形頭像切成三個 120° 扇形（切線朝 90°、210°、330°，淡朱紅線交會於中心小點）。**照片不放大**（`ZOOM = 1`、`AV_W = 34`）：每張照片以原比例呈現，臉小一點沒關係，避免解析度撐不住；照片一樣全彩、不加濾鏡 |
 | `JsonLd.tsx` | 輸出 `<script type="application/ld+json">`（`<` 會被跳脫），資料來自 `lib/jsonld.ts` |
 
 ### 3.4 `src/lib/`
@@ -498,6 +499,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `links?` | `{ kind: "lab" \| "personal", url, icon? }[]`：實驗室 / 個人網頁 chip（`LinkGlyph`） |
 | `linkedOrgs?` | `OrgKey[]`：這些機構在卡片上保留超連結，其餘只顯示名稱 |
 | `draftNote?` | `L10n`：卡片底部「†」註記，**正式站也會顯示**；確認後刪掉 |
+| `members?` | `Member[]`：講者是**團隊**時的成員（`{ name, nameEn, photo?, focus?, role? }`）。`name` 填團隊名。**剛好三位且都有照片**時：肖像窗變成三聯（`TrioPortrait`）、圖譜頭像變成三分圓（`TrioAvatar`），講者卡名字下方列出 i. / ii. / iii. 成員圖例；結構化資料以 `Organization` + `member` 呈現。`focus: [x, y]` 是臉在該照片中的位置（0–1），用來把臉放進自己的窗格。目前只有 SALAD Dressing（id 仍為 `yuhan`）使用 |
 
 新機構：在 `site.ts` 的 `OrgKey` 聯集與 `ORGS` 各加一筆（`name`、`nameEn`、`url`、`logo?`、`placeholder?`），logo 放 `public/logos/`。
 
