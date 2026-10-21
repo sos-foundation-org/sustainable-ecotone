@@ -164,8 +164,8 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
                 disciplines={DISCIPLINES}
                 caption={
                   zh
-                    ? `${vol} 觸及 ${covered.size} / ${DISCIPLINES.length} 個學科、${places.size} 個地方。學科標註待講者確認。`
-                    : `${vol} touches ${covered.size} of ${DISCIPLINES.length} fields and ${places.size} places. Discipline tags are pending the speakers’ confirmation.`
+                    ? `${vol} 觸及 ${covered.size} / ${DISCIPLINES.length} 個學科、${places.size} 個地方。`
+                    : `${vol} touches ${covered.size} of ${DISCIPLINES.length} fields and ${places.size} places.`
                 }
               />
             </div>

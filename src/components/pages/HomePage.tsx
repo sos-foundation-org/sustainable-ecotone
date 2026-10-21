@@ -302,9 +302,6 @@ export default function HomePage({ lang }: { lang: Lang }) {
           <div className="reveal">
             <SpeakerAffiliations lang={lang} id="home-affil" logos={false} note={false} />
           </div>
-          <p className="draft-note light">
-            {zh ? "† 學科標註依講者目前公開的身份整理，待講者確認。" : "† Discipline tags follow each speaker’s current public roles and are pending their confirmation."}
-          </p>
         </div>
       </section>
 

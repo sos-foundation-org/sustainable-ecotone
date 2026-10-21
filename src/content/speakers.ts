@@ -5,7 +5,7 @@ import type { DisciplineKey } from "./disciplines";
 // ─── Speakers ────────────────────────────────────────────────────────────────
 // 新講者：在 SPEAKERS 加一筆（可翻譯欄位寫 { zh, en }），並在 events.ts 的 speakers 陣列引用 id。
 // photo 放 public/speakers/<id>-4x5.jpg（先裁成 4:5，建議至少 1200×1500）後填入路徑；沒有照片時顯示設計過的台紙佔位卡。
-// disciplines：依講者既有身份標註的學科（見 disciplines.ts），用於「交會圖譜」；待講者確認。
+// disciplines：依講者既有身份標註的學科（見 disciplines.ts），用於「交會圖譜」。
 // places：講者所屬機構的地點，用於地圖與經緯度標籤。approx = 僅為區域示意。
 
 export type Identity = { title: L10n; detail: L10n };
@@ -61,7 +61,6 @@ export type Speaker = {
   members?: Member[];
 };
 
-const DRAFT: L10n = { zh: "介紹為草稿，待講者確認。", en: "Draft profile, pending the speaker’s confirmation." };
 
 export const SPEAKERS: Speaker[] = [
   {
@@ -102,7 +101,6 @@ export const SPEAKERS: Speaker[] = [
       zh: `當我們談「氣候變遷」時，常常只看到溫度曲線。孫老師的研究關心的是曲線背後那些正在調整、合作、甚至演化的生命。孫老師會從科學家的角度，拋出一個所有學科都繞不開的問題：生命系統要如何因應？（<span class="en">how do living systems cope?</span>）`,
       en: `When we talk about climate change, we often see only the temperature curve. Professor Sun’s research is about the lives behind that curve, which are adjusting, cooperating, even evolving. Speaking as a scientist, Professor Sun will pose a question no discipline can sidestep: <em>how do living systems cope?</em>`,
     },
-    draftNote: DRAFT,
   },
   {
     id: "chan",
@@ -208,7 +206,6 @@ export const SPEAKERS: Speaker[] = [
       zh: `如果說科學負責回答「發生了什麼」，文學負責的是「我們如何感受它」。在一個充滿數據與模型的論壇裡，顏訥會帶來另一種精準：語言的精準。一場說不出來的危機，我們也無從感受。（<span class="en">Because a crisis we can't narrate is a crisis we can't feel.</span>）`,
       en: `If science answers the question “what happened?”, literature answers “how do we feel it?” In a forum full of data and models, Na Yen brings a different kind of precision: the precision of language. <em>Because a crisis we can’t narrate is a crisis we can’t feel.</em>`,
     },
-    draftNote: DRAFT,
   },
   {
     // a three-person practice: the id stays "yuhan" (anchor #yuhan, photo file names)
@@ -258,10 +255,6 @@ export const SPEAKERS: Speaker[] = [
     bio: {
       zh: `SALAD Dressing 是新加坡的地景建築事務所，曾參展 2021 威尼斯建築雙年展新加坡館、負責 2020 杜拜世博新加坡館的景觀設計，並在墨爾本設計週展出 <span class="en">Rewilding the Sky</span>。吳煜涵、黃美娜與何欣蕊三人將從新加坡帶來一個問題：如果城市本身就是一個生態交會帶呢？（<span class="en">what if the city itself is the ecotone?</span>）`,
       en: `SALAD Dressing is a landscape architecture practice in Singapore. The studio exhibited in the Singapore Pavilion at the 2021 Venice Architecture Biennale, designed the landscape of the Singapore Pavilion at Expo 2020 Dubai, and showed <em>Rewilding the Sky</em> at Melbourne Design Week. From Singapore, Goh Yu Han, Wong Mee Na and He Xinrui bring a question: <em>what if the city itself is the ecotone?</em>`,
-    },
-    draftNote: {
-      zh: "介紹為草稿，待講者確認；SALAD Dressing 的標誌與官網連結為暫代。",
-      en: "Draft profile, pending the speaker’s confirmation. The SALAD Dressing logo and website link are placeholders.",
     },
   },
   {
@@ -318,10 +311,6 @@ export const SPEAKERS: Speaker[] = [
     bio: {
       zh: `醫療是最少被放進永續討論的產業之一，卻是碳排與廢棄物的大戶。當一位牙醫同時要管診間、做研究、還要推永續政策，永續就不再是抽象概念，而是每天早上都要做的營運決策（<span class="en">operational decision</span>）。`,
       en: `Healthcare is one of the industries least often included in conversations about sustainability, yet it is a major source of carbon emissions and waste. When one dentist has to run a clinic, do research and drive sustainability policy all at once, sustainability stops being an abstraction and becomes an <em>operational decision</em> made every morning.`,
-    },
-    draftNote: {
-      zh: "介紹為草稿，所屬單位與職稱待講者確認。",
-      en: "Draft profile. Affiliation and title are pending the speaker’s confirmation.",
     },
   },
 ];

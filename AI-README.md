@@ -52,7 +52,7 @@ npm run lint     # eslint（設定在 eslint.config.mjs，含 next core-web-vita
 | `NEXT_PUBLIC_SHOW_DRAFTS=1` | 顯示機構的「暫代 / Placeholder」旗標（`ORGS[k].placeholder`） | `SHOW_DRAFTS`，用在 `Partners.tsx`、`Specimen.tsx` |
 | `NEXT_DIST_DIR` | 改 build 輸出資料夾（預設 `.next`） | `next.config.ts` 的 `distDir` |
 
-> 注意：`SHOW_DRAFTS` **只控制機構暫代旗標**。講者的 `draftNote`（「介紹為草稿，待講者確認」）在正式站上**一律顯示**（`Specimen.tsx` 沒有判斷 `SHOW_DRAFTS`）。
+> 注意：`SHOW_DRAFTS` **只控制機構暫代旗標**。講者的 `draftNote` 若有填，在正式站上**一律顯示**（`Specimen.tsx` 沒有判斷 `SHOW_DRAFTS`）。2026-10-21 起所有講者的草稿註記與「學科標註待講者確認」字樣都已依客戶要求移除。
 
 ### 1.3 在 dev / start 跑著的時候做檢查 build（`NEXT_DIST_DIR` 技巧）
 
@@ -487,7 +487,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `short` | 英文短描述（兩語共用）：英文頁名字下、首頁 mini 卡、hero 無障礙標籤 |
 | `tags` | `L10n<string[]>`：**目前不渲染** |
 | `identities` | `Identity[]`（`{ title: L10n, detail: L10n }`）：身份標籤，一張一個；數量會出現在「N 種身份」計數、hero、Genet 小菇數量。`title.zh` 需唯一 |
-| `disciplines` | `DisciplineKey[]`：交會圖譜、hero 菌絲、講者卡線型色票。目前標註「待講者確認」 |
+| `disciplines` | `DisciplineKey[]`：交會圖譜、hero 菌絲、講者卡線型色票 |
 | `places` | `Place[]`：`{ name, lat, lng, approx?, country }`。`name` 是圖譜的地點 key，**同一地點在不同講者間要拼法一致**（如 `"Taipei"`）才會合併。`approx: true` 時卡片不顯示座標、圖譜顯示「≈」 |
 | `orgs` | `OrgKey[]`：講者卡機構列、「歷屆講者單位」（`allAffiliations()` 自動彙整） |
 | `bio` | `L10n`：中文可含 `<span class="en">…</span>`、英文用 `<em>…</em>`。遵守 4.8 |
@@ -498,7 +498,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `photoPos?` | 裁切焦點 |
 | `links?` | `{ kind: "lab" \| "personal", url, icon? }[]`：實驗室 / 個人網頁 chip（`LinkGlyph`） |
 | `linkedOrgs?` | `OrgKey[]`：這些機構在卡片上保留超連結，其餘只顯示名稱 |
-| `draftNote?` | `L10n`：卡片底部「†」註記，**正式站也會顯示**；確認後刪掉 |
+| `draftNote?` | `L10n`：卡片底部「†」註記，**正式站也會顯示**。目前沒有任何講者使用（客戶已要求移除草稿字樣），新增前先問 |
 | `members?` | `Member[]`：講者是**團隊**時的成員（`{ name, nameEn, photo?, focus?, role? }`）。`name` 填團隊名。**剛好三位且都有照片**時：肖像窗變成三聯（`TrioPortrait`）、圖譜頭像變成三分圓（`TrioAvatar`），講者卡名字下方列出 i. / ii. / iii. 成員圖例；結構化資料以 `Organization` + `member` 呈現。`focus: [x, y]` 是臉在該照片中的位置（0–1），用來把臉放進自己的窗格。目前只有 SALAD Dressing（id 仍為 `yuhan`）使用 |
 
 新機構：在 `site.ts` 的 `OrgKey` 聯集與 `ORGS` 各加一筆（`name`、`nameEn`、`url`、`logo?`、`placeholder?`），logo 放 `public/logos/`。
@@ -530,8 +530,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 | `src/components/pages/SpeakersPage.tsx` 空狀態 | `en="The collection begins after Vol. 01, November 2026."`、「第一冊」、fallback 字串 | 只在沒有 past 活動時出現；若仍會出現就改 |
 | `src/components/Specimen.tsx` | `vol` 預設值 `"Vol. 01 · Sustainable Urbanization? Rewilding?"`（呼叫端都有傳，實際不會用到）；`Barcode code={\`ECO-001-${…}\`}` | `ECO-001` 看起來是系列編號，所有冊都一樣；要不要按冊變，先問使用者 |
 | `EventsPage.tsx`、`AboutPage.tsx`、`HomePage.tsx`（Pl. II 側標） | `"ECO-001"` 編目字樣 | 同上，裝飾性 |
-| `src/components/pages/EventPage.tsx` | 「流程為暫定版本，正式時間將於日期確認後公布。」；FollowCard 的 note「…的確切日期與地點尚未公布」；交會圖說「學科標註待講者確認」 | 日期確定 / 活動結束後必須改（可加條件判斷 `e.status` 或 `e.isoDate`） |
-| `src/components/pages/HomePage.tsx` | `draft-note`「† 學科標註依講者目前公開的身份整理，待講者確認。」 | 講者確認後刪 |
+| `src/components/pages/EventPage.tsx` | 「流程為暫定版本，正式時間將於日期確認後公布。」；FollowCard 的 note「…的確切日期與地點尚未公布」| 日期確定 / 活動結束後必須改（可加條件判斷 `e.status` 或 `e.isoDate`） |
 | `src/content/events.ts` | `summary`「五位講者、十二種身份」、`intro`「五位」、對談「五位講者」 | 屬該冊內容，新冊自己寫；人數變動要同步 |
 | `src/components/EdgeEffectFigure.tsx` | `PAIRS` 含「臺北 / 新加坡」 | 視需要調整 |
 | `src/content/site.ts` `FAQ` | 「詳細的時程與安排，將於表單開放時一併說明」 | 表單已開放，文字可能需更新（問使用者） |
@@ -579,7 +578,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
    - **不要畫背景填色**：底色由使用處提供（`#FAF6EC` 的 rect 疊在下面）。圖案要能疊在紙色、也能在交會圖譜被調成 `.18` 透明度。
    - 用 `patternTransform="rotate(…)"` 做斜向；用 `strokeDasharray` 做虛線類。
    - 要讓它跟既有 19 種在小尺寸下**明顯不同**（密度、方向、是否有點、是否有曲線）。檢查方式：`/about` 圖例，以及講者卡右上角。
-4. **標註講者**：在講者的 `disciplines` 陣列加 key（客戶要求的標註都「待講者確認」）。
+4. **標註講者**：在講者的 `disciplines` 陣列加 key。
 5. **自動產生的影響**：
    - 首頁 hero 地下網絡多一個節點（無講者時為虛線 vacant）。
    - 交會圖譜多一個學科；無講者時以近背景藍沉在圖中（4.12），窄版會列在「待連結的學科」文字中。
@@ -823,9 +822,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 | BioNarr 網址與 logo | `ORGS.bionarr`：`url: ""`、無 logo、`placeholder: true` | 待補 |
 | Harvard logo | `ORGS.harvard` 無 logo（印章顯示文字） | 視需要 |
 | 校徽授權 | NTU / NYCU / NDHU（Wikipedia 合理使用）、Tohoku | 需各校許可 |
-| 講者介紹草稿 | `draftNote`：孫烜駿、顏訥（`DRAFT`）、吳煜涵 Goh Yu Han（含 SALAD logo 暫代）、王鼎涵（所屬單位與職稱待確認） | 待講者確認；確認後刪 `draftNote` |
 | Hank Wang（王鼎涵） | 英文名「Hank Wang」、職稱（如「牙醫副院長 / Dentist and deputy superintendent」）待確認 | 待確認 |
-| 學科標註 | 所有講者 `disciplines`；首頁「† 學科標註…待講者確認」、活動頁圖說 | 待講者確認 |
 | 多元聲音 | `voices.ts` 六筆全是佔位（無影片、名字為「多元聲音 0N」、部分 `approx`）；`VoicesPage` 暫定註記 | 待補 |
 
 ### 10.2 程式中的不一致 / 殘留（修之前先問）
