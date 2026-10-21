@@ -1132,8 +1132,11 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 .atlas-avatar { grid-column: 1; grid-row: 1 / span 2; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid var(--cyan-mute); display: block; }
 .atlas-avatar--initial { display: grid; place-items: center; font-size: .85rem; color: var(--cyan-mute); }
 
-/* Names never break mid-name */
-.sheet-name h2, .sheet-name h3, .jump-name, .atlas-key b, .mini-sheet b { white-space: nowrap; }
+/* Names never break mid-name: CJK names stay whole (keep-all); a multi-word name like
+   "SALAD Dressing" may wrap only at its space, so it can never push a card wider than its frame */
+.jump-name, .atlas-key b { white-space: nowrap; }
+.sheet-name h2, .sheet-name h3, .mini-sheet b { word-break: keep-all; overflow-wrap: normal; }
+.mini-sheet { grid-template-columns: minmax(0, 1fr); }
 /* Speaker sheet: bio sits under the identity cards, above the rule */
 .sheet-right { display: grid; gap: 16px; align-content: start; }
 .sheet-right .bio { color: var(--ink-2); margin: 0; max-width: 36em; }

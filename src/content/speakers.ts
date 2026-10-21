@@ -226,7 +226,7 @@ export const SPEAKERS: Speaker[] = [
       { zh: "吳煜涵獲選文化景觀基金會（TCLF）Oberlander Prize 論壇新銳實踐者講者（2026）", en: "Goh Yu Han was selected as an emerging-practitioner speaker for The Cultural Landscape Foundation’s Virtual Oberlander Prize Forum (2026)", source: "https://www.tclf.org/virtual-oberlander-prize-forum-where-do-we-go-here" },
     ],
     publications: [
-      { zh: "2020 杜拜世博新加坡館（SALAD Dressing 擔任景觀建築師），獲 2023 新加坡總統設計獎年度設計", en: "Singapore Pavilion, Expo 2020 Dubai (SALAD Dressing as landscape architect); President’s Design Award, Design of the Year 2023", source: "https://pda.designsingapore.org/presidents-design-award/award-recipients/2023/singapore-pavilion-expo-2020-dubai" },
+      { zh: "2020 杜拜世博新加坡館（SALAD Dressing 負責景觀設計），獲 2023 新加坡總統設計獎年度設計", en: "Singapore Pavilion, Expo 2020 Dubai (landscape design by SALAD Dressing); President’s Design Award, Design of the Year 2023", source: "https://pda.designsingapore.org/presidents-design-award/award-recipients/2023/singapore-pavilion-expo-2020-dubai" },
       { zh: "2021 威尼斯建築雙年展新加坡館「<i>to gather: The Architecture of Relationships</i>」參展作品", en: "Exhibit in <i>to gather: The Architecture of Relationships</i>, Singapore Pavilion, 17th Venice Architecture Biennale (2021)", source: "https://www.labiennale.org/en/architecture/2021/singapore/" },
       { zh: "墨爾本設計週展覽 <i>Rewilding the Sky</i>", en: "<i>Rewilding the Sky</i>, exhibition at Melbourne Design Week", source: "https://msd.unimelb.edu.au/events/rewilding-the-sky-with-salad-dressing-landscape-architects" },
     ],
@@ -234,14 +234,14 @@ export const SPEAKERS: Speaker[] = [
     linkedOrgs: ["salad"],
     initial: { zh: "S", en: "S" },
     eyebrow: "Landscape Architecture · Singapore",
-    short: "SALAD Dressing · Singapore",
-    tags: { zh: ["景觀建築師", "新加坡"], en: ["Landscape architect", "Singapore"] },
+    short: "Landscape Architecture · Singapore",
+    tags: { zh: ["地景建築事務所", "新加坡"], en: ["Landscape architecture practice", "Singapore"] },
     identities: [
       {
         title: { zh: "新加坡地景建築事務所", en: "Landscape architecture practice, Singapore" },
         detail: {
-          zh: "新加坡地景建築事務所，關注再野化（rewilding）、經驗策展與數位環境感知（Digital Umwelt）。",
-          en: "A Singapore landscape architecture practice concerned with rewilding, experience curation and digital environmental sensing (Digital Umwelt).",
+          zh: "關注再野化（rewilding）、經驗策展與數位環境感知（Digital Umwelt）。",
+          en: "Concerned with rewilding, experience curation and digital environmental sensing (Digital Umwelt).",
         },
       },
       {
@@ -256,8 +256,8 @@ export const SPEAKERS: Speaker[] = [
     places: [{ name: "Singapore", lat: 1.29, lng: 103.85, country: "SG" }],
     orgs: ["salad"],
     bio: {
-      zh: `SALAD Dressing 曾參展 2021 威尼斯建築雙年展新加坡館、擔任杜拜世博新加坡館的景觀建築師，並在墨爾本設計週展出 <span class="en">Rewilding the Sky</span>。吳煜涵、黃美娜與何欣蕊三人將從新加坡帶來一個問題：如果城市本身就是一個生態交會帶呢？（<span class="en">what if the city itself is the ecotone?</span>）`,
-      en: `SALAD Dressing exhibited in the Singapore Pavilion at the 2021 Venice Architecture Biennale, was landscape architect for the Singapore Pavilion at Expo 2020 Dubai, and showed <em>Rewilding the Sky</em> at Melbourne Design Week. From Singapore, Goh Yu Han, Wong Mee Na and He Xinrui bring a question: <em>what if the city itself is the ecotone?</em>`,
+      zh: `SALAD Dressing 是新加坡的地景建築事務所，曾參展 2021 威尼斯建築雙年展新加坡館、負責 2020 杜拜世博新加坡館的景觀設計，並在墨爾本設計週展出 <span class="en">Rewilding the Sky</span>。吳煜涵、黃美娜與何欣蕊三人將從新加坡帶來一個問題：如果城市本身就是一個生態交會帶呢？（<span class="en">what if the city itself is the ecotone?</span>）`,
+      en: `SALAD Dressing is a landscape architecture practice in Singapore. The studio exhibited in the Singapore Pavilion at the 2021 Venice Architecture Biennale, designed the landscape of the Singapore Pavilion at Expo 2020 Dubai, and showed <em>Rewilding the Sky</em> at Melbourne Design Week. From Singapore, Goh Yu Han, Wong Mee Na and He Xinrui bring a question: <em>what if the city itself is the ecotone?</em>`,
     },
     draftNote: {
       zh: "介紹為草稿，待講者確認；SALAD Dressing 的標誌與官網連結為暫代。",
