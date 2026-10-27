@@ -160,7 +160,7 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
               <CrossingAtlas
                 lang={lang}
                 idPrefix="ev-atlas"
-                speakers={lineup.map((s) => ({ id: s.id, name: s.name[lang], photo: s.photo, members: faces(s.members), initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
+                speakers={lineup.map((s) => ({ id: s.id, href: `#${s.id}`, name: s.name[lang], photo: s.photo, members: faces(s.members), initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
                 disciplines={DISCIPLINES}
                 caption={
                   zh

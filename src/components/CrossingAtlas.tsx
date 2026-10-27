@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { Discipline, DisciplineKey } from "@/content/disciplines";
 import type { Place } from "@/content/speakers";
@@ -35,6 +37,8 @@ const T = {
 export type AtlasSpeaker = {
   id: string;
   name: string;
+  /** where the speaker's full sheet lives (e.g. `/events/<slug>#<id>`); with it, names jump there instead of pinning */
+  href?: string;
   /** small round headshot on the name tag below the plate */
   photo?: string;
   initial?: string;
@@ -145,7 +149,8 @@ function build(speakers: AtlasSpeaker[], disciplines: Discipline[], places: Atla
  * Atlas of Crossings, printed like a cyanotype of pressed roots. Fields float
  * above, places lie below the shore line, and each speaker is a knot on one
  * rhizome whose roots reach the fields and places they really touch (from
- * content). Hover / focus / press a speaker in the key to light their roots.
+ * content). Hover / focus / press a speaker in the key to light their roots;
+ * a speaker with an `href` is a link instead, and clicking the name jumps to their sheet.
  * On narrow screens the plate simplifies: only touched fields are drawn, the
  * rest are listed in text.
  */
@@ -166,6 +171,7 @@ export default function CrossingAtlas({
   lang?: Lang;
 }) {
   const t = T[lang];
+  const router = useRouter();
   const [hl, setHl] = useState<string | null>(null);
   const [pinned, setPinned] = useState<string | null>(null);
   const active = hl ?? pinned;
@@ -250,7 +256,7 @@ export default function CrossingAtlas({
           transform={`translate(${s.x} ${s.y})`}
           onMouseEnter={() => setHl(s.id)}
           onMouseLeave={() => setHl(null)}
-          onClick={() => setPinned((p) => (p === s.id ? null : s.id))}
+          onClick={() => (s.href ? router.push(s.href) : setPinned((p) => (p === s.id ? null : s.id)))}
         >
           <circle r="9" className="knot-halo" />
           <circle r="4.5" className="knot" />
@@ -260,6 +266,27 @@ export default function CrossingAtlas({
         </g>
       ))}
     </svg>
+  );
+
+  const keyBody = (s: AtlasSpeaker) => (
+    <>
+      {isTrio(s.members) ? (
+        <TrioAvatar members={s.members} className="atlas-avatar" />
+      ) : s.photo ? (
+        // eslint-disable-next-line @next/next/no-img-element -- tiny static headshot
+        <img className="atlas-avatar" src={s.photo} alt="" loading="lazy" />
+      ) : (
+        <span className="atlas-avatar atlas-avatar--initial" aria-hidden="true">
+          {s.initial ?? s.name.slice(0, 1)}
+        </span>
+      )}
+      <b>{s.name}</b>
+      <span>
+        {s.disciplines.map((k) => disciplines.find((d) => d.key === k)?.name[lang]).join(t.sep)}
+        <span aria-hidden="true"> · </span>
+        <i>{s.places.map((p) => p.name).join(" ⇄ ")}</i>
+      </span>
+    </>
   );
 
   return (
@@ -278,32 +305,23 @@ export default function CrossingAtlas({
       <ul className="atlas-key" aria-label={t.key}>
         {speakers.map((s) => (
           <li key={s.id}>
-            <button
-              type="button"
-              aria-pressed={pinned === s.id}
-              onMouseEnter={() => setHl(s.id)}
-              onMouseLeave={() => setHl(null)}
-              onFocus={() => setHl(s.id)}
-              onBlur={() => setHl(null)}
-              onClick={() => setPinned((p) => (p === s.id ? null : s.id))}
-            >
-              {isTrio(s.members) ? (
-                <TrioAvatar members={s.members} className="atlas-avatar" />
-              ) : s.photo ? (
-                // eslint-disable-next-line @next/next/no-img-element -- tiny static headshot
-                <img className="atlas-avatar" src={s.photo} alt="" loading="lazy" />
-              ) : (
-                <span className="atlas-avatar atlas-avatar--initial" aria-hidden="true">
-                  {s.initial ?? s.name.slice(0, 1)}
-                </span>
-              )}
-              <b>{s.name}</b>
-              <span>
-                {s.disciplines.map((k) => disciplines.find((d) => d.key === k)?.name[lang]).join(t.sep)}
-                <span aria-hidden="true"> · </span>
-                <i>{s.places.map((p) => p.name).join(" ⇄ ")}</i>
-              </span>
-            </button>
+            {s.href ? (
+              <Link href={s.href} onMouseEnter={() => setHl(s.id)} onMouseLeave={() => setHl(null)} onFocus={() => setHl(s.id)} onBlur={() => setHl(null)}>
+                {keyBody(s)}
+              </Link>
+            ) : (
+              <button
+                type="button"
+                aria-pressed={pinned === s.id}
+                onMouseEnter={() => setHl(s.id)}
+                onMouseLeave={() => setHl(null)}
+                onFocus={() => setHl(s.id)}
+                onBlur={() => setHl(null)}
+                onClick={() => setPinned((p) => (p === s.id ? null : s.id))}
+              >
+                {keyBody(s)}
+              </button>
+            )}
           </li>
         ))}
       </ul>

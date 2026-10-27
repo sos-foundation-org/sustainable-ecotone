@@ -221,7 +221,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `LeapStage.tsx` | 「下一跳」小舞台：兩個棲點間跳的蝗蟲；`prey` 時提供給青蛙 |
 | `Saltator.tsx` | 圖版內可點擊的蝗蟲（目前只在 `MangrovePlate`） |
 | `mycorrhiza/MycorrhizaHero.tsx` + `engine.ts` | 首頁地上 / 地下 hero：樹、菇、蝗蟲、canvas 菌絲網 |
-| `CrossingAtlas.tsx` | 交會圖譜（藍曬圖風格）：上方學科、中間講者根莖、下方地點；寬 / 窄兩版 |
+| `CrossingAtlas.tsx` | 交會圖譜（藍曬圖風格）：上方學科、中間講者根莖、下方地點；寬 / 窄兩版。講者有 `href` 時，圖下名單與圖上的名字都是連結，點了跳到該講者台紙（首頁：`/events/<slug>#<id>`；活動頁、歷屆講者頁：`#<id>`）；hover / 聚焦仍會點亮根系。沒有 `href` 才是「點一下固定」的按鈕 |
 | `NextCrossing.tsx` | Desiderata 卡（活動頁、講者招募頁） |
 | `Specimen.tsx` | 講者台紙 `SpecimenSheet`、`Portrait`、`LabelStack`（身份標籤）、`Barcode`、`LinkGlyph` |
 | `Fungi.tsx` | `Genet`：一個菌絲體、多個子實體（每朵菇＝一個身份）；講者卡右下角小菇（`corner`）與招募頁 |
@@ -786,6 +786,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 - [ ] 每頁**只有一個 `<h1>`**。
 - [ ] 每頁**最多一個水線標題**（`.wl` 元素數 ≤ 1）。
 - [ ] 每頁最多一個完整種子袋 `.seed-packet`。
+- [ ] 講者錨點：首頁交會圖譜的名字與 Pl. IV mini 卡，點了會到活動頁對應的講者台紙（`#<id>`）。`SiteShell` 的 `<html data-scroll-behavior="smooth">` 讓 Next 換頁時暫停 CSS 平滑捲動，跨頁錨點才會直接落點，不要拿掉。
 - [ ] 報名：活動頁 `#register` 錨點可用（標題區「場次與報名」可跳過去）；每張場次卡的按鈕連到**該場**的預填網址（打開確認第一題已選「報名」、只勾該場）；「兩場都報名」勾好全部場次；網址空白時顯示「報名即將開放」；首頁「報名參加」中英各連到 `/events/<slug>#register`、`/en/events/<slug>#register`。
 - [ ] `events.ts` 的每個 `formLabel` 與表單「報名場次」選項一字不差；種子袋（`SITE.followFormUrl`）打開時第一題是「只想收到未來活動通知」。
 - [ ] 講者照片沒有任何去色濾鏡。

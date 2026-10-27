@@ -544,10 +544,10 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 .atlas-vacant { display: none; margin: 12px 0 0; font-size: .92rem; color: #2C5479; }
 .atlas-vacant .mono { color: #2C5479; margin-right: 8px; }
 .atlas-key { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0 18px; border-top: 1px solid var(--cyan-mute); }
-.atlas-key button { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 2px; width: 100%; padding: 10px 6px; border-bottom: .5px solid rgba(180, 198, 212, .35); transition: background .3s; }
-.atlas-key button:hover, .atlas-key button:focus-visible, .atlas-key button[aria-pressed="true"] { background: rgba(233, 238, 240, .08); }
-.atlas-key button:focus-visible { outline: 2px solid var(--cin-light); outline-offset: -2px; }
-.atlas-key button[aria-pressed="true"] b { color: var(--cin-light); }
+.atlas-key :is(button, a) { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 2px; width: 100%; padding: 10px 6px; border-bottom: .5px solid rgba(180, 198, 212, .35); transition: background .3s; }
+.atlas-key :is(button, a):hover, .atlas-key :is(button, a):focus-visible, .atlas-key button[aria-pressed="true"] { background: rgba(233, 238, 240, .08); }
+.atlas-key :is(button, a):focus-visible { outline: 2px solid var(--cin-light); outline-offset: -2px; }
+.atlas-key button[aria-pressed="true"] b, .atlas-key a:is(:hover, :focus-visible) b { color: var(--cin-light); }
 .atlas-key b { font-weight: 600; letter-spacing: .06em; }
 .atlas-key span { font-size: .8rem; color: var(--cyan-mute); line-height: 1.5; }
 
@@ -1127,8 +1127,8 @@ html:lang(en) .name-swap { font-family: var(--f-cjk); }
 .highlights--pubs li i { font-style: italic; }
 
 /* Atlas name tags: a small round headshot beside each name */
-.atlas-key button { grid-template-columns: 34px 1fr; column-gap: 10px; align-items: center; }
-.atlas-key button > b, .atlas-key button > span:not(.atlas-avatar) { grid-column: 2; }
+.atlas-key :is(button, a) { grid-template-columns: 34px 1fr; column-gap: 10px; align-items: center; }
+.atlas-key :is(button, a) > b, .atlas-key :is(button, a) > span:not(.atlas-avatar) { grid-column: 2; }
 .atlas-avatar { grid-column: 1; grid-row: 1 / span 2; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1px solid var(--cyan-mute); display: block; }
 .atlas-avatar--initial { display: grid; place-items: center; font-size: .85rem; color: var(--cyan-mute); }
 

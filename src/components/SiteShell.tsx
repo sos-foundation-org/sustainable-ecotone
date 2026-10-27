@@ -20,7 +20,8 @@ const SKIP: Record<Lang, string> = { zh: "跳到主要內容", en: "Skip to main
 /** The document shell shared by both root layouts: <html lang>, fonts, header, footer. */
 export default function SiteShell({ lang, children }: { lang: Lang; children: ReactNode }) {
   return (
-    <html lang={HTML_LANG[lang]} suppressHydrationWarning>
+    // data-scroll-behavior: Next turns the CSS smooth scroll off during route changes, so a cross-page #anchor lands at once
+    <html lang={HTML_LANG[lang]} data-scroll-behavior="smooth" suppressHydrationWarning>
       {/* eslint-disable-next-line @next/next/no-head-element -- shared by the two root layouts, so <head> lives here */}
       <head>
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js');" + PREF_REDIRECT_SCRIPT }} />

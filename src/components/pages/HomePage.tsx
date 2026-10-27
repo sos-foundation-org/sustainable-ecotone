@@ -56,6 +56,8 @@ export default function HomePage({ lang }: { lang: Lang }) {
   // the platform's whole collection: everyone on any volume, upcoming or past
   const folio = SPEAKERS.filter((s) => EVENTS.some((e) => e.speakers.includes(s.id)));
   const covered = new Set(folio.flatMap((s) => s.disciplines));
+  // a speaker's full sheet: on the latest volume's page if they are in it, else the first volume they spoke at
+  const sheetHref = (id: string) => href(`/events/${(latest.speakers.includes(id) ? latest : EVENTS.find((e) => e.speakers.includes(id))!).slug}#${id}`);
   const desiderata = [...DESIDERATA].sort((x, y) => Number(covered.has(x.a)) + Number(covered.has(x.b)) - (Number(covered.has(y.a)) + Number(covered.has(y.b))));
   const vol = `Vol. ${pad2(latest.vol)}`;
 
@@ -284,13 +286,13 @@ export default function HomePage({ lang }: { lang: Lang }) {
           <div className="atlas-solo reveal">
             <p className="lead">
               {zh
-                ? "每位講者都站在一道邊界上：左邊是他們的學科，右邊是他們工作的地方。把滑鼠移到名字上（或用鍵盤聚焦、點一下固定），看看誰把哪些世界接在一起。每多一冊，這張圖譜就長大一點。"
-                : "Every speaker stands on a border: on one side their discipline, on the other the places where they work. Hover over a name (or focus it with the keyboard, or tap to pin it) to see who joins which worlds together. With every volume, the atlas grows a little."}
+                ? "每位講者都站在一道邊界上：左邊是他們的學科，右邊是他們工作的地方。把滑鼠移到名字上（或用鍵盤聚焦），看看誰把哪些世界接在一起；點名字，就到講者的介紹。每多一冊，這張圖譜就長大一點。"
+                : "Every speaker stands on a border: on one side their discipline, on the other the places where they work. Hover over a name (or focus it with the keyboard) to see who joins which worlds together; click it to read about the speaker. With every volume, the atlas grows a little."}
             </p>
             <CrossingAtlas
               lang={lang}
               idPrefix="home-atlas"
-              speakers={folio.map((s) => ({ id: s.id, name: s.name[lang], photo: s.photo, members: faces(s.members), initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
+              speakers={folio.map((s) => ({ id: s.id, href: sheetHref(s.id), name: s.name[lang], photo: s.photo, members: faces(s.members), initial: s.initial[lang], disciplines: s.disciplines, places: s.places }))}
               disciplines={DISCIPLINES}
               caption={
                 zh
