@@ -128,8 +128,8 @@ export const EVENTS: ForumEvent[] = [
     speakers: ["sun", "chan", "yen", "yuhan", "wang"],
     plate: "urbanpark",
     attendance: {
-      zh: "分兩天、兩場舉辦：11/16（一）18:30–21:00 在臺大公館校區，11/17（二）午後在陽明交大新竹校區。報名請見下方場次。",
-      en: "Two sessions on two days: Monday 16 November, 18:30–21:00, at NTU’s Gongguan campus, and Tuesday 17 November (afternoon) at NYCU’s Hsinchu campus. Register below.",
+      zh: "分兩天、兩場舉辦：11/16（一）18:30–21:00 在臺大公館校區，11/17（二）13:30–16:30 在陽明交大新竹校區。報名請見下方場次。",
+      en: "Two sessions on two days: Monday 16 November, 18:30–21:00, at NTU’s Gongguan campus, and Tuesday 17 November, 13:30–16:30, at NYCU’s Hsinchu campus. Register below.",
     },
     sessions: [
       {
@@ -154,7 +154,9 @@ export const EVENTS: ForumEvent[] = [
         locality: { zh: "新竹市", en: "Hsinchu" },
         date: { zh: "11/17（二）", en: "Tue 17 November" },
         isoDate: "2026-11-17",
-        time: { zh: "午後（詳細時間待訂）", en: "Afternoon (exact time to be confirmed)" },
+        time: { zh: "13:30–16:30", en: "13:30–16:30" },
+        start: "13:30",
+        end: "16:30",
       },
     ],
     registerUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%A0%B1%E5%90%8D%E5%8F%83%E5%8A%A0%E6%B4%BB%E5%8B%95%20Register%20for%20a%20session",
