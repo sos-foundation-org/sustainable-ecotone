@@ -272,9 +272,9 @@ export const SPEAKERS: Speaker[] = [
     photo: "/speakers/wang-4x5.jpg",
     links: [{ kind: "lab", url: "https://www.nycu.edu.tw/cod/ch/app/artwebsite/view?module=artwebsite&id=38864&serno=ba5b7a81-845a-4b15-9a3d-d724ce886532" }],
     initial: { zh: "王", en: "W" },
-    eyebrow: "Clinician · OMIC · Sustainability Office",
+    eyebrow: "Clinician · OMIC · Office of Sustainable Development and University Social Responsibility",
     short: "Dentistry · OMIC · Sustainability",
-    tags: { zh: ["牙醫副院長", "OMIC", "永續辦"], en: ["Dental deputy superintendent", "OMIC", "Sustainability Office"] },
+    tags: { zh: ["牙醫副院長", "OMIC", "永續發展暨大學社會責任辦公室"], en: ["Dental deputy superintendent", "OMIC", "Office of Sustainable Development and University Social Responsibility"] },
     identities: [
       {
         title: { zh: "陽明交大牙醫學院副教授", en: "Associate Professor, College of Dentistry, NYCU" },
@@ -295,7 +295,7 @@ export const SPEAKERS: Speaker[] = [
         detail: { zh: "陽明交大口腔醫學創新中心（OMIC）副主任（2022 年起），推動跨領域研究與創新。", en: "Deputy Director of NYCU’s Oral Medicine Innovation Center (OMIC) since 2022, driving interdisciplinary research and innovation." },
       },
       {
-        title: { zh: "永續辦", en: "Sustainability Office" },
+        title: { zh: "永續發展暨大學社會責任辦公室", en: "Office of Sustainable Development and University Social Responsibility" },
         detail: {
           zh: "陽明交大永續發展暨大學社會責任辦公室副執行長（2024 年起），把永續從口號變成制度。",
           en: "Associate Executive Director of NYCU’s Office of Sustainable Development and University Social Responsibility since 2024, turning sustainability from a slogan into policy.",

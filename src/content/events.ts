@@ -169,10 +169,6 @@ export const EVENTS: ForumEvent[] = [
     program: [
       {
         title: { zh: "開場", en: "Opening" },
-        detail: {
-          zh: "詹偉平（Chan, Wei-Ping）為整場活動開場；孫烜駿（Sun, Syuan-Jyun）從都市化切入，帶出本冊主題。",
-          en: "Chan, Wei-Ping (詹偉平) opens the event; Sun, Syuan-Jyun (孫烜駿) sets out the theme through the lens of urbanization.",
-        },
       },
       {
         time: "Talk 1",
@@ -202,8 +198,8 @@ export const EVENTS: ForumEvent[] = [
         time: "Panel",
         title: { zh: "綜合對談", en: "Closing conversation" },
         detail: {
-          zh: "主持人：王鼎涵（Hank Wang）。講者與現場一起討論。（陽明交大場在對談前，另有王鼎涵與校園永續實踐辦公室的分享。）",
-          en: "Moderated by Hank Wang (王鼎涵). The speakers and the audience in conversation. (At the NYCU session, Hank Wang and the campus sustainability office also share their work before the conversation.)",
+          zh: "主持人：王鼎涵（Hank Wang）。講者與現場一起討論。（陽明交大場在對談前，另有王鼎涵與永續發展暨大學社會責任辦公室的分享。）",
+          en: "Moderated by Hank Wang (王鼎涵). The speakers and the audience in conversation. (At the NYCU session, Hank Wang and the Office of Sustainable Development and University Social Responsibility also share their work before the conversation.)",
         },
       },
     ],
