@@ -71,6 +71,8 @@ export type ForumEvent = {
   /** 參加方式說明，例如「活動資訊即將公布」 */
   attendance: L10n;
   program: ProgramItem[];
+  /** 目次標題下的一句說明。多場共用一份目次時，在這裡交代各場的差異；留空則不顯示 */
+  programNote?: L10n;
   /** 觀眾報名的場次。有填 = 活動頁出現報名區塊（#register）、首頁最新一冊出現「報名參加」；沒填 = 都不顯示 */
   sessions?: Session[];
   /**
@@ -102,7 +104,7 @@ export const EVENTS: ForumEvent[] = [
     statusLabel: { zh: "Vol. 01 · 籌備中", en: "Vol. 01 · In preparation" },
     summary: {
       zh: `五位講者、十二種身份。從都市裡的昆蟲、夜間人工光、人類如何記錄自然，到再野化，最後一起對談，追問：城市能永續地成長嗎？還是該把一部分土地還給自然？`,
-      en: `Five speakers, twelve identities. From insects in the city, artificial light at night and how humans have recorded nature, to rewilding, closing with a shared conversation, one question runs through the evening: can cities grow sustainably, or should some of the land go back to nature?`,
+      en: `Five speakers, twelve identities. From insects in the city, artificial light at night and how humans have recorded nature, to rewilding, closing with a shared conversation, one question runs through each session: can cities grow sustainably, or should some of the land go back to nature?`,
     },
     intro: {
       zh: [
@@ -160,6 +162,10 @@ export const EVENTS: ForumEvent[] = [
       },
     ],
     registerUrl: "https://docs.google.com/forms/d/e/1FAIpQLSc_ElhgPRGpf13rsHtOIAW_YoQk3UJVx536lpKlorrKnPahMA/viewform?usp=pp_url&entry.1577784457=%E5%A0%B1%E5%90%8D%E5%8F%83%E5%8A%A0%E6%B4%BB%E5%8B%95%20Register%20for%20a%20session",
+    programNote: {
+      zh: "兩場流程大致相同，順序與時間依場次略有調整：開場與休息各約 10 分鐘，演講與討論每段約 20–30 分鐘。",
+      en: "Both sessions follow much the same running order, with small changes to sequence and timing: about 10 minutes each for the opening and the break, and about 20–30 minutes for each talk and discussion.",
+    },
     program: [
       {
         title: { zh: "開場", en: "Opening" },
@@ -180,6 +186,7 @@ export const EVENTS: ForumEvent[] = [
       },
       {
         title: { zh: "中場休息", en: "Break" },
+        detail: { zh: "休息時點依場次略有不同。", en: "The timing of the break varies slightly by session." },
       },
       {
         time: "Talk 3",
@@ -195,8 +202,8 @@ export const EVENTS: ForumEvent[] = [
         time: "Panel",
         title: { zh: "綜合對談", en: "Closing conversation" },
         detail: {
-          zh: "主持人：王鼎涵（Hank Wang）。講者與現場一起討論。",
-          en: "Moderated by Hank Wang (王鼎涵). The speakers and the audience in conversation.",
+          zh: "主持人：王鼎涵（Hank Wang）。講者與現場一起討論。（陽明交大場在對談前，另有王鼎涵與校園永續實踐辦公室的分享。）",
+          en: "Moderated by Hank Wang (王鼎涵). The speakers and the audience in conversation. (At the NYCU session, Hank Wang and the campus sustainability office also share their work before the conversation.)",
         },
       },
     ],

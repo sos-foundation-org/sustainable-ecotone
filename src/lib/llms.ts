@@ -47,6 +47,7 @@ function eventBlock(e: ForumEvent, full: boolean) {
     ...speakersOf(e).map((s) => `- ${who(s)}${s.members?.length ? ` (a team: ${s.members.map((m) => `${m.name.en} ${m.name.zh}`).join(", ")})` : ""}: ${s.short}${s.talk ? `. Talk or role: “${s.talk.en}” (${s.talk.zh})` : ""}`),
     ``,
     `Programme:`,
+    ...(e.programNote ? [plain(e.programNote.en)] : []),
     ...e.program.map((p) => `- ${p.time ? `${p.time}: ` : ""}${p.title.en}${p.detail ? `. ${plain(p.detail.en)}` : ""}`),
     ``,
   ];

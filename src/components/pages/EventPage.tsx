@@ -194,7 +194,7 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
                 "Programme"
               )}
             </h2>
-            <p className="muted">{zh ? "流程為暫定版本，正式時間將於日期確認後公布。" : "The running order is provisional. Final times will be published once the date is confirmed."}</p>
+            {e.programNote && <p className="muted">{e.programNote[lang]}</p>}
           </div>
           <div className="gutter" aria-hidden="true" />
           <div className="reveal">

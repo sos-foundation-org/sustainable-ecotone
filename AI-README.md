@@ -453,7 +453,8 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `speakers` | `string[]` | 講者 id，順序就是活動頁、首頁、hero 菇的順序 |
 | `plate?` | `EventPlate` | 活動頁標題旁的圖版（`"mangrove"` / `"urbanpark"`） |
 | `attendance` | `L10n` | 參加方式（活動頁、首頁 Pl. IV）。有場次時寫概述並指向場次（「報名請見各場次」） |
-| `program` | `ProgramItem[]` | 目次：`{ time?, title, detail }`。`time` 可省略（開場、對談），可放「Talk 1」或「19:00」。**`title.zh` 在同一冊內必須唯一**（當 React key） |
+| `program` | `ProgramItem[]` | 目次：`{ time?, title, detail }`。`time` 可省略（開場、對談），可放「Talk 1」或「19:00」。**`title.zh` 在同一冊內必須唯一**（當 React key）。多場次共用**一份**目次，客戶不要在網頁上寫多份完整流程；各場差異用 `programNote` 與項目 `detail` 的括弧帶過 |
+| `programNote?` | `L10n` | 目次標題下的一句說明（活動頁、`llms.txt`），例如交代各場的順序與時間差異；不寫則不顯示 |
 | `sessions?` | `Session[]` | 觀眾報名場次（見 4.6.1）：活動頁 `#register` 票根卡、首頁場次列與「報名參加」。`id` 同冊內唯一 |
 | `registerAllUrl?` | `string` | 「兩場都報名 / 全部場次都報名」預填網址；不寫 = 不顯示，空字串 = 即將開放 |
 
@@ -530,7 +531,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 | `src/components/pages/SpeakersPage.tsx` 空狀態 | `en="The collection begins after Vol. 01, November 2026."`、「第一冊」、fallback 字串 | 只在沒有 past 活動時出現；若仍會出現就改 |
 | `src/components/Specimen.tsx` | `vol` 預設值 `"Vol. 01 · Sustainable Urbanization? Rewilding?"`（呼叫端都有傳，實際不會用到）；`Barcode code={\`ECO-001-${…}\`}` | `ECO-001` 看起來是系列編號，所有冊都一樣；要不要按冊變，先問使用者 |
 | `EventsPage.tsx`、`AboutPage.tsx`、`HomePage.tsx`（Pl. II 側標） | `"ECO-001"` 編目字樣 | 同上，裝飾性 |
-| `src/components/pages/EventPage.tsx` | 「流程為暫定版本，正式時間將於日期確認後公布。」；FollowCard 的 note「…的確切日期與地點尚未公布」| 日期確定 / 活動結束後必須改（可加條件判斷 `e.status` 或 `e.isoDate`） |
+| `src/components/pages/EventPage.tsx` | FollowCard 的 note「…的確切日期與地點尚未公布」| 日期確定 / 活動結束後必須改（可加條件判斷 `e.status` 或 `e.isoDate`） |
 | `src/content/events.ts` | `summary`「五位講者、十二種身份」、`intro`「五位」、對談「五位講者」 | 屬該冊內容，新冊自己寫；人數變動要同步 |
 | `src/components/EdgeEffectFigure.tsx` | `PAIRS` 含「臺北 / 新加坡」 | 視需要調整 |
 | `src/content/site.ts` `FAQ` | 「詳細的時程與安排，將於表單開放時一併說明」 | 表單已開放，文字可能需更新（問使用者） |
@@ -815,7 +816,6 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 | Vol. 01 場次 | `events.ts`：`sessions` 兩場（臺大場、陽明交大場）的 `date`、`time`、`venueNote` 皆「確認中」；`registerUrl` 與 `registerAllUrl` 皆空（按鈕顯示「報名即將開放」） | 客戶執行 `createParticipationForm()` 後貼上預填網址；日期確定後填 `date` / `isoDate` / `time` |
 | 「活動報名與通知」表單 | `scripts/create-google-forms.gs` 的 `createParticipationForm()` 尚未執行；`SITE.followFormUrl` 仍指向舊追蹤表單 | 建好後把 `followFormUrl` 換成新表單的「只想收到通知」預填網址；舊追蹤表單可停止收回覆（不要刪，保留舊名單） |
 | Vol. 01 `venueNote` | 仍是「臺北 · 實體為主」（首頁 hero 取「臺北」當城市），但陽明交大場的校區未定 | 校區確定後確認是否仍正確 |
-| 流程時間 | `EventPage.tsx`「流程為暫定版本…」 | 待定 |
 | 聯絡信箱 | `site.ts`：`contactEmail: ""`（講者招募頁聯絡區改成「請透過上方的講者申請或追蹤表單與我們聯繫」，連到 `#two-ways`；填了才顯示 Email 與「歡迎來信」標題） | 客戶目前沒有公開信箱 |
 | Instagram | `site.ts`：`instagram: ""`（空則不顯示） | 待補 |
 | SALAD Dressing logo | `public/logos/salad-placeholder.svg`，`ORGS.salad.placeholder: true` | 待換正式 logo |
