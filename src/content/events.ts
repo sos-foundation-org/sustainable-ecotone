@@ -152,7 +152,7 @@ export const EVENTS: ForumEvent[] = [
         formLabel: "Vol. 01｜陽明交大場 NYCU",
         name: { zh: "陽明交大場", en: "NYCU session" },
         venue: { zh: "國立陽明交通大學", en: "National Yang Ming Chiao Tung University" },
-        venueNote: { zh: "新竹校區 · 場地確認中", en: "Hsinchu campus · Room to be confirmed" },
+        venueNote: { zh: "新竹校區 · 綜合一館 A302 教室", en: "Hsinchu campus · Assembly Building I, Room A302" },
         locality: { zh: "新竹市", en: "Hsinchu" },
         date: { zh: "11/17（二）", en: "Tue 17 November" },
         isoDate: "2026-11-17",
