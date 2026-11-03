@@ -19,6 +19,8 @@ const T = {
     one: "報名參加",
     oneSmall: "REGISTER",
     newTab: "（另開新視窗）",
+    map: "地圖",
+    mapLabel: "Google 地圖",
     pending: "報名即將開放",
     pendingSmall: "OPENING SOON",
   },
@@ -35,6 +37,8 @@ const T = {
     one: "Register",
     oneSmall: "OPENS IN A NEW TAB",
     newTab: " (opens in a new tab)",
+    map: "Map",
+    mapLabel: "Google Maps",
     pending: "Registration opening soon",
     pendingSmall: "",
   },
@@ -76,6 +80,20 @@ export function RegisterButton({
   );
 }
 
+/** An engraved map pin: ink teardrop with a little hatching, a cinnabar station dot, and its shadow on the ground. */
+function PinGlyph() {
+  return (
+    <svg className="pin-glyph" viewBox="0 0 24 24" aria-hidden="true">
+      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20.4c-3.7-4.3-6-7.6-6-10.5a6 6 0 0 1 12 0c0 2.9-2.3 6.2-6 10.5Z" strokeWidth="1.1" />
+        <path d="M15.6 6.4l1.4-1.1M16.4 9.2l1.5-1.2M15.9 12.2l1.4-1.1M14.6 15l1.2-1" strokeWidth=".5" />
+        <path d="M8.6 21.6c1.1.4 2.2.5 3.4.5s2.3-.1 3.4-.5" strokeWidth=".6" />
+      </g>
+      <circle cx="12" cy="9.9" r="2.1" fill="#A8321F" />
+    </svg>
+  );
+}
+
 function SessionStub({ s, i, e, lang }: { s: Session; i: number; e: ForumEvent; lang: Lang }) {
   const t = T[lang];
   const zh = lang === "zh";
@@ -98,6 +116,13 @@ function SessionStub({ s, i, e, lang }: { s: Session; i: number; e: ForumEvent; 
           <dd>
             {s.venue[lang]}
             {s.venueNote && <span className="muted">{s.venueNote[lang]}</span>}
+            {s.mapUrl && (
+              <a className="stub-map" href={s.mapUrl} target="_blank" rel="noopener noreferrer" aria-label={`${t.mapLabel}${zh ? "：" : ": "}${s.venue[lang]}${t.newTab}`}>
+                <PinGlyph />
+                <span className="mono">{t.map}</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            )}
           </dd>
         </div>
         <div>

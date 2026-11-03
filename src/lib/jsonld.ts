@@ -152,6 +152,7 @@ export function eventGraph(lang: Lang, e: ForumEvent): Node {
         ...(s.locality ? { addressLocality: s.locality[lang] } : {}),
         addressCountry: "TW",
       },
+      ...(s.mapUrl ? { hasMap: s.mapUrl } : {}),
     },
     image: [ogImage(lang)],
     url,

@@ -28,6 +28,8 @@ export type Session = {
   name: L10n;
   venue: L10n; // 例如 國立臺灣大學 / National Taiwan University
   venueNote?: L10n; // 校區、教室
+  /** Google 地圖連結：票根卡地點下方出現「地圖」小連結（附圖釘圖示），也帶進結構化資料的 hasMap */
+  mapUrl?: string;
   /** 城市，用於搜尋引擎的活動結構化資料（JSON-LD 的 addressLocality），例如 臺北市 / Taipei */
   locality?: L10n;
   date: L10n; // 顯示用；未定時寫「日期確認中」
@@ -140,6 +142,7 @@ export const EVENTS: ForumEvent[] = [
         name: { zh: "臺大場", en: "NTU session" },
         venue: { zh: "國立臺灣大學", en: "National Taiwan University" },
         venueNote: { zh: "公館校區 · 全球變遷中心 G202", en: "Gongguan campus · Global Change Research Center, Room G202" },
+        mapUrl: "https://maps.app.goo.gl/x7Kp18yoYfvNf4Zp6",
         locality: { zh: "臺北市", en: "Taipei" },
         date: { zh: "11/16（一）", en: "Mon 16 November" },
         isoDate: "2026-11-16",
@@ -153,6 +156,7 @@ export const EVENTS: ForumEvent[] = [
         name: { zh: "陽明交大場", en: "NYCU session" },
         venue: { zh: "國立陽明交通大學", en: "National Yang Ming Chiao Tung University" },
         venueNote: { zh: "新竹校區 · 綜合一館 A302 教室", en: "Hsinchu campus · Assembly Building I, Room A302" },
+        mapUrl: "https://maps.app.goo.gl/MYaGuGsMsQfJzcKK9",
         locality: { zh: "新竹市", en: "Hsinchu" },
         date: { zh: "11/17（二）", en: "Tue 17 November" },
         isoDate: "2026-11-17",

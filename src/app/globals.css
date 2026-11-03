@@ -602,6 +602,13 @@ a.myco-tree-label:hover b { color: var(--cinnabar); }
 .stub-facts dt { font-family: var(--f-mono); font-size: var(--t-xs); letter-spacing: .12em; text-transform: uppercase; color: var(--cinnabar); padding-top: 4px; }
 .stub-facts dd { margin: 0; font-weight: 600; display: grid; }
 .stub-facts dd .muted { font-weight: 400; font-size: .86rem; }
+/* map link under a venue: a small engraved pin + a catalogue-style label, quiet until hovered */
+.stub-map { justify-self: start; display: inline-flex; align-items: center; gap: 5px; margin-top: 6px; padding: 2px 0; font-weight: 400; color: var(--sepia); text-decoration: none; border-bottom: .5px dotted currentColor; }
+.stub-map .mono { font-size: var(--t-xs); letter-spacing: .12em; text-transform: uppercase; }
+.stub-map > span[aria-hidden] { font-size: .8rem; }
+.stub-map:hover, .stub-map:focus-visible { color: var(--cinnabar); border-bottom-style: solid; }
+.pin-glyph { width: 18px; height: 18px; flex: none; }
+@media (prefers-reduced-motion: no-preference) { .stub-map .pin-glyph { transition: transform .2s var(--ease); } .stub-map:hover .pin-glyph { transform: translateY(-2px); } }
 /* the perforation: a dashed tear line with a notch punched out of each edge */
 .stub-foot { position: relative; margin: 8px calc(-1 * var(--stub-pad)) 0; padding: 18px var(--stub-pad) 20px; border-top: 1px dashed var(--ink); }
 .stub-foot::before, .stub-foot::after { content: ""; position: absolute; top: -10px; width: 10px; height: 19px; background: var(--paper); border: 1px solid var(--ink); }
