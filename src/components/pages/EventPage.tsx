@@ -21,6 +21,8 @@ import { pageMetadata } from "@/lib/meta";
 import JsonLd from "@/components/JsonLd";
 import { faces } from "@/components/Trio";
 import { eventGraph } from "@/lib/jsonld";
+import FieldNotes from "@/components/FieldNotes";
+import { FIELD_NOTES } from "@/content/fieldnotes";
 
 export function eventMetadata(lang: Lang, e: ForumEvent) {
   const vol = `Vol. ${pad2(e.vol)}`;
@@ -47,6 +49,7 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
   const desiderata = [...DESIDERATA].sort((x, y) => Number(covered.has(x.a)) + Number(covered.has(x.b)) - (Number(covered.has(y.a)) + Number(covered.has(y.b))));
   const places = new Set(lineup.flatMap((s) => s.places.map((p) => p.name)));
   const Plate = e.plate ? EVENT_PLATES[e.plate] : null;
+  const notes = FIELD_NOTES[e.slug];
 
   return (
     <>
@@ -94,6 +97,18 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
                   "Contents"
                 )}
               </a>
+              {notes && (
+                <a className="txtlink" href="#field-notes">
+                  {zh ? (
+                    <>
+                      現場紀錄 <i>Field notes</i>
+                    </>
+                  ) : (
+                    "Field notes"
+                  )}{" "}
+                  <span aria-hidden="true">↓</span>
+                </a>
+              )}
             </div>
           </div>
           {Plate && <Plate plateNo={roman(e.vol)} lang={lang} />}
@@ -138,6 +153,9 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
           </dl>
         </div>
       </section>
+
+      {/* Field notes: photos and short films from the event (src/content/fieldnotes.ts) */}
+      {notes && <FieldNotes notes={notes} lang={lang} />}
 
       {/* Audience registration: one ticket stub per session (only for events with sessions) */}
       <RegisterBlock e={e} lang={lang} />
@@ -276,9 +294,13 @@ export default function EventPage({ lang, e }: { lang: Lang; e: ForumEvent }) {
             <FollowCard
               lang={lang}
               note={
-                zh
-                  ? `${e.title} 的確切日期與地點尚未公布。留下你的 e-mail，資訊確定時我們會第一時間通知你；之後的每一冊，也不會錯過。`
-                  : `The exact date and venue for ${e.title} have not been announced yet. Leave your email and we will let you know the moment they are confirmed, and you won’t miss a volume after that.`
+                e.status === "past"
+                  ? zh
+                    ? `${e.title} 已經舉辦。留下你的 e-mail，下一冊的日期與地點確定時，我們會第一時間通知你。`
+                    : `${e.title} has taken place. Leave your email and we will let you know the moment the next volume’s date and venue are confirmed.`
+                  : zh
+                    ? `${e.title} 的確切日期與地點尚未公布。留下你的 e-mail，資訊確定時我們會第一時間通知你；之後的每一冊，也不會錯過。`
+                    : `The exact date and venue for ${e.title} have not been announced yet. Leave your email and we will let you know the moment they are confirmed, and you won’t miss a volume after that.`
               }
             />
           </div>

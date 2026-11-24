@@ -266,34 +266,6 @@ export default function UrbanParkPlate({ plateNo = "I", lang = "zh" }: { plateNo
               <line x1="0" y1="0" x2="10" y2="0" stroke={INK} strokeWidth=".55" />
               <line x1="0" y1="6" x2="10" y2="6" stroke={INK} strokeWidth=".3" />
             </pattern>
-            {/* a moth seen from above, heading up (-y) */}
-            <symbol id="urbanpark-moth" viewBox="-12 -10 24 20" overflow="visible">
-              <g stroke={INK} strokeWidth=".55" strokeLinejoin="round" strokeLinecap="round">
-                <path className="pf" d="M0 1C-3 2 -7 3 -6 6.5C-3 7 -1 5 0 3ZM0 1C3 2 7 3 6 6.5C3 7 1 5 0 3Z" />
-                <path className="pf" d="M0 -3C-4 -6 -10 -6 -11 -1C-8 2 -3 2 0 1ZM0 -3C4 -6 10 -6 11 -1C8 2 3 2 0 1Z" />
-                <path d="M-1 -2C-4 -4.4 -8 -4.6 -10 -1.6C-7 .6 -3 .6 -1 0ZM1 -2C4 -4.4 8 -4.6 10 -1.6C7 .6 3 .6 1 0Z" fill="url(#hatch)" stroke="none" />
-                <ellipse cx="0" cy=".5" rx="1.1" ry="4.6" fill={INK} />
-                <path fill="none" strokeWidth=".4" d="M-.5 -4C-1.5 -6.6 -3 -8.2 -4.6 -8.8M.5 -4C1.5 -6.6 3 -8.2 4.6 -8.8" />
-              </g>
-            </symbol>
-            {/* burying beetle, Nicrophorus, from above, facing right */}
-            <symbol id="urbanpark-beetle" viewBox="-34 -18 76 36" overflow="visible">
-              <g stroke={INK} strokeWidth=".8" strokeLinejoin="round" strokeLinecap="round">
-                <path fill="none" d="M-2 -10L-6 -16L-12 -17M6 -10L8 -17L14 -19M16 -7L22 -14L26 -14M-2 10L-6 16L-12 17M6 10L8 17L14 19M16 7L22 14L26 14" />
-                <path className="pf" d="M-14 -8C-22 -8 -28 -4 -29 0C-28 4 -22 8 -14 8Z" />
-                <path fill="none" strokeWidth=".5" d="M-18 -8C-19 -3 -19 3 -18 8M-22 -7C-23 -3 -23 3 -22 7M-26 -4.6C-26.6 -2 -26.6 2 -26 4.6" />
-                <path className="pf" d="M-14 -10L12 -10C14 -6 14 6 12 10L-14 10Z" />
-                <path d="M-12 -9.6L-6 -9.6C-7.4 -7 -4.6 -4.4 -6 -1L-11 -1C-9.6 -4.4 -12.6 -7 -12 -9.6ZM-12 9.6L-6 9.6C-7.4 7 -4.6 4.4 -6 1L-11 1C-9.6 4.4 -12.6 7 -12 9.6ZM2 -9.6L7.4 -9.6C6 -7 9 -4 7.4 -1L2.6 -1C4 -4 1 -7 2 -9.6ZM2 9.6L7.4 9.6C6 7 9 4 7.4 1L2.6 1C4 4 1 7 2 9.6Z" fill={CIN} stroke="none" />
-                <path d="M-14 0L12 0" strokeWidth=".6" />
-                <path d="M-6 -6C-2 -6.6 4 -6.6 9 -6M-6 6C-2 6.6 4 6.6 9 6" fill="none" strokeWidth=".35" />
-                <path d="M-14 -10L12 -10C14 -6 14 6 12 10L-14 10Z" fill="url(#hatch)" opacity=".5" stroke="none" />
-                <path className="pf" d="M12 -9C20 -11 26 -7 26 0C26 7 20 11 12 9C13.6 5 13.6 -5 12 -9Z" />
-                <path className="pf" d="M26 -4C30 -5 33 -3 33 0C33 3 30 5 26 4Z" />
-                <path fill="none" strokeWidth=".55" d="M32 -2.4L37 -6M32 2.4L37 6" />
-                <ellipse cx="38.4" cy="-7" rx="2" ry="1.4" fill={CIN} transform="rotate(-35 38.4 -7)" />
-                <ellipse cx="38.4" cy="7" rx="2" ry="1.4" fill={CIN} transform="rotate(35 38.4 7)" />
-              </g>
-            </symbol>
           </defs>
           <g id="urbanpark-art">
             <rect width="600" height="760" fill={PAPER} />
@@ -490,7 +462,7 @@ export default function UrbanParkPlate({ plateNo = "I", lang = "zh" }: { plateNo
                 <g key={i} transform={`translate(${LAMP.x} ${LAMP.y + 2})`}>
                   <g className="orbit" style={{ animationDuration: `${m.dur}s`, animationDelay: `${m.delay}s`, animationDirection: m.rev ? "reverse" : "normal" }}>
                     <g transform={`rotate(${i * 120}) translate(${m.r} 0) rotate(${m.rev ? 0 : 180}) scale(${m.s})`}>
-                      <use href="#urbanpark-moth" x="-12" y="-10" width="24" height="20" />
+                      <use href="#moth" x="-12" y="-10" width="24" height="20" />
                     </g>
                   </g>
                 </g>
@@ -506,7 +478,7 @@ export default function UrbanParkPlate({ plateNo = "I", lang = "zh" }: { plateNo
               </g>
 
               {/* burying beetle on the soil */}
-              <use href="#urbanpark-beetle" x="350" y="676" width="60" height="28.4" />
+              <use href="#burying-beetle" x="350" y="676" width="60" height="28.4" />
 
               {/* the edge of the paving: the ecotone itself */}
               <path d={EDGE} fill="none" stroke={CIN} strokeWidth=".9" strokeDasharray="5 3" />

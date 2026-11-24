@@ -88,7 +88,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | **水筆仔胎生苗 / 種子袋** | `src/components/Follow.tsx` 內的 `Propagule()` | `FollowCard`（完整種子袋 `.seed-packet`）與 `FollowCard compact`（頁尾迷你種子袋 `.seed-mini`） | 首頁 Pl. IV、`/events`、活動頁、`/call-for-speakers` | 改 `Propagule()` |
 | **連結圖示**（實驗室 / 個人網頁） | `src/components/Specimen.tsx` 內的 `LinkGlyph({ kind })`：`"lab"` 燒瓶長出幼苗、`"personal"` 葉枝框起的肖像浮雕 | 講者 `links[].kind`；若 `links[].icon` 有填則改用該圖檔 | 任一活動頁講者卡的機構列 | 在 `LinkGlyph` 加分支，並擴充 `Speaker.links[].kind` 型別與 `T` 的標籤 |
 | **鯨與海** | `src/components/WhaleSea.tsx` 自帶 `#sea-whale`、`#sea-dolphin`、`#sea-fish` | 只在 `WhaleSea` 內使用 | `/voices` | 改 `WhaleSea.tsx` |
-| **城市公園圖版內的符號** | `UrbanParkPlate.tsx`：`#urbanpark-moth`、`#urbanpark-beetle`、patterns `#urbanpark-win`、`#urbanpark-floor`、clipPath `#urbanpark-pave`、`#urbanpark-pond` | 圖版內部 | 活動頁 | 新圖版請用自己的 id 前綴 |
+| **城市公園圖版內的符號** | `UrbanParkPlate.tsx`：patterns `#urbanpark-win`、`#urbanpark-floor`、clipPath `#urbanpark-pave`、`#urbanpark-pond` | 圖版內部 | 活動頁 | 新圖版請用自己的 id 前綴 |
 | **機構 Logo** | `public/logos/`（見下表） | `ORGS[key].logo`（`src/content/site.ts`），由 `Logo.tsx`（純 `<img>`）渲染 | 關於頁、首頁共同主辦、講者卡機構列 | 放檔案 → 在 `ORGS` 填 `logo` |
 | **講者肖像** | `public/speakers/<id>-4x5.jpg`（目前：`sun`、`chan`、`yen`、`yuhan`、`wang`；SALAD Dressing 團隊成員另有 `meena`、`xinrui`） | `Speaker.photo`，`Specimen.tsx` 的 `Portrait`；`CrossingAtlas` 的圓形小頭像 | 活動頁講者卡 | 見 5.3 |
 | **網站圖示** | `src/app/icon.svg`（32×32 favicon，簡化版標誌）、`src/app/apple-icon.png`（180×180） | Next.js 檔案慣例自動產生 `<link rel="icon">` | 直接開檔；PNG 用圖片檢視器 | 見 8.7 |
@@ -111,6 +111,8 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `mudskipper` | symbol | 彈塗魚，`MangrovePlate`、404 頁 |
 | `whale` | symbol | 座頭鯨（線稿）。目前**未被引用**（`/voices` 用的是 `WhaleSea` 自己的 `#sea-whale`） |
 | `crab` | symbol | 招潮蟹，`MangrovePlate` |
+| `moth` | symbol（viewBox -12 -10 24 20，頭朝上） | 蛾（俯視）。`UrbanParkPlate` 繞燈的蛾、現場紀錄側欄的路燈小版畫（`FieldVignette`） |
+| `burying-beetle` | symbol（viewBox -34 -18 76 36，頭朝右） | 埋葬蟲（俯視，朱紅斑紋）。`UrbanParkPlate`、`FieldVignette` 的爬行埋葬蟲 |
 | `fungus-<id>` | symbol ×11 | 由 `FungusSymbols` 產生，目前**未被引用** |
 | `mark` / `mark-clip` | symbol / clipPath | 品牌標誌（見 8.7），`BrandMark.tsx` 用 `<use href="#mark">` |
 
@@ -202,6 +204,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `crossings.ts` | `Desideratum`、`DESIDERATA` | 「下一跳 / Desiderata」學科配對與提問（首頁 hero 卡、活動頁、講者招募頁） |
 | `voices.ts` | `Voice`、`VOICES` | 多元聲音影片（見第 7 章） |
 | `fungi.ts` | `FungusId`、`FungusMeta`、`FUNGI`、`fungusMeta` | 菌類圖庫的名稱、學名、外形說明（圖在 `fungi/library.tsx`） |
+| `fieldnotes.ts` | `FieldShot`、`FieldMovement`、`FieldNotes`、`FIELD_NOTES`（以活動 slug 為 key） | 活動頁的「現場紀錄」照片與短片（見 7A） |
 
 ### 3.3 主要元件（一行說明）
 
@@ -244,6 +247,8 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `Rich.tsx` | 以 `dangerouslySetInnerHTML` 渲染 repo 內自己寫的含標記文案（`<span class="en">`、`<em>`、`<i>`） |
 | `Logo.tsx` | logo `<img>` |
 | `Trio.tsx` | 三人團隊講者的照片組合（設計理由：三個人＝三個棲地，彼此的界線用朱紅邊界線，即 ecotone 的意象）。`TrioPortrait`：4:5 肖像窗以兩條**微斜**的朱紅線切成三格（上緣 36% / 70%、下緣 30% / 64%），大肖像底部標 i / ii / iii；`TrioAvatar`：34px 圓形頭像切成三個 120° 扇形（切線朝 90°、210°、330°，淡朱紅線交會於中心小點）。**照片不放大**（`ZOOM = 1`、`AV_W = 34`）：每張照片以原比例呈現，臉小一點沒關係，避免解析度撐不住；照片一樣全彩、不加濾鏡 |
+| `FieldNotes.tsx` + `FieldLightbox.tsx` + `FieldFilm.tsx` + `FieldHyphae.tsx` + `FieldVignette.tsx` | 活動頁「現場紀錄」：樣線圖例、三段（講台／觀眾席／交會帶）、照片燈箱（原生 `<dialog>`）、短片播放器、照片之間的菌絲層、側欄小版畫（見 7A） |
+| `PastVolume.tsx` | 歷屆講者頁的一冊＝標本櫃的一格抽屜：抽屜標籤（冊號、場次、收錄章）＋每位演講者一張索引卡（肖像、編號、名字、講題、身份標題、學科線型、機構、連到活動頁完整台紙），卡片下有菌絲相連（`FieldHyphae`） |
 | `JsonLd.tsx` | 輸出 `<script type="application/ld+json">`（`<` 會被跳脫），資料來自 `lib/jsonld.ts` |
 
 ### 3.4 `src/lib/`
@@ -452,6 +457,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `intro` | `L10n<string[]>` | 活動頁標題下的段落 |
 | `premise?` | `{ title, body }` | **仍在資料中但目前不渲染** |
 | `speakers` | `string[]` | 講者 id，順序就是活動頁、首頁、hero 菇的順序 |
+| `presenters?` | `string[]` | 實際上台演講的講者 id。歷屆講者頁（與其交會圖譜）只收這些人；不填＝`speakers` 全部。Vol. 01 不含主持人王鼎涵（`wang`） |
 | `plate?` | `EventPlate` | 活動頁標題旁的圖版（`"mangrove"` / `"urbanpark"`） |
 | `attendance` | `L10n` | 參加方式（活動頁、首頁 Pl. IV）。有場次時寫概述並指向場次（「報名請見各場次」） |
 | `program` | `ProgramItem[]` | 目次：`{ time?, title, detail }`。`time` 可省略（開場、對談），可放「Talk 1」或「19:00」。**`title.zh` 在同一冊內必須唯一**（當 React key）。多場次共用**一份**目次，客戶不要在網頁上寫多份完整流程；各場差異用 `programNote` 與項目 `detail` 的括弧帶過 |
@@ -465,14 +471,16 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 
 - **首頁「最新一冊」**：`upcomingEvents()[0]`（**依 `EVENTS` 陣列順序**取第一個非 past），沒有則取 `vol` 最大者。所以：新冊上線時，**舊冊要改成 `past`**，否則首頁仍顯示舊冊（或把新冊放在陣列較前面，但建議以 status 控制）。
 - **`/speakers` 歷屆講者**：只收 `status: "past"` 的活動講者，依冊號新到舊分區，每區是完整講者台紙，下面再加一張只含歷屆講者的交會圖譜。**沒有任何 past 活動時**顯示空狀態（空台紙插畫 + 水線標題 + 「待收錄」名單，名單取最小 vol 的 upcoming）。
-- 所以**把 Vol. 01 改為 `status: "past"`，它的講者就自動出現在 /speakers**，空狀態與其水線標題同時消失。
+- Vol. 01 已於 2026-11-25 改為 `status: "past"`：它的演講者（`presenters`）出現在 /speakers（`PastVolume` 的抽屜與索引卡，只取講者資料的一部分，完整台紙仍在活動頁），空狀態與其水線標題同時消失。
 - 首頁交會圖譜與「歷屆講者單位」則收**所有活動**（含 upcoming）的講者。
 
 把上一冊轉為 past 時：
 - [ ] `status: "past"`
 - [ ] `statusLabel` 改成例如 `{ zh: "Vol. 01 · 已舉辦", en: "Vol. 01 · Held" }`（文字與使用者確認）
 - [ ] `dateLabel`、`dateNote`、`venue`、`venueNote`、`attendance` 改成確定 / 已舉辦的描述
-- [ ] 已舉辦的冊**移除 `sessions` 與 `registerAllUrl`**（否則活動頁仍顯示報名區塊）；表單上的舊場次選項保留不刪（舊回覆要對得上）
+- [ ] **時間、地點等細節（`sessions`、`attendance`、場次票根卡、報名區塊）不要自行刪改**：Vol. 01 轉為 past 時客戶要求保留原樣。是否撤下報名按鈕，先問使用者。表單上的舊場次選項保留不刪（舊回覆要對得上）
+- [ ] 活動頁種子袋的說明會依 `status` 自動換成「已經舉辦」版本
+- [ ] 有主持人等非演講者時，填 `presenters`
 - [ ] 活動頁有寫死「尚未公布」的文案（見 5.7），past 活動看起來會不對，需改程式加條件
 
 ### 5.3 新增講者（`speakers.ts` 的 `Speaker`）
@@ -635,6 +643,28 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 - [ ] `VoicesPage.tsx` 的 lead、`HomePage.tsx` 預告文字中列舉的身份（「高中生與退休教師、漁民與律師、護理師與原住民族部落工作者…」）是否與實際收錄相符。
 - [ ] 文案永遠強調兩件事：**誰**是多元的（年齡、性別、族群、學歷、職業、生命經驗），**說的**是對跨領域永續的期待。不寫「海外聲音」。
 - [ ] 多元聲音文案出現在：`VoicesPage.tsx`（metadata、水線標題、lead、海中註記、結尾 CTA）、`WhaleSea.tsx`（隱藏 h2）、`HomePage.tsx` 預告、`EventPage.tsx` 預告、`CallPage.tsx` 聯絡區、`site.ts` 的 FAQ「人不在臺灣」。改方向時一起改。
+
+---
+
+## 7A. 活動現場紀錄（Field notes）
+
+活動頁資訊卡之後的「§ 現場紀錄」區塊（`#field-notes`），資料在 `src/content/fieldnotes.ts` 的 `FIELD_NOTES[<slug>]`，沒有資料的活動不顯示。標題區的「目次」旁會自動多一個「現場紀錄 ↓」連結。
+
+- **版面概念：樣線（transect）。** 現場照片依「棲地」分成幾段（`movements`），是空間分類，**不是時間順序**。Vol. 01 是 I. 講台、II. 觀眾席（不要寫「座席」）、III. 交會帶（ecotone，講者與觀眾交流）。頁首的樣線圖例依各段張數分配寬度，各段用一種線型當圖例（`pattern`：`hatch` 講台、`stip` 觀眾席、`hatchC` 交會帶；朱紅排線 `hatchC` 只標交會帶，與首頁 Pl. II 一致）。桌機每段左側是 sticky 的羅馬數字欄，欄底有一幅小版畫（`vignette`：`lamp` 路燈與繞燈的蛾、`beetle` 沿地線來回爬的埋葬蟲、`fungi` 墨色與朱紅兩條菌絲在土下相會並長出子實體，旁邊一片榕葉飄落）。
+- **菌絲層**（`FieldHyphae`，客戶端）：量測照片實際位置後，以 seed 長出菌絲：側欄與照片之間的主脈、通往每列第一張的分支、同列照片之間跨過欄距的連結（只走空隙，不穿過圖說）、幾條細枝；部分照片上緣長出小子實體（`species`）。交會帶 `braid: true` 會多一條朱紅菌絲與墨色交纏。菌絲在照片下方（被照片遮住），子實體在上方，都不攔截點擊。捲入畫面時描線長出；減少動態時直接靜態呈現。歷屆講者頁的 `PastVolume` 也用它（傳入 `grid` / `item` / `rail` selector）。
+- **手貼感**：每張照片有固定的微小傾斜（`TILTS`）與膠帶，滑鼠移上去會擺正並浮起；收尾的 `plate` 不傾斜、不貼膠帶。
+- **照片形狀（`shape`）**：`wide`（3:2，佔 4/6 欄）與 `tall`（3:4，佔 2/6 欄）**成對排**，同一列的高度由 wide 決定（CSS subgrid）；排列順序就是格線順序，請交錯 wide/tall（W T、T W、W T…），不要讓 tall 單獨一列。`pano` 全寬橫幅；`plate` 全寬收尾大圖（雙框，像銅版圖版）。手機一欄，tall 改 4:5、pano 改 3:2。
+- **燈箱**：點照片開原生 `<dialog>`，顯示**未裁切的整張**（`-full-` 檔）；左右鍵 / 滑動換張，Esc 或點黑色背景關閉，焦點回到原照片。
+- **新增照片**：原始檔放在 repo 外，在 `scripts/field-notes.mjs` 的 `SHOTS` 加一筆（`crop` 設計裁切、`redact` 要模糊的方框、`tone` 亮度 / 對比），執行 `node scripts/field-notes.mjs <原始照片資料夾>`，輸出到 `public/field/<dir>/`；再到 `fieldnotes.ts` 加資料（`w`/`h` 等於 crop 尺寸，`fullW`/`fullH` 等於原圖）。腳本的 `WIDTHS` 要與 `FieldNotes.tsx` 一致。
+  - **隱私**：照片中的白板、螢幕若有 WiFi 密碼、個資，一定要用 `redact` 模糊（Vol. 01 的 G202 白板密碼已處理）。
+  - **照片一律全彩**，`tone` 只調亮度、對比與一點暖色，不可去色（4.4）。
+  - **圖說只寫照片裡看得到的**：投影片標題照抄，其餘用中性的場景詞（交流、觀眾席、合影）。不推測時序（開場、第幾段演講、演講後、散場前）、時間或人物身分，也不加詮釋。`cue` 欄位只在使用者明確提供時才填。
+- **短片**（10–20 秒）：`kind: "video"`，檔案 `public/field/<dir>/<id>.mp4` 與封面 `<id>-poster.webp`，填 `seconds`。`FieldFilm` 只在畫面內且分頁可見時靜音循環播放，離開就暫停；`prefers-reduced-motion: reduce` 時不自動播放（封面 + 播放鈕）；聲音由使用者自己開。轉檔建議：
+  ```bash
+  ffmpeg -i in.mov -t 20 -vf "scale=-2:720,fps=30" -c:v libx264 -crf 26 -preset slow -profile:v high -pix_fmt yuv420p -movflags +faststart -c:a aac -b:a 96k out.mp4
+  ffmpeg -ss 1 -i out.mp4 -frames:v 1 -vf scale=1280:-2 -q:v 80 out-poster.webp
+  ```
+  每支目標 < 5MB。若影片多（約 10 支以上）或很長，改傳 YouTube，沿用多元聲音的「點擊才載入」做法（7.2），不要自動播放第三方 iframe。
 
 ---
 
@@ -811,12 +841,8 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 
 | 項目 | 位置 | 狀態 |
 |---|---|---|
-| Vol. 01 確切日期 | `events.ts`：`dateNote`「確切日期確認中」、`isoDate` 未填 | 待定 |
-| Vol. 01 地點 | `events.ts`：`venue`「臺大、陽明交大各一場」；校區與教室見各場次 `venueNote` | 待定 |
-| 參加方式 | `events.ts`：`attendance`「分兩天、兩場舉辦…日期確認中，報名請見各場次。」 | 日期確定後更新 |
-| Vol. 01 場次 | `events.ts`：`sessions` 兩場（臺大場、陽明交大場）的 `date`、`time`、`venueNote` 皆「確認中」；`registerUrl` 與 `registerAllUrl` 皆空（按鈕顯示「報名即將開放」） | 客戶執行 `createParticipationForm()` 後貼上預填網址；日期確定後填 `date` / `isoDate` / `time` |
+| Vol. 01 | 已舉辦（`status: "past"`，2026-11-25）；場次、時間、地點與報名區塊依客戶要求維持原樣 | 是否撤下報名按鈕待客戶決定 |
 | 「活動報名與通知」表單 | `scripts/create-google-forms.gs` 的 `createParticipationForm()` 尚未執行；`SITE.followFormUrl` 仍指向舊追蹤表單 | 建好後把 `followFormUrl` 換成新表單的「只想收到通知」預填網址；舊追蹤表單可停止收回覆（不要刪，保留舊名單） |
-| Vol. 01 `venueNote` | 仍是「臺北 · 實體為主」（首頁 hero 取「臺北」當城市），但陽明交大場的校區未定 | 校區確定後確認是否仍正確 |
 | 聯絡信箱 | `site.ts`：`contactEmail: ""`（講者招募頁聯絡區改成「請透過上方的講者申請或追蹤表單與我們聯繫」，連到 `#two-ways`；填了才顯示 Email 與「歡迎來信」標題） | 客戶目前沒有公開信箱 |
 | Instagram | `site.ts`：`instagram: ""`（空則不顯示） | 待補 |
 | SALAD Dressing logo | `public/logos/salad-placeholder.svg`，`ORGS.salad.placeholder: true` | 待換正式 logo |

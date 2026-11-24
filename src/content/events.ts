@@ -68,6 +68,8 @@ export type ForumEvent = {
   /** 本冊的主張：標題 + 段落（中文可含 <span class="en">…</span>，英文用 <em>…</em>） */
   premise?: { title: L10n; body: L10n<string[]> };
   speakers: string[]; // speaker ids
+  /** 實際上台演講的講者 id（歷屆講者頁只收這些人）；不填 = speakers 全部 */
+  presenters?: string[];
   /** 活動頁標題旁的銅版畫圖版（選填） */
   plate?: EventPlate;
   /** 參加方式說明，例如「活動資訊即將公布」 */
@@ -102,8 +104,8 @@ export const EVENTS: ForumEvent[] = [
     language: { zh: "中文 + 英文", en: "Mandarin + English" },
     languageNote: { zh: "", en: "" },
     talkLanguages: { zh: "中文 & 英文", en: "Mandarin & English" },
-    status: "upcoming",
-    statusLabel: { zh: "Vol. 01 · 籌備中", en: "Vol. 01 · In preparation" },
+    status: "past",
+    statusLabel: { zh: "Vol. 01 · 已舉辦", en: "Vol. 01 · Held" },
     summary: {
       zh: `五位講者、十二種身份。從都市裡的昆蟲、夜間人工光、人類如何記錄自然，到再野化，最後一起對談，追問：城市能永續地成長嗎？還是該把一部分土地還給自然？`,
       en: `Five speakers, twelve identities. From insects in the city, artificial light at night and how humans have recorded nature, to rewilding, closing with a shared conversation, one question runs through each session: can cities grow sustainably, or should some of the land go back to nature?`,
@@ -130,6 +132,8 @@ export const EVENTS: ForumEvent[] = [
       },
     },
     speakers: ["sun", "chan", "yen", "yuhan", "wang"],
+    // 王鼎涵是綜合對談主持人，沒有個人演講：不收進歷屆講者
+    presenters: ["sun", "chan", "yen", "yuhan"],
     plate: "urbanpark",
     attendance: {
       zh: "分兩天、兩場舉辦：11/16（一）18:30–21:00 在臺大公館校區，11/17（二）13:30–16:30 在陽明交大新竹校區。報名請見下方場次。",

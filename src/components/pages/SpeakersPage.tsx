@@ -3,7 +3,7 @@ import { Fungus } from "@/components/fungi/library";
 import { PageTitle, PlateHead } from "@/components/Typography";
 import WaterlineHeading from "@/components/WaterlineHeading";
 import { PlateEdge } from "@/components/Dividers";
-import SpecimenSheet from "@/components/Specimen";
+import PastVolume from "@/components/PastVolume";
 import CrossingAtlas from "@/components/CrossingAtlas";
 import { CallLink } from "@/components/SpeakerCall";
 import { pastEvents, upcomingEvents } from "@/content/events";
@@ -87,7 +87,7 @@ export default function SpeakersPage({ lang }: { lang: Lang }) {
   const zh = lang === "zh";
   const href = (p: string) => localePath(lang, p);
   const past = pastEvents().sort((a, b) => b.vol - a.vol);
-  const archived = past.flatMap((e) => e.speakers.map(speakerById).filter((s) => s !== undefined).map((s) => ({ s, e })));
+  const archived = past.flatMap((e) => (e.presenters ?? e.speakers).map(speakerById).filter((s) => s !== undefined).map((s) => ({ s, e })));
   const pending = upcomingEvents().sort((a, b) => a.vol - b.vol)[0];
   const pendingLineup = pending ? pending.speakers.map(speakerById).filter((s) => s !== undefined) : [];
 
@@ -174,23 +174,14 @@ export default function SpeakersPage({ lang }: { lang: Lang }) {
         </section>
       ) : (
         <>
-          {past.map((e) => {
-            const people = e.speakers.map(speakerById).filter((s) => s !== undefined);
-            return (
-              <section key={e.slug} className="sec sec--tight" aria-labelledby={`vol-${e.vol}`}>
-                <div className="wrap">
-                  <PlateHead lang={lang} no={roman(e.vol)} id={`vol-${e.vol}`} title={e.title} en={e.subtitle[lang]} side={`Vol. ${pad2(e.vol)} · ${e.dateLabel[lang]}`} />
-                  <div className="sheets">
-                    {people.map((s) => (
-                      <div key={s.id} className="reveal">
-                        <SpecimenSheet s={s} full headingLevel={3} vol={`Vol. ${pad2(e.vol)} · ${e.title}`} lang={lang} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-            );
-          })}
+          {past.map((e) => (
+            <section key={e.slug} className="sec sec--tight" aria-labelledby={`vol-${e.vol}`}>
+              <div className="wrap">
+                <PlateHead lang={lang} no={roman(e.vol)} id={`vol-${e.vol}`} title={e.title} en={e.subtitle[lang]} side={`Vol. ${pad2(e.vol)} · ${e.dateLabel[lang]}`} />
+                <PastVolume e={e} lang={lang} />
+              </div>
+            </section>
+          ))}
           <PlateEdge from="var(--paper)" to="var(--cyan)" mode="lace" seed={55} />
           <section className="sec sec--cyan" aria-labelledby="sp-atlas">
             <div className="wrap">
