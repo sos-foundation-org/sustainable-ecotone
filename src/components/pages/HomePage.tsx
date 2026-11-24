@@ -347,7 +347,7 @@ export default function HomePage({ lang }: { lang: Lang }) {
                   </span>
                 </Link>
                 {/* goes straight to the Google Form (「報名參加活動」 pre-filled; sessions are ticked in the form) */}
-                {latest.sessions && latest.sessions.length > 0 && (
+                {latest.status !== "past" && latest.sessions && latest.sessions.length > 0 && (
                   <RegisterButton url={latest.registerUrl ?? ""} lang={lang} label={zh ? "報名參加" : "Register"} small={zh ? "REGISTER" : undefined} variant="line" />
                 )}
               </div>

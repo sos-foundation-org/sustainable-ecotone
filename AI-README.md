@@ -478,7 +478,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 - [ ] `status: "past"`
 - [ ] `statusLabel` 改成例如 `{ zh: "Vol. 01 · 已舉辦", en: "Vol. 01 · Held" }`（文字與使用者確認）
 - [ ] `dateLabel`、`dateNote`、`venue`、`venueNote`、`attendance` 改成確定 / 已舉辦的描述
-- [ ] **時間、地點等細節（`sessions`、`attendance`、場次票根卡、報名區塊）不要自行刪改**：Vol. 01 轉為 past 時客戶要求保留原樣。是否撤下報名按鈕，先問使用者。表單上的舊場次選項保留不刪（舊回覆要對得上）
+- [ ] **時間、地點等細節（`sessions`、`attendance`、場次票根卡、報名區塊）不要自行刪改**：Vol. 01 轉為 past 時客戶要求保留原樣。`status: "past"` 時只會自動隱藏「報名參加」按鈕（活動頁報名區塊與首頁），場次卡照常顯示；下一冊有自己的按鈕。表單上的舊場次選項保留不刪（舊回覆要對得上）
 - [ ] 活動頁種子袋的說明會依 `status` 自動換成「已經舉辦」版本
 - [ ] 有主持人等非演講者時，填 `presenters`
 - [ ] 活動頁有寫死「尚未公布」的文案（見 5.7），past 活動看起來會不對，需改程式加條件
@@ -841,7 +841,7 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 
 | 項目 | 位置 | 狀態 |
 |---|---|---|
-| Vol. 01 | 已舉辦（`status: "past"`，2026-11-25）；場次、時間、地點與報名區塊依客戶要求維持原樣 | 是否撤下報名按鈕待客戶決定 |
+| Vol. 01 | 已舉辦（`status: "past"`，2026-11-25）；場次、時間、地點與報名區塊依客戶要求維持原樣；「報名參加」按鈕（活動頁、首頁）在 past 時自動隱藏 | 無 |
 | 「活動報名與通知」表單 | `scripts/create-google-forms.gs` 的 `createParticipationForm()` 尚未執行；`SITE.followFormUrl` 仍指向舊追蹤表單 | 建好後把 `followFormUrl` 換成新表單的「只想收到通知」預填網址；舊追蹤表單可停止收回覆（不要刪，保留舊名單） |
 | 聯絡信箱 | `site.ts`：`contactEmail: ""`（講者招募頁聯絡區改成「請透過上方的講者申請或追蹤表單與我們聯繫」，連到 `#two-ways`；填了才顯示 Email 與「歡迎來信」標題） | 客戶目前沒有公開信箱 |
 | Instagram | `site.ts`：`instagram: ""`（空則不顯示） | 待補 |

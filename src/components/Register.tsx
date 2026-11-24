@@ -192,9 +192,12 @@ export default function RegisterBlock({ e, lang }: { e: ForumEvent; lang: Lang }
             <SessionStub key={s.id} s={s} i={i} e={e} lang={lang} />
           ))}
         </ol>
-        <div className="register-all reveal">
-          <RegisterButton url={e.registerUrl ?? ""} lang={lang} label={t.one} small={t.oneSmall} />
-        </div>
+        {/* a held volume keeps its session cards but hides the button; the next volume brings its own */}
+        {e.status !== "past" && (
+          <div className="register-all reveal">
+            <RegisterButton url={e.registerUrl ?? ""} lang={lang} label={t.one} small={t.oneSmall} />
+          </div>
+        )}
       </div>
     </section>
   );
