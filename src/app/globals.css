@@ -1243,19 +1243,15 @@ html:lang(en) .sheet-members b { font-family: var(--f-lat); font-size: 1.1rem; l
 /* the mount: a print tipped onto card, inked edge */
 .fn-mount { display: block; position: relative; width: 100%; padding: 5px; background: var(--card); border: 1px solid var(--ink); box-shadow: 3px 3px 0 -1px var(--paper-2), 3px 3px 0 0 var(--rule); color: inherit; font: inherit; transform: rotate(var(--tilt, 0deg)); }
 .fn-mount .tape { z-index: 2; }
-button.fn-mount { cursor: zoom-in; }
 .fn-mount img, .fn-mount video { display: block; width: 100%; height: auto; aspect-ratio: var(--ar); object-fit: cover; background: var(--paper-2); }
 /* tall frames stand beside a wide one: they take the row's height (set by the wide frame) */
 @supports (grid-template-rows: subgrid) {
   .fn-shot--tall .fn-mount { height: 100%; min-height: 220px; }
   .fn-shot--tall .fn-mount img { position: absolute; inset: 5px; width: calc(100% - 10px); height: calc(100% - 10px); aspect-ratio: auto; }
 }
-.fn-mount::after { content: "+"; position: absolute; top: 12px; right: 12px; width: 26px; height: 26px; display: grid; place-items: center; font-family: var(--f-mono); font-size: 1rem; line-height: 1; background: color-mix(in srgb, var(--card) 88%, transparent); border: .5px solid var(--ink); opacity: 0; transition: opacity .3s; }
-.fn-film::after { display: none; }
-button.fn-mount:hover::after, button.fn-mount:focus-visible::after { opacity: 1; }
 @media (prefers-reduced-motion: no-preference) {
   .fn-mount { transition: transform .7s var(--ease), box-shadow .7s var(--ease); }
-  button.fn-mount:hover, button.fn-mount:focus-visible { transform: rotate(0deg) translateY(-4px); box-shadow: 5px 7px 0 -1px var(--paper-2), 5px 7px 0 0 var(--rule); }
+  .fn-shot .fn-mount:hover { transform: rotate(0deg) translateY(-4px); box-shadow: 5px 7px 0 -1px var(--paper-2), 5px 7px 0 0 var(--rule); }
 }
 
 /* mycelium under the prints (FieldHyphae): hyphae below, fruit on top; both ignore the pointer */
@@ -1308,28 +1304,6 @@ button.fn-mount:hover::after, button.fn-mount:focus-visible::after { opacity: 1;
 .fn-film-ctl button:hover { color: var(--cinnabar); }
 .fn-film-ctl .mono { letter-spacing: .08em; }
 
-/* lightbox: the whole frame on humus */
-.fn-box { border: 0; padding: 0; margin: 0; width: 100vw; max-width: none; height: 100dvh; max-height: none; background: var(--humus); color: var(--hypha); }
-.fn-box[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
-.fn-box::backdrop { background: rgba(21, 18, 14, .7); }
-html:has(.fn-box[open]) { overflow: hidden; }
-.fn-box-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px var(--m); color: var(--hypha-2); border-bottom: .5px solid rgba(233, 223, 198, .18); }
-.fn-box-stage { position: relative; display: grid; place-items: center; padding: 16px var(--m); min-height: 0; touch-action: pan-y; }
-.fn-box-stage img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; user-select: none; box-shadow: 0 0 0 1px rgba(233, 223, 198, .2); }
-.fn-box-btn { display: grid; place-items: center; width: 44px; height: 44px; background: transparent; color: var(--hypha); border: .5px solid rgba(233, 223, 198, .35); cursor: pointer; }
-.fn-box-btn:hover { color: var(--spore); border-color: var(--spore); }
-.fn-box-prev, .fn-box-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(21, 18, 14, .55); }
-.fn-box-prev { left: max(8px, calc(var(--m) - 36px)); }
-.fn-box-next { right: max(8px, calc(var(--m) - 36px)); }
-.fn-box-cap { padding: 12px var(--m) max(18px, env(safe-area-inset-bottom)); max-width: 52em; margin: 0 auto; text-align: center; font-size: .92rem; line-height: 1.75; }
-.fn-box-cap .mono { color: var(--spore); margin-right: 6px; }
-.fn-box :focus-visible { outline-color: var(--spore); }
-@media (prefers-reduced-motion: no-preference) {
-  .fn-box[open] { animation: fn-in .35s var(--ease); }
-  .fn-box-stage img { animation: fn-in .4s var(--ease); }
-}
-@keyframes fn-in { from { opacity: 0; } to { opacity: 1; } }
-
 @media (max-width: 960px) {
   .fn-move { grid-template-columns: 1fr; gap: 22px; }
   .fn-rail { position: relative; top: auto; display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(96px, 150px); column-gap: 16px; align-items: baseline; }
@@ -1348,7 +1322,6 @@ html:has(.fn-box[open]) { overflow: hidden; }
   .fn-shot--tall .fn-mount { height: auto; min-height: 0; }
   .fn-shot--tall .fn-mount img { position: static; width: 100%; height: auto; aspect-ratio: 4 / 5; }
   .fn-shot--pano .fn-mount img { aspect-ratio: 3 / 2; }
-  .fn-box-prev, .fn-box-next { display: none; }
 }
 
 /* ── Past Speakers: one held volume as a drawer of the cabinet（PastVolume.tsx） ──

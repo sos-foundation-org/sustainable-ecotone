@@ -1,5 +1,7 @@
 # AI-README：Ecotone｜兼容並續 網站維護指南（給 AI 代理）
 
+> **活動結束了？** 直接照第 5A 章做。
+>
 > **給接手的 AI：** 修改任何東西之前，先讀完本檔的「0. 快速守則」與「4. 設計系統與不可違反的規則」。
 > 這個網站的設計語言是客戶逐項確認過的，很多「看起來可以順手優化」的地方其實是刻意的決定。
 > 不確定時，**先問人，不要猜**。本檔所有路徑、型別、欄位都對照過 `main` 分支的程式碼（最後一個 commit：`2e4c22e`）。
@@ -247,7 +249,7 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 | `Rich.tsx` | 以 `dangerouslySetInnerHTML` 渲染 repo 內自己寫的含標記文案（`<span class="en">`、`<em>`、`<i>`） |
 | `Logo.tsx` | logo `<img>` |
 | `Trio.tsx` | 三人團隊講者的照片組合（設計理由：三個人＝三個棲地，彼此的界線用朱紅邊界線，即 ecotone 的意象）。`TrioPortrait`：4:5 肖像窗以兩條**微斜**的朱紅線切成三格（上緣 36% / 70%、下緣 30% / 64%），大肖像底部標 i / ii / iii；`TrioAvatar`：34px 圓形頭像切成三個 120° 扇形（切線朝 90°、210°、330°，淡朱紅線交會於中心小點）。**照片不放大**（`ZOOM = 1`、`AV_W = 34`）：每張照片以原比例呈現，臉小一點沒關係，避免解析度撐不住；照片一樣全彩、不加濾鏡 |
-| `FieldNotes.tsx` + `FieldLightbox.tsx` + `FieldFilm.tsx` + `FieldHyphae.tsx` + `FieldVignette.tsx` | 活動頁「現場紀錄」：樣線圖例、三段（講台／觀眾席／交會帶）、照片燈箱（原生 `<dialog>`）、短片播放器、照片之間的菌絲層、側欄小版畫（見 7A） |
+| `FieldNotes.tsx` + `FieldFilm.tsx` + `FieldHyphae.tsx` + `FieldVignette.tsx` | 活動頁「現場紀錄」：樣線圖例、三段（講台／觀眾席／交會帶）、短片播放器、照片之間的菌絲層、側欄小版畫（見 7A）。照片不提供點擊放大 |
 | `PastVolume.tsx` | 歷屆講者頁的一冊＝標本櫃的一格抽屜：抽屜標籤（冊號、場次、收錄章）＋每位演講者一張索引卡（肖像、編號、名字、講題、身份標題、學科線型、機構、連到活動頁完整台紙），卡片下有菌絲相連（`FieldHyphae`） |
 | `JsonLd.tsx` | 輸出 `<script type="application/ld+json">`（`<` 會被跳脫），資料來自 `lib/jsonld.ts` |
 
@@ -470,18 +472,11 @@ $env:NEXT_DIST_DIR = ".next-check"; npm run build; Remove-Item Env:NEXT_DIST_DIR
 ### 5.2 past / upcoming 邏輯與歷屆講者
 
 - **首頁「最新一冊」**：`upcomingEvents()[0]`（**依 `EVENTS` 陣列順序**取第一個非 past），沒有則取 `vol` 最大者。所以：新冊上線時，**舊冊要改成 `past`**，否則首頁仍顯示舊冊（或把新冊放在陣列較前面，但建議以 status 控制）。
-- **`/speakers` 歷屆講者**：只收 `status: "past"` 的活動講者，依冊號新到舊分區，每區是完整講者台紙，下面再加一張只含歷屆講者的交會圖譜。**沒有任何 past 活動時**顯示空狀態（空台紙插畫 + 水線標題 + 「待收錄」名單，名單取最小 vol 的 upcoming）。
+- **`/speakers` 歷屆講者**：只收 `status: "past"` 活動的演講者（`presenters`，不填則為 `speakers`），依冊號新到舊，每冊是一格「抽屜」（`PastVolume`：抽屜標籤 + 收錄章 + 每人一張索引卡，只取部分資料，完整台紙留在活動頁），下面再加一張只含歷屆講者的交會圖譜。**沒有任何 past 活動時**顯示空狀態（空台紙插畫 + 水線標題 + 「待收錄」名單，名單取最小 vol 的 upcoming）。
 - Vol. 01 已於 2026-11-25 改為 `status: "past"`：它的演講者（`presenters`）出現在 /speakers（`PastVolume` 的抽屜與索引卡，只取講者資料的一部分，完整台紙仍在活動頁），空狀態與其水線標題同時消失。
 - 首頁交會圖譜與「歷屆講者單位」則收**所有活動**（含 upcoming）的講者。
 
-把上一冊轉為 past 時：
-- [ ] `status: "past"`
-- [ ] `statusLabel` 改成例如 `{ zh: "Vol. 01 · 已舉辦", en: "Vol. 01 · Held" }`（文字與使用者確認）
-- [ ] `dateLabel`、`dateNote`、`venue`、`venueNote`、`attendance` 改成確定 / 已舉辦的描述
-- [ ] **時間、地點等細節（`sessions`、`attendance`、場次票根卡、報名區塊）不要自行刪改**：Vol. 01 轉為 past 時客戶要求保留原樣。`status: "past"` 時只會自動隱藏「報名參加」按鈕（活動頁報名區塊與首頁），場次卡照常顯示；下一冊有自己的按鈕。表單上的舊場次選項保留不刪（舊回覆要對得上）
-- [ ] 活動頁種子袋的說明會依 `status` 自動換成「已經舉辦」版本
-- [ ] 有主持人等非演講者時，填 `presenters`
-- [ ] 活動頁有寫死「尚未公布」的文案（見 5.7），past 活動看起來會不對，需改程式加條件
+把上一冊轉為 past 時：照 **5A「活動結束時」** 的流程做。
 
 ### 5.3 新增講者（`speakers.ts` 的 `Speaker`）
 
@@ -573,6 +568,79 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 
 ---
 
+## 5A. 活動結束時（把一冊轉為「已舉辦」並放上現場紀錄）
+
+> 這是 Vol. 01（2026-11）結束後實際做過、經客戶逐項修正的流程。下一冊結束時照做，**不要自行擴大改動範圍**。
+
+### 5A.1 先問使用者（不要自己決定）
+
+- [ ] 狀態標籤的文字（Vol. 01 用的是 `{ zh: "Vol. NN · 已舉辦", en: "Vol. NN · Held" }`）。
+- [ ] 這一冊有沒有**沒上台演講**的人（例如對談主持人）：他們不收進歷屆講者（Vol. 01 的王鼎涵即是）。
+- [ ] 現場照片 / 短片的檔案位置；影片要自架 mp4 還是 YouTube。
+- [ ] 改完要「先本地預覽」還是「直接上線」（push 到 `main` 就是上線）。
+
+### 5A.2 `events.ts`：只改這三樣
+
+```ts
+status: "past",
+statusLabel: { zh: "Vol. NN · 已舉辦", en: "Vol. NN · Held" },
+presenters: ["<演講者 id>", …], // 實際上台演講的人；全部都有講就不用填
+```
+
+**不要動**：`sessions`（場次卡的地點、教室、地圖、日期、時間）、`attendance`、`dateLabel` / `dateNote` / `venue` / `venueNote`、`registerUrl`、`program`、講者資料。Vol. 01 曾因為一起改了這些而被客戶要求全部還原。
+
+### 5A.3 自動發生的事（不用改程式）
+
+- 活動頁與首頁的「報名參加」按鈕隱藏（`status === "past"`），場次票根卡、時間、教室、地圖照常顯示。下一冊（非 past）會有自己的按鈕。
+- 活動頁種子袋的說明換成「已經舉辦」版本。
+- `/speakers`：這一冊出現為一格抽屜（`PastVolume`），收 `presenters`；交會圖譜也只收他們。空狀態與其水線標題消失。
+- 首頁「最新一冊」側標、`/events` 列表顯示新的 `statusLabel`。
+
+### 5A.4 現場紀錄（照片）
+
+1. 原始照片放在 repo **外**（例如暫存資料夾）。先逐張看：白板 / 螢幕上有沒有 WiFi 密碼、電話、email 等個資，有就記下座標用 `redact` 模糊。
+2. 在 `scripts/field-notes.mjs` 把 `DIR` 改成 `"volNN"`，`SHOTS` 每張一筆：
+   ```js
+   { id: "talk1", src: "IMG_0123.jpg", crop: [left, top, width, height], redact: [[x, y, w, h]], tone: { b: 1.04, c: 1.06 } },
+   ```
+   `crop` 依版面形狀取：`wide` 3:2、`tall` 3:4、`pano` 約 7:3、`plate`（合影收尾）原比例。執行 `node scripts/field-notes.mjs <原始照片資料夾>`，用 sharp 做張縮圖確認裁切與模糊。
+3. 在 `src/content/fieldnotes.ts` 的 `FIELD_NOTES` 加一筆（key 是活動 slug），範本：
+   ```ts
+   "<slug>": {
+     dir: "volNN",
+     side: "Vol. NN",
+     intro: { zh: "現場照片依三種棲地排成一條樣線：講台、觀眾席，以及兩者交會的地方。", en: "…" },
+     movements: [
+       { key: "lectern", title: { zh: "講台", en: "The lectern" }, gloss: { zh: "The lectern", en: "講台" },
+         note: { zh: "…", en: "…" }, pattern: "hatch", vignette: "lamp", species: ["mycena", "coprinus"],
+         shots: [{ id: "talk1", shape: "wide", w: 2000, h: 1333, caption: { zh: "…", en: "…" }, alt: { zh: "…", en: "…" } }, …] },
+       { key: "audience", title: { zh: "觀眾席", en: "The audience" }, …, pattern: "stip", vignette: "beetle", … },
+       { key: "ecotone", title: { zh: "交會帶", en: "The ecotone" }, …, pattern: "hatchC", vignette: "fungi", braid: true, … },
+     ],
+   },
+   ```
+   三段是**空間**分類（講台 / 觀眾席 / 交會帶），不是時間順序。小版畫可以換成該冊圖版的生物（新增時照 7A 的做法）。
+4. 文案守則（客戶逐條糾正過）：
+   - 圖說**只寫照片裡看得到的**：投影片標題照抄；其餘用中性詞（講台上的分享、觀眾席、講者與觀眾交流、交流、合影）。
+   - **不推測**時序（開場、Talk N、演講後、散場前）、時間、誰是誰；不加詮釋句。
+   - **不標場次**（不要寫「臺大場」「臺大場合影」或教室號碼），合影就寫「合影」。
+   - 用「觀眾席」，不要用「座席」。
+   - 照片全彩，不去色；不提供點擊放大或高解析度原圖。
+5. 照片排法：`wide` / `tall` 成對交錯（W T、T W…），合影用 `plate` 放最後。
+
+### 5A.5 短片
+
+照 7A「短片」：720p H.264 mp4（< 5MB）+ 封面 webp，`kind: "video"`；太多或太長改 YouTube 點擊才載入。
+
+### 5A.6 檢查與上線
+
+- [ ] 照第 9 章 QA（lint、build、中英兩頁、375px 無水平捲軸、減少動態、h1 唯一、水線標題 ≤ 1）。
+- [ ] 活動頁：場次卡與時間地點**仍在**、報名按鈕已隱藏、現場紀錄顯示、沒有「臺大場」等場次字樣。
+- [ ] `/speakers`：只有 `presenters`；卡片的「完整台紙」連到 `/events/<slug>#<id>`。
+- [ ] Commit 訊息如 `Vol. NN: field notes photos, held status`；依使用者指示 push（`main` = 上線）。
+
+---
+
 ## 6. 新增學科（交會圖譜領域）
 
 1. **`src/content/disciplines.ts`**
@@ -654,8 +722,8 @@ grep -rn "Vol\. 01\|ECO-001\|2026\|第一場\|第一冊\|第一批\|First volume
 - **菌絲層**（`FieldHyphae`，客戶端）：量測照片實際位置後，以 seed 長出菌絲：側欄與照片之間的主脈、通往每列第一張的分支、同列照片之間跨過欄距的連結（只走空隙，不穿過圖說）、幾條細枝；部分照片上緣長出小子實體（`species`）。交會帶 `braid: true` 會多一條朱紅菌絲與墨色交纏。菌絲在照片下方（被照片遮住），子實體在上方，都不攔截點擊。捲入畫面時描線長出；減少動態時直接靜態呈現。歷屆講者頁的 `PastVolume` 也用它（傳入 `grid` / `item` / `rail` selector）。
 - **手貼感**：每張照片有固定的微小傾斜（`TILTS`）與膠帶，滑鼠移上去會擺正並浮起；收尾的 `plate` 不傾斜、不貼膠帶。
 - **照片形狀（`shape`）**：`wide`（3:2，佔 4/6 欄）與 `tall`（3:4，佔 2/6 欄）**成對排**，同一列的高度由 wide 決定（CSS subgrid）；排列順序就是格線順序，請交錯 wide/tall（W T、T W、W T…），不要讓 tall 單獨一列。`pano` 全寬橫幅；`plate` 全寬收尾大圖（雙框，像銅版圖版）。手機一欄，tall 改 4:5、pano 改 3:2。
-- **燈箱**：點照片開原生 `<dialog>`，顯示**未裁切的整張**（`-full-` 檔）；左右鍵 / 滑動換張，Esc 或點黑色背景關閉，焦點回到原照片。
-- **新增照片**：原始檔放在 repo 外，在 `scripts/field-notes.mjs` 的 `SHOTS` 加一筆（`crop` 設計裁切、`redact` 要模糊的方框、`tone` 亮度 / 對比），執行 `node scripts/field-notes.mjs <原始照片資料夾>`，輸出到 `public/field/<dir>/`；再到 `fieldnotes.ts` 加資料（`w`/`h` 等於 crop 尺寸，`fullW`/`fullH` 等於原圖）。腳本的 `WIDTHS` 要與 `FieldNotes.tsx` 一致。
+- **不提供放大**：客戶要求照片不能點擊放大、不提供高解析度原圖（2026-11-25 移除燈箱與 `-full-` 檔）。照片只是 `<div class="fn-mount">` 裡的 `<img alt>`，不要再加回燈箱或下載連結。
+- **新增照片**：原始檔放在 repo 外，在 `scripts/field-notes.mjs` 的 `SHOTS` 加一筆（`crop` 設計裁切、`redact` 要模糊的方框、`tone` 亮度 / 對比），執行 `node scripts/field-notes.mjs <原始照片資料夾>`，輸出到 `public/field/<dir>/`；再到 `fieldnotes.ts` 加資料（`w`/`h` 等於 crop 尺寸）。腳本的 `WIDTHS` 要與 `FieldNotes.tsx` 一致。
   - **隱私**：照片中的白板、螢幕若有 WiFi 密碼、個資，一定要用 `redact` 模糊（Vol. 01 的 G202 白板密碼已處理）。
   - **照片一律全彩**，`tone` 只調亮度、對比與一點暖色，不可去色（4.4）。
   - **圖說只寫照片裡看得到的**：投影片標題照抄，其餘用中性的場景詞（交流、觀眾席、合影）。不推測時序（開場、第幾段演講、演講後、散場前）、時間或人物身分，也不加詮釋。`cue` 欄位只在使用者明確提供時才填。

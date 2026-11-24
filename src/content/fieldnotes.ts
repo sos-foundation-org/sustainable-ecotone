@@ -6,7 +6,7 @@
 // 頁首的樣線圖例會依各段的張數自動分配寬度。
 //
 // 照片：用 `node scripts/field-notes.mjs <原始照片資料夾>` 產生 public/field/<dir>/ 下的 WebP（裁切、
-// 調整亮度對比、模糊白板上的 WiFi 密碼等）。`w` / `h` 是設計裁切的尺寸，`fullW` / `fullH` 是燈箱用的整張。
+// 調整亮度對比、模糊白板上的 WiFi 密碼等）。`w` / `h` 是設計裁切的尺寸。照片不提供放大。
 // 短片：`kind: "video"`，mp4 放 public/field/<dir>/，見 AI-README「活動現場紀錄」。
 //
 // 文案守則：描述場景，不必逐一點名；講者照片與現場照片一律全彩，不加去色濾鏡（AI-README 4.4）。
@@ -23,9 +23,6 @@ export type FieldShot = {
   shape: FieldShape;
   w: number;
   h: number;
-  /** 燈箱用的整張照片尺寸（只有照片需要） */
-  fullW?: number;
-  fullH?: number;
   /** 對應流程的位置，例如「Talk 1」 */
   cue?: L10n;
   caption: L10n;
@@ -58,7 +55,7 @@ export type FieldNotes = {
   movements: FieldMovement[];
 };
 
-const T3x2 = { w: 2000, h: 1333, fullW: 2000, fullH: 1333 };
+const T3x2 = { w: 2000, h: 1333 };
 
 export const FIELD_NOTES: Record<string, FieldNotes> = {
   "sustainable-urbanization-rewilding-2026": {
@@ -98,9 +95,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
             id: "talk1",
             shape: "tall",
             w: 800,
-            h: 1067,
-            fullW: 2000,
-            fullH: 1333,
+            h: 1067,
             caption: {
               zh: "〈環境變遷下的育兒策略：從行為可塑性到環境適應〉",
               en: "Raising the Next Generation under Environmental Change: Behavioural Plasticity and Adaptation",
@@ -114,9 +109,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
             id: "talk2",
             shape: "tall",
             w: 840,
-            h: 1120,
-            fullW: 2000,
-            fullH: 1333,
+            h: 1120,
             caption: { zh: "講台上的分享。", en: "At the lectern." },
             alt: {
               zh: "講者舉起一隻手說明，身後的投影幕是一片藍紫色的影像。",
@@ -127,9 +120,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
             id: "talk3",
             shape: "wide",
             w: 2000,
-            h: 1333,
-            fullW: 2000,
-            fullH: 1500,
+            h: 1333,
             caption: {
               zh: "〈人類眼中的自然：理解、對待與記錄〉",
               en: "Nature through Human Eyes: How We Understand, Treat and Record It",
@@ -153,9 +144,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
             id: "talk4",
             shape: "tall",
             w: 900,
-            h: 1200,
-            fullW: 2000,
-            fullH: 1500,
+            h: 1200,
             caption: {
               zh: "不悅之美（The Unpleasant Necessity）：樹洞、水窪、落葉、單寧、泥浴、礦物鹽地。",
               en: "The Unpleasant Necessity: hollows and burrows, puddles, leaf litter, tannin, mud baths, mineral licks.",
@@ -183,9 +172,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
             id: "seats",
             shape: "pano",
             w: 2000,
-            h: 857,
-            fullW: 2000,
-            fullH: 1333,
+            h: 857,
             caption: { zh: "觀眾席。", en: "The audience." },
             alt: {
               zh: "觀眾坐在長桌後看向前方，牆上掛著幾張研究海報。",
@@ -211,9 +198,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
             id: "after",
             shape: "wide",
             w: 1800,
-            h: 1200,
-            fullW: 2000,
-            fullH: 1333,
+            h: 1200,
             caption: { zh: "講者與觀眾交流。", en: "Speakers and audience in conversation." },
             alt: {
               zh: "幾個人圍成一圈站著交談。",
@@ -224,9 +209,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
             id: "mingle",
             shape: "tall",
             w: 800,
-            h: 1067,
-            fullW: 2000,
-            fullH: 1333,
+            h: 1067,
             caption: { zh: "交流。", en: "In conversation." },
             alt: {
               zh: "兩個人在教室裡面對面聊天，後方還有其他人在交談。",
@@ -237,9 +220,7 @@ export const FIELD_NOTES: Record<string, FieldNotes> = {
             id: "together",
             shape: "plate",
             w: 2000,
-            h: 1157,
-            fullW: 2000,
-            fullH: 1157,
+            h: 1157,
             caption: { zh: "合影", en: "Group photo" },
             alt: {
               zh: "講者與觀眾在投影幕前排成兩排合影。",

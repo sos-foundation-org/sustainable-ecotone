@@ -4,7 +4,6 @@ import type { FieldNotes as Notes, FieldShot } from "@/content/fieldnotes";
 import type { Lang } from "@/lib/i18n";
 import { roman } from "@/lib/engrave";
 import { PlateHead } from "./Typography";
-import FieldLightbox, { type LightboxItem } from "./FieldLightbox";
 import FieldFilm from "./FieldFilm";
 import FieldHyphae from "./FieldHyphae";
 import FieldVignette from "./FieldVignette";
@@ -16,7 +15,6 @@ const TILTS = [-0.8, 0.6, -0.35, 0.9, -0.6, 0.4, -0.95, 0.3];
 /** Same widths and rule as scripts/field-notes.mjs (never upscale). */
 const WIDTHS = [480, 800, 1200, 1600, 2000];
 const fieldWidths = (w: number) => WIDTHS.filter((x) => x <= w);
-const fullWidths = (w: number) => WIDTHS.filter((x) => x >= 1200 && x <= w);
 
 const SIZES: Record<FieldShot["shape"], string> = {
   wide: "(max-width: 640px) calc(100vw - 32px), (max-width: 960px) 62vw, 640px",
@@ -29,14 +27,12 @@ const T = {
   zh: {
     title: "現場紀錄",
     en: "Field notes",
-    open: (n: number, alt: string) => `放大 Fig. ${n}：${alt}`,
     figs: (n: number) => `${n} 幀`,
     nav: "樣線：講台、觀眾席、交會帶",
   },
   en: {
     title: "Field notes",
     en: undefined,
-    open: (n: number, alt: string) => `Enlarge Fig. ${n}: ${alt}`,
     figs: (n: number) => `${n} ${n === 1 ? "frame" : "frames"}`,
     nav: "Transect: lectern, audience, ecotone",
   },
@@ -53,27 +49,14 @@ function Swatch({ pattern }: { pattern: string }) {
 
 /**
  * The volume's field notes: photographs (and short films) laid out as a transect of the
- * evening, lectern → seats → ecotone. Photos open in a lightbox showing the whole frame;
- * the grid shows a designed crop. Films play muted in view (see FieldFilm).
+ * evening, lectern → audience → ecotone. Each photo shows a designed crop (no enlarging).
+ * Films play muted in view (see FieldFilm).
  */
 export default function FieldNotes({ notes, lang }: { notes: Notes; lang: Lang }) {
   const t = T[lang];
   const base = `/field/${notes.dir}`;
   const all = notes.movements.flatMap((m) => m.shots);
-  const photos = all.filter((s) => s.kind !== "video");
   const figNo = new Map(all.map((s, i) => [s.id, i + 1]));
-  const boxItems: LightboxItem[] = photos.map((s) => ({
-    srcSet: fullWidths(s.fullW ?? s.w)
-      .map((w) => `${base}/${s.id}-full-${w}.webp ${w}w`)
-      .join(", "),
-    src: `${base}/${s.id}-full-${fullWidths(s.fullW ?? s.w).at(-1)}.webp`,
-    w: s.fullW ?? s.w,
-    h: s.fullH ?? s.h,
-    alt: s.alt[lang],
-    fig: figNo.get(s.id) ?? 0,
-    cue: s.cue?.[lang],
-    caption: s.caption[lang],
-  }));
   const cols = notes.movements.map((m) => `minmax(0, ${Math.max(m.shots.length, 2)}fr)`).join(" ");
 
   return (
@@ -134,19 +117,19 @@ export default function FieldNotes({ notes, lang }: { notes: Notes; lang: Lang }
                 const style = { "--ar": `${s.w} / ${s.h}`, "--tilt": `${tilt}deg` } as CSSProperties;
                 return (
                   <figure key={s.id} className={`fn-shot fn-shot--${s.shape} reveal`} style={style}>
-                    <button type="button" className="fn-mount" data-fn={photos.indexOf(s)} aria-label={t.open(n, s.alt[lang])} aria-haspopup="dialog">
+                    <div className="fn-mount">
                       <img
                         src={`${base}/${s.id}-${ws.at(-1)}.webp`}
                         srcSet={ws.map((w) => `${base}/${s.id}-${w}.webp ${w}w`).join(", ")}
                         sizes={SIZES[s.shape]}
                         width={s.w}
                         height={s.h}
-                        alt=""
+                        alt={s.alt[lang]}
                         loading="lazy"
                         decoding="async"
                       />
                       {s.shape !== "plate" && <span className={`tape ${si % 2 ? "b" : "a"}`} aria-hidden="true" />}
-                    </button>
+                    </div>
                     {cap}
                   </figure>
                 );
@@ -155,7 +138,6 @@ export default function FieldNotes({ notes, lang }: { notes: Notes; lang: Lang }
           </div>
         ))}
       </div>
-      <FieldLightbox rootId="field-notes" items={boxItems} lang={lang} />
     </section>
   );
 }

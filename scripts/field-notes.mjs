@@ -7,7 +7,6 @@
 //   2. apply a gentle tone correction (`tone`: brightness, contrast, warmth). Never desaturate:
 //      people in these photos stay in full colour (AI-README 4.4),
 //   3. write the designed crop used in the page grid:   public/field/<dir>/<id>-<w>.webp
-//   4. write the whole (redacted) frame for the lightbox: public/field/<dir>/<id>-full-<w>.webp
 // Widths come from WIDTHS and never upscale. src/components/FieldNotes.tsx uses the same rule
 // (fieldWidths) to build srcset, so keep the two in sync.
 //
@@ -83,9 +82,5 @@ for (const shot of SHOTS) {
   for (const width of WIDTHS.filter((x) => x <= w)) {
     await sharp(cropped).resize({ width }).webp({ quality: 78 }).toFile(join(out, `${shot.id}-${width}.webp`));
   }
-  const full = await img.clone().toBuffer();
-  for (const width of WIDTHS.filter((x) => x >= 1200 && x <= meta.width)) {
-    await sharp(full).resize({ width }).webp({ quality: 80 }).toFile(join(out, `${shot.id}-full-${width}.webp`));
-  }
-  console.log(`${shot.id}: crop ${w}×${h}, full ${meta.width}×${meta.height}`);
+  console.log(`${shot.id}: crop ${w}×${h} of ${meta.width}×${meta.height}`);
 }
