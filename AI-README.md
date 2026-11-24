@@ -598,10 +598,10 @@ presenters: ["<演講者 id>", …], // 實際上台演講的人；全部都有�
 
 ### 5A.4 現場紀錄（照片）
 
-1. 原始照片放在 repo **外**（例如暫存資料夾）。先逐張看：白板 / 螢幕上有沒有 WiFi 密碼、電話、email 等個資，有就記下座標用 `redact` 模糊。
+1. 原始照片放在 repo **外**（例如暫存資料夾）。先逐張看：白板 / 螢幕上有沒有 WiFi 密碼、電話、email 等個資，有就記下座標用 `erase` 擦掉（只擦必要的部分，例如密碼後半；WiFi 名稱可保留）。用放大格線圖確認座標，處理完再放大檢查。
 2. 在 `scripts/field-notes.mjs` 把 `DIR` 改成 `"volNN"`，`SHOTS` 每張一筆：
    ```js
-   { id: "talk1", src: "IMG_0123.jpg", crop: [left, top, width, height], redact: [[x, y, w, h]], tone: { b: 1.04, c: 1.06 } },
+   { id: "talk1", src: "IMG_0123.jpg", crop: [left, top, width, height], erase: [[x, y, w, h]], tone: { b: 1.04, c: 1.06 } },
    ```
    `crop` 依版面形狀取：`wide` 3:2、`tall` 3:4、`pano` 約 7:3、`plate`（合影收尾）原比例。執行 `node scripts/field-notes.mjs <原始照片資料夾>`，用 sharp 做張縮圖確認裁切與模糊。
 3. 在 `src/content/fieldnotes.ts` 的 `FIELD_NOTES` 加一筆（key 是活動 slug），範本：
@@ -723,8 +723,8 @@ presenters: ["<演講者 id>", …], // 實際上台演講的人；全部都有�
 - **手貼感**：每張照片有固定的微小傾斜（`TILTS`）與膠帶，滑鼠移上去會擺正並浮起；收尾的 `plate` 不傾斜、不貼膠帶。
 - **照片形狀（`shape`）**：`wide`（3:2，佔 4/6 欄）與 `tall`（3:4，佔 2/6 欄）**成對排**，同一列的高度由 wide 決定（CSS subgrid）；排列順序就是格線順序，請交錯 wide/tall（W T、T W、W T…），不要讓 tall 單獨一列。`pano` 全寬橫幅；`plate` 全寬收尾大圖（雙框，像銅版圖版）。手機一欄，tall 改 4:5、pano 改 3:2。
 - **不提供放大**：客戶要求照片不能點擊放大、不提供高解析度原圖（2026-11-25 移除燈箱與 `-full-` 檔）。照片只是 `<div class="fn-mount">` 裡的 `<img alt>`，不要再加回燈箱或下載連結。
-- **新增照片**：原始檔放在 repo 外，在 `scripts/field-notes.mjs` 的 `SHOTS` 加一筆（`crop` 設計裁切、`redact` 要模糊的方框、`tone` 亮度 / 對比），執行 `node scripts/field-notes.mjs <原始照片資料夾>`，輸出到 `public/field/<dir>/`；再到 `fieldnotes.ts` 加資料（`w`/`h` 等於 crop 尺寸）。腳本的 `WIDTHS` 要與 `FieldNotes.tsx` 一致。
-  - **隱私**：照片中的白板、螢幕若有 WiFi 密碼、個資，一定要用 `redact` 模糊（Vol. 01 的 G202 白板密碼已處理）。
+- **新增照片**：原始檔放在 repo 外，在 `scripts/field-notes.mjs` 的 `SHOTS` 加一筆（`crop` 設計裁切、`erase` 要擦掉的方框、`tone` 亮度 / 對比），執行 `node scripts/field-notes.mjs <原始照片資料夾>`，輸出到 `public/field/<dir>/`；再到 `fieldnotes.ts` 加資料（`w`/`h` 等於 crop 尺寸）。腳本的 `WIDTHS` 要與 `FieldNotes.tsx` 一致。
+  - **隱私**：照片中的白板、螢幕若有 WiFi 密碼、個資，一定要用 `erase` 擦掉（把方框內重畫成乾淨的白板，深色的頭髮、框不會被蓋掉；不要用模糊，模糊會留下一塊明顯的矩形）。只擦到無法使用即可：Vol. 01 只擦掉 WiFi 密碼的後五碼，WiFi 名稱保留。
   - **照片一律全彩**，`tone` 只調亮度、對比與一點暖色，不可去色（4.4）。
   - **圖說只寫照片裡看得到的**：投影片標題照抄，其餘用中性的場景詞（交流、觀眾席、合影）。不推測時序（開場、第幾段演講、演講後、散場前）、時間或人物身分，也不加詮釋。`cue` 欄位只在使用者明確提供時才填。
 - **短片**（10–20 秒）：`kind: "video"`，檔案 `public/field/<dir>/<id>.mp4` 與封面 `<id>-poster.webp`，填 `seconds`。`FieldFilm` 只在畫面內且分頁可見時靜音循環播放，離開就暫停；`prefers-reduced-motion: reduce` 時不自動播放（封面 + 播放鈕）；聲音由使用者自己開。轉檔建議：
